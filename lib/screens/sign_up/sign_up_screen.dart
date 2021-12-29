@@ -142,68 +142,65 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   credentialsFeild(controller, hintText, errorText, obscureText, feildName) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.055,
-      child: TextFormField(
-        obscureText: obscureText,
-        keyboardType: TextInputType.emailAddress,
-        textAlign: TextAlign.start,
-        controller: controller,
-        validator: (value) {
-          if (value == null || value.isEmpty)
-            return 'please enter $hintText';
-          else if ((feildName == 'password' || feildName == 'password2')) {
-            if (value.length < 8) {
-              return 'Password strength should be 8';
-            } else if (value.contains(RegExp(r'^-?[0-9]+$')) == true) {
-              return 'Password must include atleast 1 letter';
-            } else if (feildName == 'password2' &&
-                _passwordController.text != value) {
-              return 'Password does not Match!';
-            }
+    return TextFormField(
+      obscureText: obscureText,
+      keyboardType: TextInputType.emailAddress,
+      textAlign: TextAlign.start,
+      controller: controller,
+      validator: (value) {
+        if (value == null || value.isEmpty)
+          return 'please enter $hintText';
+        else if ((feildName == 'password' || feildName == 'password2')) {
+          if (value.length < 8) {
+            return 'Password strength should be 8';
+          } else if (value.contains(RegExp(r'^-?[0-9]+$')) == true) {
+            return 'Password must include atleast 1 letter';
+          } else if (feildName == 'password2' &&
+              _passwordController.text != value) {
+            return 'Password does not Match!';
           }
-        },
-        onChanged: (value) {
-          _userDetails[feildName] = controller.text;
-          setState(() {
-            _errors[feildName] = '';
-          });
-        },
-        onFieldSubmitted: (value) {
-          _userDetails[feildName] = value;
-        },
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(left: 10),
-          errorText:
-              _errors[feildName] == '' ? null : _errors[feildName].toString(),
-          focusColor: Colors.grey,
-          hintText: hintText,
-          focusedBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(7.5),
-            ),
-            borderSide: BorderSide(color: Colors.grey, width: 3),
+        }
+      },
+      onChanged: (value) {
+        _userDetails[feildName] = controller.text;
+        setState(() {
+          _errors[feildName] = '';
+        });
+      },
+      onFieldSubmitted: (value) {
+        _userDetails[feildName] = value;
+      },
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.only(left: 10),
+        errorText:
+            _errors[feildName] == '' ? null : _errors[feildName].toString(),
+        focusColor: Colors.grey,
+        hintText: hintText,
+        focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(7.5),
           ),
-          errorBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(7.5),
-            ),
-            borderSide: BorderSide(color: Colors.grey, width: 3),
+          borderSide: BorderSide(color: Colors.grey, width: 3),
+        ),
+        errorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(7.5),
           ),
-          focusedErrorBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(7.5),
-            ),
-            borderSide: BorderSide(color: Colors.grey, width: 3),
+          borderSide: BorderSide(color: Colors.grey, width: 3),
+        ),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(7.5),
           ),
-          enabledBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(7.5),
-            ),
-            borderSide: BorderSide(
-              color: Colors.grey,
-              width: 2,
-            ),
+          borderSide: BorderSide(color: Colors.grey, width: 3),
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(7.5),
+          ),
+          borderSide: BorderSide(
+            color: Colors.grey,
+            width: 2,
           ),
         ),
       ),
