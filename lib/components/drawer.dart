@@ -1,12 +1,14 @@
 import 'package:feex/constants.dart';
 import 'package:feex/screens/home_screen/home_screen.dart';
+import 'package:feex/screens/my_orders/my_orders_screen.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class DrawerWidget extends StatelessWidget {
-  var email="joseph@gmail.com";
-  var name= "Joseph Jo";
+  var email = "joseph@gmail.com";
+  var name = "Joseph Jo";
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -31,54 +33,48 @@ class DrawerWidget extends StatelessWidget {
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: CircleAvatar(
-                  radius: 30.0,
-                  backgroundColor: skyBlueColor,
-                  // backgroundImage: NetworkImage(userAvatarUrl),
+              Container(
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 15),
+                      child: CircleAvatar(
+                        radius: 30,
+                        child: Image.asset('assets/images/user_default.png'),
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '$name',
+                          style: const TextStyle(
+                              color: kPrimaryColor, fontSize: 20),
+                        ),
+                        Text(
+                          '$email',
+                          style: const TextStyle(
+                              color: kSecondaryColor, fontSize: 15),
+                        )
+                      ],
+                    )
+                  ],
                 ),
               ),
-              SizedBox(
-                width: SizeConfig.screenWidth * 0.09,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "$name",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: kPrimaryColor,
-                    ),
-                  ),
-                  SizedBox(
-                    height: SizeConfig.screenHeight * 0.01,
-                  ),
-                  Text(
-                    "$email",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: kSecondaryColor,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                width: SizeConfig.screenWidth * 0.2,
-              ),
-              Icon(
-                Icons.settings,
-                color: kPrimaryColor,
-                size: 36.0,
-              ),
+              const Padding(
+                padding: EdgeInsets.only(right: 20),
+                child: Icon(
+                  Icons.settings_outlined,
+                  size: 30,
+                ),
+              )
             ],
           ),
           SizedBox(
-            height: SizeConfig.screenHeight * 0.08,
+            height: SizeConfig.screenHeight * 0.07,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,14 +82,45 @@ class DrawerWidget extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-
                   Navigator.pushNamed(context, HomeScreen.routeName);
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                  child: Text(
-                    "Home",
-                    style: TextStyle(fontSize: 20, color: Colors.black),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        "Home",
+                        style: TextStyle(fontSize: 20, color: Colors.black),
+                      ),
+                      Icon(
+                        Icons.arrow_right,
+                        color: kSecondaryColor,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Divider(),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyOrders()));
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        "My Orders",
+                        style: TextStyle(fontSize: 20, color: Colors.black),
+                      ),
+                      Icon(
+                        Icons.arrow_right,
+                        color: kSecondaryColor,
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -103,10 +130,19 @@ class DrawerWidget extends StatelessWidget {
                   Navigator.pushNamed(context, HomeScreen.routeName);
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                  child: Text(
-                    "My orders",
-                    style: TextStyle(fontSize: 20, color: Colors.black),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        "Notifications",
+                        style: TextStyle(fontSize: 20, color: Colors.black),
+                      ),
+                      Icon(
+                        Icons.arrow_right,
+                        color: kSecondaryColor,
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -116,10 +152,19 @@ class DrawerWidget extends StatelessWidget {
                   Navigator.pushNamed(context, HomeScreen.routeName);
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                  child: Text(
-                    "Notification",
-                    style: TextStyle(fontSize: 20, color: Colors.black),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        "Get Support",
+                        style: TextStyle(fontSize: 20, color: Colors.black),
+                      ),
+                      Icon(
+                        Icons.arrow_right,
+                        color: kSecondaryColor,
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -129,10 +174,19 @@ class DrawerWidget extends StatelessWidget {
                   Navigator.pushNamed(context, HomeScreen.routeName);
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                  child: Text(
-                    "Get support",
-                    style: TextStyle(fontSize: 20, color: Colors.black),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        "About",
+                        style: TextStyle(fontSize: 20, color: Colors.black),
+                      ),
+                      Icon(
+                        Icons.arrow_right,
+                        color: kSecondaryColor,
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -142,23 +196,19 @@ class DrawerWidget extends StatelessWidget {
                   Navigator.pushNamed(context, HomeScreen.routeName);
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                  child: Text(
-                    "About",
-                    style: TextStyle(fontSize: 20, color: Colors.black),
-                  ),
-                ),
-              ),
-              Divider(),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, HomeScreen.routeName);
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                  child: Text(
-                    "Payment Methods",
-                    style: TextStyle(fontSize: 20, color: Colors.black),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        "Payment Methods",
+                        style: TextStyle(fontSize: 20, color: Colors.black),
+                      ),
+                      Icon(
+                        Icons.arrow_right,
+                        color: kSecondaryColor,
+                      )
+                    ],
                   ),
                 ),
               ),

@@ -144,7 +144,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   credentialsFeild(controller, hintText, errorText, obscureText, feildName) {
     return TextFormField(
       obscureText: obscureText,
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: feildName != 'mobile_number'
+          ? TextInputType.emailAddress
+          : TextInputType.phone,
       textAlign: TextAlign.start,
       controller: controller,
       validator: (value) {
