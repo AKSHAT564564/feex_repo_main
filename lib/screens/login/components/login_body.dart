@@ -70,8 +70,8 @@ class _BodyState extends State<Body> {
             Radius.circular(7.5),
           ),
           borderSide: BorderSide(
-            color: Colors.grey,
-            width: 2,
+            color: Color(0xff211452),
+            width: 1,
           ),
         ),
       ),
@@ -84,165 +84,162 @@ class _BodyState extends State<Body> {
     return ModalProgressHUD(
       inAsyncCall: _isLoading,
       child: Scaffold(
-        body: SafeArea(
-          child: SizedBox(
-            width: double.infinity,
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: getProportionateScreenWidth(20)),
-              child: ListView(
-                children: [
-                  SizedBox(height: SizeConfig.screenHeight * 0.06),
-                  Row(children: [
-                    Spacer(),
-                    GestureDetector(
-                      onTap: () =>
-                          Navigator.pushNamed(context, HomeScreen.routeName),
-                      child: const Text(
-                        "Skip for now",
-                        style: TextStyle(
-                          color: greenColor,
-                          fontSize: 16,
-                          // decoration: TextDecoration.underline
-                        ),
+        body: SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: getProportionateScreenWidth(20)),
+            child: ListView(
+              children: [
+                SizedBox(height: SizeConfig.screenHeight * 0.06),
+                Row(children: [
+                  Spacer(),
+                  GestureDetector(
+                    onTap: () =>
+                        Navigator.pushNamed(context, HomeScreen.routeName),
+                    child: const Text(
+                      "Skip for now",
+                      style: TextStyle(
+                        color: greenColor,
+                        fontSize: 16,
+                        // decoration: TextDecoration.underline
                       ),
-                    )
-                  ]),
-                  SizedBox(
-                    height: SizeConfig.screenHeight * 0.06,
-                  ),
-                  Image.asset(
-                    'assets/images/frame_blue.png',
-                    height: SizeConfig.screenHeight * 0.10,
-                    width: SizeConfig.screenWidth * 0.5,
-                  ),
-                  // Text(
-                  //   "FEEX .",
-                  //   style: TextStyle(
-                  //     color: Colors.black,
-                  //     fontSize: getProportionateScreenWidth(32),
-                  //     fontWeight: FontWeight.bold,
-                  //   ),
-                  // ),
-                  SizedBox(height: SizeConfig.screenHeight * 0.1),
-                  // SizedBox(
-                  //   height: getProportionateScreenHeight(10),
-                  // ),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.06,
-                          child: credentialsFeild(
-                              _emailController,
-                              'Username',
-                              emailError,
-                              false,
-                              const Icon(
-                                Icons.person,
-                                color: Color(0xff211452),
-                              )),
-                        ),
-                        SizedBox(height: getProportionateScreenHeight(30)),
-                        credentialsFeild(
-                            _passwordController,
-                            'Password',
-                            passwordError,
-                            true,
+                    ),
+                  )
+                ]),
+                SizedBox(
+                  height: SizeConfig.screenHeight * 0.06,
+                ),
+                Image.asset(
+                  'assets/images/frame_blue.png',
+                  height: SizeConfig.screenHeight * 0.10,
+                  width: SizeConfig.screenWidth * 0.5,
+                ),
+                // Text(
+                //   "FEEX .",
+                //   style: TextStyle(
+                //     color: Colors.black,
+                //     fontSize: getProportionateScreenWidth(32),
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                // ),
+                SizedBox(height: SizeConfig.screenHeight * 0.1),
+                // SizedBox(
+                //   height: getProportionateScreenHeight(10),
+                // ),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        child: credentialsFeild(
+                            _emailController,
+                            'Username',
+                            emailError,
+                            false,
                             const Icon(
-                              Icons.lock,
+                              Icons.person,
                               color: Color(0xff211452),
                             )),
-                        SizedBox(height: getProportionateScreenHeight(30)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            GestureDetector(
-                              onTap: () => Navigator.pushNamed(
-                                  context, ForgotPasswordScreen.routeName),
-                              child: const Text(
-                                "Forgot password?",
-                                style: TextStyle(fontSize: 16, color: greenColor
-                                    // decoration: TextDecoration.underline
-                                    ),
-                              ),
-                            )
-                          ],
-                        ),
-                        // FormError(errors: errors),
-                        SizedBox(height: SizeConfig.screenHeight * 0.15),
-                        DefaultButton(
-                          text: "Log In",
-                          press: () async {
-                            if (_formKey.currentState!.validate()) {
-                              _formKey.currentState!.save();
-                              // if all are valid then go to success screen
-                              KeyboardUtil.hideKeyboard(context);
-                              if (_emailController.text == '' ||
-                                  _passwordController.text == '') {
-                                setState(() {
-                                  emailError = true;
-                                  passwordError = true;
-                                });
-                              } else {
-                                setState(() {
-                                  _isLoading = true;
-                                });
-                                await AuthMethods()
-                                    .login(_emailController.text,
-                                        _passwordController.text)
-                                    .then((value) {
-                                  if (value == 'true') {
-                                    Navigator.pushNamed(
-                                        context, HomeScreen.routeName);
-                                  } else {
-                                    // Showing alert dialog for error
-                                    setState(() {
-                                      _isLoading = false;
-                                    });
-                                    Alert(
-                                      context: context,
-                                      type: AlertType.info,
-                                      title: 'Login Failed',
-                                      desc: value.toString(),
-                                      buttons: [
-                                        DialogButton(
-                                          child: const Text(
-                                            "Try Again",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20),
-                                          ),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          color:
-                                              Color.fromRGBO(0, 179, 134, 1.0),
+                      ),
+                      SizedBox(height: getProportionateScreenHeight(30)),
+                      credentialsFeild(
+                          _passwordController,
+                          'Password',
+                          passwordError,
+                          true,
+                          const Icon(
+                            Icons.lock,
+                            color: Color(0xff211452),
+                          )),
+                      SizedBox(height: getProportionateScreenHeight(30)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () => Navigator.pushNamed(
+                                context, ForgotPasswordScreen.routeName),
+                            child: const Text(
+                              "Forgot password?",
+                              style: TextStyle(fontSize: 16, color: greenColor
+                                  // decoration: TextDecoration.underline
+                                  ),
+                            ),
+                          )
+                        ],
+                      ),
+                      // FormError(errors: errors),
+                      SizedBox(height: SizeConfig.screenHeight * 0.15),
+                      DefaultButton(
+                        text: "Log In",
+                        press: () async {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            // if all are valid then go to success screen
+                            KeyboardUtil.hideKeyboard(context);
+                            if (_emailController.text == '' ||
+                                _passwordController.text == '') {
+                              setState(() {
+                                emailError = true;
+                                passwordError = true;
+                              });
+                            } else {
+                              setState(() {
+                                _isLoading = true;
+                              });
+                              await AuthMethods()
+                                  .login(_emailController.text,
+                                      _passwordController.text)
+                                  .then((value) {
+                                if (value == 'true') {
+                                  Navigator.pushNamed(
+                                      context, HomeScreen.routeName);
+                                } else {
+                                  // Showing alert dialog for error
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                  Alert(
+                                    context: context,
+                                    type: AlertType.info,
+                                    title: 'Login Failed',
+                                    desc: value.toString(),
+                                    buttons: [
+                                      DialogButton(
+                                        child: const Text(
+                                          "Try Again",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
                                         ),
-                                      ],
-                                    ).show();
-                                  }
-                                });
-                              }
-
-                              // Navigator.pushNamed(context, HomeScreen.routeName);
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        color: Color.fromRGBO(0, 179, 134, 1.0),
+                                      ),
+                                    ],
+                                  ).show();
+                                }
+                              });
                             }
-                          },
-                        ),
-                        SizedBox(height: getProportionateScreenHeight(20)),
-                      ],
-                    ),
+
+                            // Navigator.pushNamed(context, HomeScreen.routeName);
+                          }
+                        },
+                      ),
+                      SizedBox(height: getProportionateScreenHeight(20)),
+                    ],
                   ),
-                  SizedBox(
-                    height: SizeConfig.screenHeight * 0.01,
-                    // child: Container(
-                    //   color: Colors.green,
-                    // ),
-                  ),
-                  NoAccountText(),
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: SizeConfig.screenHeight * 0.01,
+                  // child: Container(
+                  //   color: Colors.green,
+                  // ),
+                ),
+                NoAccountText(),
+              ],
             ),
           ),
         ),

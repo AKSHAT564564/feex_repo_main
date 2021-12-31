@@ -1,6 +1,8 @@
 import 'package:feex/constants.dart';
+import 'package:feex/screens/quotation_screens/quotation_details.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class MyOrders extends StatefulWidget {
   const MyOrders({Key? key}) : super(key: key);
@@ -10,50 +12,177 @@ class MyOrders extends StatefulWidget {
 }
 
 class _MyOrdersState extends State<MyOrders> {
-  orderItemWidget() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Container(
-          height: 100,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Color(0xffe3def8), width: 1.0)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                  flex: 7,
-                  child: Padding(
-                    padding: EdgeInsets.all(15),
+  Widget bottomWidget() {
+    return Container(
+      height: SizeConfig.screenHeight * 0.3,
+      child: Padding(
+        padding: const EdgeInsets.all(1.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                    flex: 7,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 25, left: 20, right: 20, bottom: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Plumber',
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: kPrimaryColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8),
+                                child: Image.asset(
+                                    'assets/images/location_pin.png'),
+                              ),
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  Text(
+                                    'Dubai -Silicon Oasis',
+                                    style: TextStyle(color: kSecondaryColor),
+                                  ),
+                                  Text(
+                                    'Home',
+                                    style: TextStyle(color: kSecondaryColor),
+                                  ),
+                                ],
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    )),
+                Expanded(
+                    flex: 3,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Plumber',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: kPrimaryColor,
-                              fontWeight: FontWeight.bold),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.asset(
+                                'assets/images/clock_icon.png',
+                                scale: 1.5,
+                              ),
+                            ),
+                            Text(
+                              'Pending',
+                              style: TextStyle(color: kPrimaryColor),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'Requested for : Home',
+                        SizedBox(
+                          height: 20,
                         ),
-                        Text('Date : 12/07/2020')
+                        GestureDetector(
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => QuotationDetails())),
+                          child: const Text(
+                            'View Quotation',
+                            style: TextStyle(
+                                color: greenColor,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        )
                       ],
-                    ),
-                  )),
-              Expanded(
-                  flex: 3,
-                  child: Row(
-                    children: [
-                      Icon(Icons.timer),
-                      Text('Pedning'),
-                      Icon(Icons.arrow_right)
-                    ],
-                  ))
-            ],
-          )),
+                    ))
+              ],
+            ),
+            const ListTile(
+              title: Padding(
+                padding: EdgeInsets.only(bottom: 10),
+                child: Text(
+                  'Estimated Time to Recieve the Service',
+                  style: TextStyle(color: kSecondaryColor, fontSize: 15),
+                ),
+              ),
+              subtitle: Text(
+                '1hr & 30 Min',
+                style: TextStyle(fontSize: 20, color: kSecondaryColor),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  orderItemWidget() {
+    return GestureDetector(
+      onTap: () => showBarModalBottomSheet(
+          duration: const Duration(microseconds: 300),
+          bounce: true,
+          context: context,
+          backgroundColor: Colors.white,
+          builder: (context) {
+            return bottomWidget();
+          }),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Container(
+            height: 100,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Color(0xffe3def8), width: 1.0)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                    flex: 7,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'Plumber',
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: kPrimaryColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            'Requested for : Home',
+                          ),
+                          Text('Date : 12/07/2020')
+                        ],
+                      ),
+                    )),
+                Expanded(
+                    flex: 3,
+                    child: Row(
+                      children: const [
+                        Icon(Icons.timer),
+                        Text('Pedning'),
+                        Icon(Icons.arrow_right)
+                      ],
+                    ))
+              ],
+            )),
+      ),
     );
   }
 
