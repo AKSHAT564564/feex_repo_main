@@ -144,7 +144,7 @@ class _MyOrdersState extends State<MyOrders> {
         child: Container(
             height: 100,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: Color(0xffe3def8), width: 1.0)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -161,7 +161,7 @@ class _MyOrdersState extends State<MyOrders> {
                             'Plumber',
                             style: TextStyle(
                                 fontSize: 20,
-                                color: kPrimaryColor,
+                                color: Colors.black,
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
@@ -174,10 +174,22 @@ class _MyOrdersState extends State<MyOrders> {
                 Expanded(
                     flex: 3,
                     child: Row(
-                      children: const [
-                        Icon(Icons.timer),
-                        Text('Pedning'),
-                        Icon(Icons.arrow_right)
+                      children: [
+                        Image.asset(
+                          'assets/images/clock_icon.png',
+                          scale: 1.5,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'Pending',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_right_sharp,
+                          color: kSecondaryColor,
+                        )
                       ],
                     ))
               ],

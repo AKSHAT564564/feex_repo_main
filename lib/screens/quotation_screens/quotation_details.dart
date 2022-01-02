@@ -160,7 +160,7 @@ class QuotationDetails extends StatelessWidget {
             endIndent: 20,
             color: kSecondaryColor,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           const Padding(
@@ -180,7 +180,7 @@ class QuotationDetails extends StatelessWidget {
             child: Container(
               height: SizeConfig.screenHeight * 0.3,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(10),
                   border: Border.all(width: 1.0, color: Color(0xffe3def8))),
             ),
           )

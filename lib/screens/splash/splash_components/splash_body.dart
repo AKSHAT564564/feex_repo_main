@@ -17,17 +17,17 @@ class _BodyState extends State<Body> {
     {
       "text1": "Welcome",
       "text2": "on-boarding text 1",
-      "image": "assets/images/splash1.jpg"
+      "image": "assets/images/welcome_rectangle.svg"
     },
     {
       "text1": "dummy text p1",
       "text2": "on-boarding text 2",
-      "image": "assets/images/splash1.jpg"
+      "image": "assets/images/welcome_rectangle.svg"
     },
     {
       "text1": "dummy text p2",
       "text2": "on-boarding text 3",
-      "image": "assets/images/splash1.jpg"
+      "image": "assets/images/welcome_rectangle.svg"
     },
   ];
   @override

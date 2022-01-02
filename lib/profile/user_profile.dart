@@ -1,10 +1,20 @@
 import 'package:feex/constants.dart';
+import 'package:feex/profile/user_account_info.dart';
+import 'package:feex/profile/user_change_email.dart';
+import 'package:feex/profile/user_change_password.dart';
+import 'package:feex/profile/user_saved_address.dart';
 import 'package:feex/screens/home_screen/home_screen.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
 
 class UserProfile extends StatelessWidget {
-  const UserProfile({Key? key}) : super(key: key);
+  Widget divider = const Divider(
+    height: 20,
+    thickness: 0.3,
+    indent: 20,
+    endIndent: 0,
+    color: kSecondaryColor,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +24,7 @@ class UserProfile extends StatelessWidget {
         backgroundColor: Colors.white,
         leading: IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back,
               color: kPrimaryColor,
             )),
@@ -22,7 +32,7 @@ class UserProfile extends StatelessWidget {
           'My Account',
           style: TextStyle(color: kPrimaryColor),
         ),
-        actions: [
+        actions: const [
           Align(
             alignment: Alignment.centerRight,
             child: TextButton(
@@ -61,16 +71,16 @@ class UserProfile extends StatelessWidget {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: const [
                           Text(
                             'Jsoseph Jo',
-                            style: const TextStyle(
-                                color: kPrimaryColor, fontSize: 20),
+                            style:
+                                TextStyle(color: kPrimaryColor, fontSize: 20),
                           ),
                           Text(
                             'Welcome in Feex',
-                            style: const TextStyle(
-                                color: kSecondaryColor, fontSize: 15),
+                            style:
+                                TextStyle(color: kSecondaryColor, fontSize: 15),
                           )
                         ],
                       )
@@ -80,7 +90,7 @@ class UserProfile extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: SizeConfig.screenHeight * 0.07,
+              height: SizeConfig.screenHeight * 0.05,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,10 +98,14 @@ class UserProfile extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, HomeScreen.routeName);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UserAccountInfo()));
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
@@ -100,18 +114,24 @@ class UserProfile extends StatelessWidget {
                           style: TextStyle(fontSize: 20, color: Colors.black),
                         ),
                         Icon(
-                          Icons.arrow_right,
+                          Icons.keyboard_arrow_right_outlined,
                           color: kSecondaryColor,
                         )
                       ],
                     ),
                   ),
                 ),
-                Divider(),
+                divider,
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UserSavedAddress()));
+                  },
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
@@ -120,14 +140,14 @@ class UserProfile extends StatelessWidget {
                           style: TextStyle(fontSize: 20, color: Colors.black),
                         ),
                         Icon(
-                          Icons.arrow_right,
+                          Icons.keyboard_arrow_right_outlined,
                           color: kSecondaryColor,
                         )
                       ],
                     ),
                   ),
                 ),
-                Divider(),
+                divider,
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, HomeScreen.routeName);
@@ -142,17 +162,20 @@ class UserProfile extends StatelessWidget {
                           style: TextStyle(fontSize: 20, color: Colors.black),
                         ),
                         Icon(
-                          Icons.arrow_right,
+                          Icons.keyboard_arrow_right_outlined,
                           color: kSecondaryColor,
                         )
                       ],
                     ),
                   ),
                 ),
-                Divider(),
+                divider,
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, HomeScreen.routeName);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UserChangeEmail()));
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -164,17 +187,20 @@ class UserProfile extends StatelessWidget {
                           style: TextStyle(fontSize: 20, color: Colors.black),
                         ),
                         Icon(
-                          Icons.arrow_right,
+                          Icons.keyboard_arrow_right_outlined,
                           color: kSecondaryColor,
                         )
                       ],
                     ),
                   ),
                 ),
-                Divider(),
+                divider,
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, HomeScreen.routeName);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UserChangePassword()));
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -186,14 +212,14 @@ class UserProfile extends StatelessWidget {
                           style: TextStyle(fontSize: 20, color: Colors.black),
                         ),
                         Icon(
-                          Icons.arrow_right,
+                          Icons.keyboard_arrow_right_outlined,
                           color: kSecondaryColor,
                         )
                       ],
                     ),
                   ),
                 ),
-                Divider(),
+                divider,
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, HomeScreen.routeName);
@@ -207,10 +233,6 @@ class UserProfile extends StatelessWidget {
                           "Log Out",
                           style: TextStyle(fontSize: 20, color: greenColor),
                         ),
-                        Icon(
-                          Icons.arrow_right,
-                          color: kSecondaryColor,
-                        )
                       ],
                     ),
                   ),

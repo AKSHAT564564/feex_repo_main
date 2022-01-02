@@ -31,10 +31,10 @@ class ForgotPasswordScreen extends StatelessWidget {
                 ),
                 SvgPicture.asset(
                   'assets/images/frame_blue.svg',
-                  height: SizeConfig.screenHeight * 0.10,
-                  width: SizeConfig.screenWidth * 0.5,
+                  height: SizeConfig.screenHeight * 0.08,
+                  width: SizeConfig.screenWidth * 0.4,
                 ),
-                SizedBox(height: SizeConfig.screenHeight * 0.09),
+                SizedBox(height: SizeConfig.screenHeight * 0.1),
                 Text(
                   "Reset Password",
                   style: TextStyle(
@@ -46,21 +46,20 @@ class ForgotPasswordScreen extends StatelessWidget {
                 SizedBox(height: SizeConfig.screenHeight * 0.01),
                 Text(
                   "Email your email to get the reset password link, check spam folder if you didn't receive it",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     color: kSecondaryColor,
                     fontSize: getProportionateScreenWidth(16),
-                    fontWeight: FontWeight.w800,
                   ),
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
-                credentialsFeild(
-                    _emailController,
-                    'Email',
-                    emailError,
-                    false,
-                    const Icon(
-                      Icons.lock,
-                      color: Color(0xff211452),
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    child: credentialsFeild(
+                      _emailController,
+                      'Email',
+                      emailError,
+                      false,
                     )),
                 SizedBox(height: SizeConfig.screenHeight * 0.25),
                 DefaultButton(
@@ -104,8 +103,7 @@ class ForgotPasswordScreen extends StatelessWidget {
     ));
   }
 
-  credentialsFeild(
-      controller, hintText, errorText, obscureText, Icon feildIcon) {
+  credentialsFeild(controller, hintText, errorText, obscureText) {
     return TextFormField(
       obscureText: obscureText,
       keyboardType: TextInputType.emailAddress,
@@ -115,36 +113,35 @@ class ForgotPasswordScreen extends StatelessWidget {
         if (value == null || value.isEmpty) return 'please enter $hintText';
       },
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.all(0),
-        prefixIcon: feildIcon,
+        contentPadding: const EdgeInsets.all(8),
         errorText: errorText ? 'Check $hintText' : null,
         focusColor: Colors.grey,
         hintText: hintText,
         focusedBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(7.5),
+            Radius.circular(3),
           ),
-          borderSide: BorderSide(color: Colors.grey, width: 3),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         errorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(7.5),
+            Radius.circular(3),
           ),
-          borderSide: BorderSide(color: Colors.grey, width: 3),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         focusedErrorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(7.5),
+            Radius.circular(3),
           ),
-          borderSide: BorderSide(color: Colors.grey, width: 3),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(7.5),
+            Radius.circular(3),
           ),
           borderSide: BorderSide(
             color: Colors.grey,
-            width: 2,
+            width: 1,
           ),
         ),
       ),

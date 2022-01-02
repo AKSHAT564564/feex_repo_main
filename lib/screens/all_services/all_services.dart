@@ -1,6 +1,7 @@
 import 'package:feex/constants.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AllServices extends StatelessWidget {
   const AllServices({Key? key}) : super(key: key);
@@ -72,32 +73,32 @@ class AllServices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-            appBar: AppBar(
-              elevation: 1,
-              backgroundColor: Colors.white,
-              leading: IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: kPrimaryColor,
-                  )),
-              title: const Text(
-                'All Services',
-                style: TextStyle(color: kPrimaryColor),
-              ),
-            ),
-            body: Container(
-              padding: EdgeInsets.only(left: 15, top: 15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  scrollWidget('Cleaning Services 1'),
-                  scrollWidget('Cleaning Services 2'),
-                  scrollWidget('Cleaning Services 3')
-                ],
-              ),
-            )));
+    return Scaffold(
+        appBar: AppBar(
+          elevation: 1,
+          backgroundColor: Colors.white,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+          leading: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(
+                Icons.arrow_back_sharp,
+                color: Colors.black,
+              )),
+          title: const Text(
+            'All Services',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+        body: Container(
+          padding: EdgeInsets.only(left: 15, top: 15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              scrollWidget('Cleaning Services 1'),
+              scrollWidget('Cleaning Services 2'),
+              scrollWidget('Cleaning Services 3')
+            ],
+          ),
+        ));
   }
 }

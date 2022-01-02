@@ -82,14 +82,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: getProportionateScreenWidth(20)),
-              child: ListView(
+              child: Column(
                 children: [
-                  SizedBox(height: SizeConfig.screenHeight * 0.03), // 4%
+                  SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
 
                   SvgPicture.asset(
                     'assets/images/frame_blue.svg',
-                    height: SizeConfig.screenHeight * 0.09,
-                    width: SizeConfig.screenWidth * 0.55,
+                    height: SizeConfig.screenHeight * 0.08,
+                    width: SizeConfig.screenWidth * 0.4,
                   ),
 
                   SizedBox(height: SizeConfig.screenHeight * 0.1),
@@ -180,29 +180,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
         hintText: hintText,
         focusedBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(7.5),
+            Radius.circular(3),
           ),
-          borderSide: BorderSide(color: Colors.grey, width: 3),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         errorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(7.5),
+            Radius.circular(3),
           ),
-          borderSide: BorderSide(color: Colors.grey, width: 3),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         focusedErrorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(7.5),
+            Radius.circular(3),
           ),
-          borderSide: BorderSide(color: Colors.grey, width: 3),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(7.5),
+            Radius.circular(3),
           ),
           borderSide: BorderSide(
             color: Colors.grey,
-            width: 2,
+            width: 1,
           ),
         ),
       ),

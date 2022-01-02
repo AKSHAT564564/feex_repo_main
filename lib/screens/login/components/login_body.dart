@@ -10,6 +10,7 @@ import '../../../constants.dart';
 import '../../../size_config.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:feex/auth/auth_functions.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -49,28 +50,28 @@ class _BodyState extends State<Body> {
         hintText: hintText,
         focusedBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(7.5),
+            Radius.circular(3),
           ),
-          borderSide: BorderSide(color: Colors.grey, width: 3),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         errorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(7.5),
+            Radius.circular(3),
           ),
-          borderSide: BorderSide(color: Colors.grey, width: 3),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         focusedErrorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(7.5),
+            Radius.circular(3),
           ),
-          borderSide: BorderSide(color: Colors.grey, width: 3),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(7.5),
+            Radius.circular(3),
           ),
           borderSide: BorderSide(
-            color: Color(0xff211452),
+            color: Colors.grey,
             width: 1,
           ),
         ),
@@ -112,17 +113,10 @@ class _BodyState extends State<Body> {
                 ),
                 Image.asset(
                   'assets/images/frame_blue.png',
-                  height: SizeConfig.screenHeight * 0.10,
-                  width: SizeConfig.screenWidth * 0.5,
+                  height: SizeConfig.screenHeight * 0.08,
+                  width: SizeConfig.screenWidth * 0.4,
                 ),
-                // Text(
-                //   "FEEX .",
-                //   style: TextStyle(
-                //     color: Colors.black,
-                //     fontSize: getProportionateScreenWidth(32),
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                // ),
+
                 SizedBox(height: SizeConfig.screenHeight * 0.1),
                 // SizedBox(
                 //   height: getProportionateScreenHeight(10),
@@ -139,7 +133,7 @@ class _BodyState extends State<Body> {
                             emailError,
                             false,
                             const Icon(
-                              Icons.person,
+                              Icons.person_outline_sharp,
                               color: Color(0xff211452),
                             )),
                       ),
@@ -150,7 +144,7 @@ class _BodyState extends State<Body> {
                           passwordError,
                           true,
                           const Icon(
-                            Icons.lock,
+                            Icons.lock_outline,
                             color: Color(0xff211452),
                           )),
                       SizedBox(height: getProportionateScreenHeight(30)),
@@ -234,9 +228,6 @@ class _BodyState extends State<Body> {
                 ),
                 SizedBox(
                   height: SizeConfig.screenHeight * 0.01,
-                  // child: Container(
-                  //   color: Colors.green,
-                  // ),
                 ),
                 NoAccountText(),
               ],

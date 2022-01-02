@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -10,19 +11,17 @@ class SplashContent extends StatelessWidget {
     this.text2,
     this.image,
   }) : super(key: key);
-  final String? text1,text2, image;
+  final String? text1, text2, image;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         Spacer(),
-        Image.asset(
+        SvgPicture.asset(
           image!,
-          height: getProportionateScreenHeight(290),
-          width: getProportionateScreenWidth(250),
         ),
-        Spacer(flex: 2),
+        Spacer(flex: 1),
         Text(
           text1!,
           textAlign: TextAlign.center,
