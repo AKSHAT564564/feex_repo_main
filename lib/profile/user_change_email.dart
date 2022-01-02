@@ -65,12 +65,12 @@ class UserChangeEmail extends StatelessWidget {
             )),
         elevation: 1,
         title: const Text(
-          'Change Emial',
+          'Change Email',
           style: TextStyle(color: Colors.black),
         ),
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

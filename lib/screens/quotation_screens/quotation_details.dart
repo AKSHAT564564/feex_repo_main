@@ -109,7 +109,7 @@ class QuotationDetails extends StatelessWidget {
                                       scale: 1.5,
                                     ),
                                   ),
-                                  Text(
+                                  const Text(
                                     'Pending',
                                     style: TextStyle(color: kPrimaryColor),
                                   ),
@@ -118,20 +118,6 @@ class QuotationDetails extends StatelessWidget {
                               SizedBox(
                                 height: 20,
                               ),
-                              GestureDetector(
-                                onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            QuotationDetails())),
-                                child: const Text(
-                                  'View Quotation',
-                                  style: TextStyle(
-                                      color: greenColor,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              )
                             ],
                           ))
                     ],
@@ -179,9 +165,59 @@ class QuotationDetails extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: Container(
               height: SizeConfig.screenHeight * 0.3,
+              width: SizeConfig.screenWidth,
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(width: 1.0, color: Color(0xffe3def8))),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'Solution Includes',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  Text(
+                    '1- Adapter',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  Text(
+                    '1- barb',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  Text(
+                    '3- Cross Type',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  Text(
+                    '1- Tube 1m',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'Comment:',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Their are broken items must be replaced + the service charges',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'Price : 250 AED',
+                        style: TextStyle(color: Colors.black),
+                      ))
+                ],
+              ),
             ),
           )
         ],

@@ -5,7 +5,6 @@ import 'package:feex/screens/all_services/all_services.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
 
-
 import 'package:provider/provider.dart';
 
 class TopCategoriesWidget extends StatelessWidget {
@@ -15,7 +14,7 @@ class TopCategoriesWidget extends StatelessWidget {
     //initiates data calling as soon as widget is about to be build
 
     context.read<TopCategoriesProvider>().fetchData();
-    
+
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Column(
@@ -34,7 +33,7 @@ class TopCategoriesWidget extends StatelessWidget {
           ),
           SizedBox(
               width: double.infinity,
-              height: SizeConfig.screenHeight * 0.38,
+              height: SizeConfig.screenHeight * 0.42,
               child: RefreshIndicator(
                 onRefresh: () async {},
 
@@ -42,7 +41,8 @@ class TopCategoriesWidget extends StatelessWidget {
 
                 child: Consumer<TopCategoriesProvider>(
                     builder: (context, value, child) {
-                  return value.topCategoriesData.length == 0 && !value.error // shows CPI when listening to data
+                  return value.topCategoriesData.length == 0 &&
+                          !value.error // shows CPI when listening to data
                       ? const Center(
                           child: CircularProgressIndicator(
                           color: kPrimaryColor,

@@ -43,7 +43,7 @@ class _BodyState extends State<Body> {
         if (value == null || value.isEmpty) return 'please enter $hintText';
       },
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.all(0),
+        contentPadding: const EdgeInsets.all(8),
         prefixIcon: feildIcon,
         errorText: errorText ? 'Check $hintText' : null,
         focusColor: Colors.grey,
@@ -137,7 +137,7 @@ class _BodyState extends State<Body> {
                               color: Color(0xff211452),
                             )),
                       ),
-                      SizedBox(height: getProportionateScreenHeight(30)),
+                      SizedBox(height: getProportionateScreenHeight(20)),
                       credentialsFeild(
                           _passwordController,
                           'Password',

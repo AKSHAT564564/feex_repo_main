@@ -89,7 +89,7 @@ class UserAccountInfo extends StatelessWidget {
                 false,
                 const Icon(
                   Icons.calendar_today_outlined,
-                  color: kPrimaryColor,
+                  color: kBorderGreyColor,
                 )),
             SizedBox(height: getProportionateScreenHeight(25)),
             const Text(
@@ -105,7 +105,8 @@ class UserAccountInfo extends StatelessWidget {
                         value: 'value', groupValue: 'gValue', onChanged: null),
                     Text(
                       'Male',
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
@@ -115,7 +116,8 @@ class UserAccountInfo extends StatelessWidget {
                         value: 'value', groupValue: 'gValue', onChanged: null),
                     Text(
                       'Female',
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
                     )
                   ],
                 )

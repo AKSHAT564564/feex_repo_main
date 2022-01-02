@@ -22,7 +22,7 @@ class ForgotPasswordScreen extends StatelessWidget {
         width: double.infinity,
         child: Padding(
           padding:
-              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(25)),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -34,7 +34,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                   height: SizeConfig.screenHeight * 0.08,
                   width: SizeConfig.screenWidth * 0.4,
                 ),
-                SizedBox(height: SizeConfig.screenHeight * 0.1),
+                SizedBox(height: SizeConfig.screenHeight * 0.07),
                 Text(
                   "Reset Password",
                   style: TextStyle(
@@ -69,7 +69,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                         context, ResetPasswordSuccessScreen.routeName);
                   },
                 ),
-                SizedBox(height: SizeConfig.screenHeight * 0.05),
+                SizedBox(height: SizeConfig.screenHeight * 0.03),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -121,26 +121,26 @@ class ForgotPasswordScreen extends StatelessWidget {
           borderRadius: BorderRadius.all(
             Radius.circular(3),
           ),
-          borderSide: BorderSide(color: Colors.grey, width: 1),
+          borderSide: BorderSide(color: kBorderGreyColor, width: 1),
         ),
         errorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(3),
           ),
-          borderSide: BorderSide(color: Colors.grey, width: 1),
+          borderSide: BorderSide(color: kBorderGreyColor, width: 1),
         ),
         focusedErrorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(3),
           ),
-          borderSide: BorderSide(color: Colors.grey, width: 1),
+          borderSide: BorderSide(color: kBorderGreyColor, width: 1),
         ),
         enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(3),
           ),
           borderSide: BorderSide(
-            color: Colors.grey,
+            color: kBorderGreyColor,
             width: 1,
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:feex/auth/auth_functions.dart';
 import 'package:feex/components/default_button.dart';
 import 'package:feex/components/yes_account_text.dart';
+import 'package:feex/constants.dart';
 import 'package:feex/screens/home_screen/home_screen.dart';
 import 'package:feex/screens/sign_up/components/sign_up_form.dart';
 import 'package:feex/size_config.dart';
@@ -92,7 +93,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     width: SizeConfig.screenWidth * 0.4,
                   ),
 
-                  SizedBox(height: SizeConfig.screenHeight * 0.1),
+                  SizedBox(height: SizeConfig.screenHeight * 0.08),
                   Form(
                     key: _formKey,
                     child: Column(
@@ -114,7 +115,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         credentialsFeild(_confirmPasswordController,
                             'Confirm Password', false, true, 'password2'),
                         // FormError(errors: errors),
-                        SizedBox(height: getProportionateScreenHeight(40)),
+                        SizedBox(height: getProportionateScreenHeight(80)),
                         DefaultButton(
                           text: "Create Account",
                           press: () async {
@@ -182,26 +183,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
           borderRadius: BorderRadius.all(
             Radius.circular(3),
           ),
-          borderSide: BorderSide(color: Colors.grey, width: 1),
+          borderSide: BorderSide(color: kBorderGreyColor, width: 1),
         ),
         errorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(3),
           ),
-          borderSide: BorderSide(color: Colors.grey, width: 1),
+          borderSide: BorderSide(color: kBorderGreyColor, width: 1),
         ),
         focusedErrorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(3),
           ),
-          borderSide: BorderSide(color: Colors.grey, width: 1),
+          borderSide: BorderSide(color: kBorderGreyColor, width: 1),
         ),
         enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(3),
           ),
           borderSide: BorderSide(
-            color: Colors.grey,
+            color: kBorderGreyColor,
             width: 1,
           ),
         ),

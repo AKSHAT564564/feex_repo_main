@@ -129,7 +129,7 @@ class _MyOrdersState extends State<MyOrders> {
     );
   }
 
-  orderItemWidget() {
+  orderItemWidget(status) {
     return GestureDetector(
       onTap: () => showBarModalBottomSheet(
           duration: const Duration(microseconds: 300),
@@ -145,12 +145,12 @@ class _MyOrdersState extends State<MyOrders> {
             height: 100,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Color(0xffe3def8), width: 1.0)),
+                border: Border.all(color: const Color(0xffe3def8), width: 1.0)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                    flex: 7,
+                    flex: 6,
                     child: Padding(
                       padding: const EdgeInsets.all(15),
                       child: Column(
@@ -176,17 +176,14 @@ class _MyOrdersState extends State<MyOrders> {
                     child: Row(
                       children: [
                         Image.asset(
-                          'assets/images/clock_icon.png',
-                          scale: 1.5,
+                          'assets/images/completed_icon.png',
+                          scale: 3.5,
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        const Text(
-                          'Pending',
+                        Text(
+                          '$status',
                           style: TextStyle(color: Colors.black),
                         ),
-                        Icon(
+                        const Icon(
                           Icons.keyboard_arrow_right_sharp,
                           color: kSecondaryColor,
                         )
@@ -225,6 +222,7 @@ class _MyOrdersState extends State<MyOrders> {
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'Joseph Jo',
@@ -232,7 +230,7 @@ class _MyOrdersState extends State<MyOrders> {
                                 color: kPrimaryColor, fontSize: 20),
                           ),
                           Text(
-                            'email',
+                            'jsoeph@feexapp.com',
                             style: const TextStyle(
                                 color: kSecondaryColor, fontSize: 15),
                           )
@@ -251,16 +249,16 @@ class _MyOrdersState extends State<MyOrders> {
               ],
             ),
             SizedBox(
-              height: SizeConfig.screenHeight * 0.07,
+              height: SizeConfig.screenHeight * 0.04,
             ),
             ListView(
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               children: [
-                orderItemWidget(),
-                orderItemWidget(),
-                orderItemWidget()
+                orderItemWidget('Pending'),
+                orderItemWidget('Completed'),
+                orderItemWidget('Cancelled')
               ],
             )
           ],

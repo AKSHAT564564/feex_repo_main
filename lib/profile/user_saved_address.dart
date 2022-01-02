@@ -3,8 +3,6 @@ import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
 
 class UserSavedAddress extends StatelessWidget {
-  const UserSavedAddress({Key? key}) : super(key: key);
-
   savedAddressWidget(category) {
     return Container(
       height: 100,
@@ -14,13 +12,10 @@ class UserSavedAddress extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 6),
-            child: Expanded(
-              flex: 1,
-              child: Radio(
-                  value: 'value', groupValue: 'groupValue', onChanged: null),
-            ),
+          Expanded(
+            flex: 1,
+            child: Radio(
+                value: 'value', groupValue: 'groupValue', onChanged: null),
           ),
           Expanded(
             flex: 7,
@@ -32,7 +27,7 @@ class UserSavedAddress extends StatelessWidget {
                 children: [
                   Text(
                     '$category',
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 17,
                         color: kPrimaryColor,
                         fontWeight: FontWeight.w500),
@@ -45,7 +40,9 @@ class UserSavedAddress extends StatelessWidget {
               ),
             ),
           ),
-          const IconButton(onPressed: null, icon: Icon(Icons.edit))
+          Expanded(
+              flex: 2,
+              child: const IconButton(onPressed: null, icon: Icon(Icons.edit)))
         ],
       ),
     );

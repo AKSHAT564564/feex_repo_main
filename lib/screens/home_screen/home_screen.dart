@@ -21,8 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        SystemNavigator.pop();
-        return true;
+        return false;
       },
       child: Scaffold(
         drawer: buildDrawer(),
@@ -40,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: CircleAvatar(
                     radius: 20,
                     backgroundColor: skyBlueColor,
+                    child: Image.asset('assets/images/user_default.png'),
                   ),
                 ),
               ),
