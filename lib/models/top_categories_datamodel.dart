@@ -1,8 +1,5 @@
 
-// Data is in form {
-// 'id' : 1,
-// 'name' : xyz
-//   }  
+
 
 
 class TopCategoriesDataModel {

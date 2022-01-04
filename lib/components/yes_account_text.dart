@@ -20,12 +20,12 @@ class YesAccountText extends StatelessWidget {
           style: TextStyle(fontSize: getProportionateScreenWidth(16)),
         ),
         GestureDetector(
-          onTap: () => Navigator.pushNamed(context, LoginScreen.routeName),
+          onTap: () =>
+              Navigator.pushReplacementNamed(context, LoginScreen.routeName),
           child: Text(
             "Log in",
             style: TextStyle(
-                fontSize: getProportionateScreenWidth(16),
-                color: greenColor),
+                fontSize: getProportionateScreenWidth(16), color: greenColor),
           ),
         ),
       ],

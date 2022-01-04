@@ -125,18 +125,15 @@ class _BodyState extends State<Body> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        child: credentialsFeild(
-                            _emailController,
-                            'Username',
-                            emailError,
-                            false,
-                            const Icon(
-                              Icons.person_outline_sharp,
-                              color: Color(0xff211452),
-                            )),
-                      ),
+                      credentialsFeild(
+                          _emailController,
+                          'Username',
+                          emailError,
+                          false,
+                          const Icon(
+                            Icons.person_outline_sharp,
+                            color: Color(0xff211452),
+                          )),
                       SizedBox(height: getProportionateScreenHeight(20)),
                       credentialsFeild(
                           _passwordController,

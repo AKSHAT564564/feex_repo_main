@@ -1,10 +1,13 @@
 import 'package:feex/constants.dart';
+import 'package:feex/models/customer_detail_model.dart';
+import 'package:feex/providers/customer_details_provider.dart';
 import 'package:feex/screens/home_screen/home_screen.dart';
 import 'package:feex/screens/my_orders/my_orders_screen.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class DrawerWidget extends StatelessWidget {
   var email = "joseph@gmail.com";
@@ -18,6 +21,37 @@ class DrawerWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget customerDetailsDrawerWidget(BuildContext context) {
+    context.read<CustomerDetailsProvider>().fetchCustomerDetails();
+    return Consumer<CustomerDetailsProvider>(builder: (context, value, child) {
+      return Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10, right: 15),
+            child: CircleAvatar(
+              radius: 30,
+              child: Image.asset('assets/images/user_default.png'),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                value.customerDetailsModel.name,
+                style: const TextStyle(color: kPrimaryColor, fontSize: 20),
+              ),
+              Text(
+                '$email',
+                style: const TextStyle(color: kSecondaryColor, fontSize: 15),
+              )
+            ],
+          )
+        ],
+      );
+    });
   }
 
   Widget buildDrawerItems(BuildContext context) {
@@ -36,41 +70,15 @@ class DrawerWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 15),
-                      child: CircleAvatar(
-                        radius: 30,
-                        child: Image.asset('assets/images/user_default.png'),
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '$name',
-                          style: const TextStyle(
-                              color: kPrimaryColor, fontSize: 20),
-                        ),
-                        Text(
-                          '$email',
-                          style: const TextStyle(
-                              color: kSecondaryColor, fontSize: 15),
-                        )
-                      ],
-                    )
-                  ],
-                ),
+                child: customerDetailsDrawerWidget(context),
               ),
-              const Padding(
-                padding: EdgeInsets.only(right: 20),
-                child: Icon(
-                  Icons.settings_outlined,
-                  size: 30,
-                ),
-              )
+              // const Padding(
+              //   padding: EdgeInsets.only(right: 20),
+              //   child: Icon(
+              //     Icons.settings_outlined,
+              //     size: 30,
+              //   ),
+              // )
             ],
           ),
           SizedBox(
@@ -94,7 +102,7 @@ class DrawerWidget extends StatelessWidget {
                         style: TextStyle(fontSize: 20, color: Colors.black),
                       ),
                       Icon(
-                        Icons.arrow_right,
+                        Icons.keyboard_arrow_right_outlined,
                         color: kSecondaryColor,
                       )
                     ],
@@ -117,7 +125,7 @@ class DrawerWidget extends StatelessWidget {
                         style: TextStyle(fontSize: 20, color: Colors.black),
                       ),
                       Icon(
-                        Icons.arrow_right,
+                        Icons.keyboard_arrow_right_outlined,
                         color: kSecondaryColor,
                       )
                     ],
@@ -139,7 +147,7 @@ class DrawerWidget extends StatelessWidget {
                         style: TextStyle(fontSize: 20, color: Colors.black),
                       ),
                       Icon(
-                        Icons.arrow_right,
+                        Icons.keyboard_arrow_right_outlined,
                         color: kSecondaryColor,
                       )
                     ],
@@ -161,7 +169,7 @@ class DrawerWidget extends StatelessWidget {
                         style: TextStyle(fontSize: 20, color: Colors.black),
                       ),
                       Icon(
-                        Icons.arrow_right,
+                        Icons.keyboard_arrow_right_outlined,
                         color: kSecondaryColor,
                       )
                     ],
@@ -183,7 +191,7 @@ class DrawerWidget extends StatelessWidget {
                         style: TextStyle(fontSize: 20, color: Colors.black),
                       ),
                       Icon(
-                        Icons.arrow_right,
+                        Icons.keyboard_arrow_right_outlined,
                         color: kSecondaryColor,
                       )
                     ],
@@ -205,7 +213,7 @@ class DrawerWidget extends StatelessWidget {
                         style: TextStyle(fontSize: 20, color: Colors.black),
                       ),
                       Icon(
-                        Icons.arrow_right,
+                        Icons.keyboard_arrow_right_outlined,
                         color: kSecondaryColor,
                       )
                     ],

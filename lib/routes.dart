@@ -12,10 +12,8 @@ final Map<String, WidgetBuilder> routes = {
   SplashScreen.routeName: (context) => SplashScreen(),
   LoginScreen.routeName: (context) => LoginScreen(),
   ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
-  ResetPasswordSuccessScreen.routeName: (context) => ResetPasswordSuccessScreen(),
+  ResetPasswordSuccessScreen.routeName: (context) =>
+      ResetPasswordSuccessScreen(),
   SignUpScreen.routeName: (context) => SignUpScreen(),
   HomeScreen.routeName: (context) => HomeScreen(),
-  // CompleteProfileScreen.routeName: (context) => CompleteProfileScreen(),
-
-  // ProfileScreen.routeName: (context) => ProfileScreen(),
 };

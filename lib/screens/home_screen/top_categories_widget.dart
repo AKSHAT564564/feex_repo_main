@@ -33,7 +33,7 @@ class TopCategoriesWidget extends StatelessWidget {
           ),
           SizedBox(
               width: double.infinity,
-              height: SizeConfig.screenHeight * 0.42,
+              height: SizeConfig.screenHeight * 0.45,
               child: RefreshIndicator(
                 onRefresh: () async {},
 
@@ -49,75 +49,80 @@ class TopCategoriesWidget extends StatelessWidget {
                         ))
                       : value.error
                           ? const Text('Something Wrong')
-                          : GridView.count(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              crossAxisCount: 3,
-                              mainAxisSpacing: 20,
-                              children: List.generate(
-                                  value.topCategoriesData.length, (index) {
-                                return ListTile(
-                                  title: Padding(
-                                    padding: EdgeInsets.zero,
-                                    child: GestureDetector(
-                                      onTap: null,
-                                      child: Hero(
-                                          tag:
-                                              value.topCategoriesData[index].id,
-                                          child: Container(
-                                            width: 100,
-                                            height: 100,
-                                            padding: EdgeInsets.all(8.0),
-                                            decoration: BoxDecoration(
+                          : Column(
+                              children: [
+                                GridView.count(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  crossAxisCount: 3,
+                                  mainAxisSpacing: 20,
+                                  children: List.generate(
+                                      value.topCategoriesData.length, (index) {
+                                    return ListTile(
+                                      title: GestureDetector(
+                                        onTap: null,
+                                        child: Hero(
+                                            tag: value
+                                                .topCategoriesData[index].id,
+                                            child: Container(
+                                              width: 100,
+                                              height: 100,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  border: Border.all(
+                                                      color: Color(0xffE3DEF8),
+                                                      width: 1.0)),
+                                              child: ClipRRect(
                                                 borderRadius:
-                                                    BorderRadius.circular(20),
-                                                border: Border.all(
-                                                    color: Color(0xffE3DEF8),
-                                                    width: 1.0)),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                              child: const FadeInImage(
-                                                placeholder: AssetImage(
-                                                    'assets/images/frame_blue.png'),
-                                                image: AssetImage(
-                                                    'assets/images/frame_blue.png'),
-                                                fit: BoxFit.contain,
+                                                    BorderRadius.circular(8.0),
+                                                child: const FadeInImage(
+                                                  placeholder: AssetImage(
+                                                      'assets/images/frame_blue.png'),
+                                                  image: AssetImage(
+                                                      'assets/images/frame_blue.png'),
+                                                  fit: BoxFit.contain,
+                                                ),
                                               ),
-                                            ),
-                                          )),
+                                            )),
+                                      ),
+                                      subtitle: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10.0, top: 2.0),
+                                        child: Text(
+                                          value.topCategoriesData[index]
+                                              .Category,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              color: kSecondaryColor,
+                                              fontSize: 12),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: GestureDetector(
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AllServices())),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'show all',
+                                        style: TextStyle(
+                                            color: greenColor, fontSize: 20),
+                                      ),
                                     ),
                                   ),
-                                  subtitle: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10.0, top: 2.0),
-                                    child: Text(
-                                      '${value.topCategoriesData[index].Category}',
-                                      style: TextStyle(
-                                          color: kSecondaryColor, fontSize: 12),
-                                    ),
-                                  ),
-                                );
-                              }),
+                                ),
+                              ],
                             );
                 }),
               )),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AllServices())),
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'show all',
-                    style: TextStyle(color: greenColor, fontSize: 20),
-                  ),
-                ),
-              )
-            ],
-          ),
         ],
       ),
     );

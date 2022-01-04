@@ -1,4 +1,5 @@
 import 'package:feex/constants.dart';
+import 'package:feex/screens/all_services/service_details.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,7 +38,12 @@ class AllServices extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.zero,
                         child: GestureDetector(
-                          onTap: null,
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ServiceDetails()));
+                          },
                           child: Hero(
                               tag: '$index' + '$title',
                               child: Container(

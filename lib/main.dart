@@ -1,4 +1,5 @@
 import 'package:feex/constants.dart';
+import 'package:feex/providers/customer_details_provider.dart';
 import 'package:feex/providers/top_categories_provider.dart';
 import 'package:feex/routes.dart';
 import 'package:feex/screens/login/login_screen.dart';
@@ -22,7 +23,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<TopCategoriesProvider>(
-            create: (_) => TopCategoriesProvider())
+            create: (_) => TopCategoriesProvider()),
+        ChangeNotifierProvider<CustomerDetailsProvider>(
+            create: (_) => CustomerDetailsProvider())
       ],
       builder: (context, child) => MaterialApp(
         debugShowCheckedModeBanner: false,

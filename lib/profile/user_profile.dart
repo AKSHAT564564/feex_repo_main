@@ -1,11 +1,15 @@
+import 'package:feex/auth/auth_functions.dart';
 import 'package:feex/constants.dart';
 import 'package:feex/profile/user_account_info.dart';
 import 'package:feex/profile/user_change_email.dart';
 import 'package:feex/profile/user_change_password.dart';
 import 'package:feex/profile/user_saved_address.dart';
+import 'package:feex/providers/customer_details_provider.dart';
 import 'package:feex/screens/home_screen/home_screen.dart';
+import 'package:feex/screens/login/login_screen.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class UserProfile extends StatelessWidget {
   Widget divider = const Divider(
@@ -15,6 +19,37 @@ class UserProfile extends StatelessWidget {
     endIndent: 0,
     color: kSecondaryColor,
   );
+
+  customerDetailsProfileWidget(BuildContext context) {
+    context.read<CustomerDetailsProvider>().fetchCustomerDetails();
+    return Consumer<CustomerDetailsProvider>(builder: (context, value, child) {
+      return Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10, right: 15),
+            child: CircleAvatar(
+              radius: 30,
+              child: Image.asset('assets/images/user_default.png'),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                value.customerDetailsModel.name,
+                style: TextStyle(color: kPrimaryColor, fontSize: 20),
+              ),
+              const Text(
+                'Welcome in Feex',
+                style: TextStyle(color: kSecondaryColor, fontSize: 15),
+              )
+            ],
+          )
+        ],
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,33 +94,7 @@ class UserProfile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 15),
-                        child: CircleAvatar(
-                          radius: 30,
-                          child: Image.asset('assets/images/user_default.png'),
-                        ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'Jsoseph Jo',
-                            style:
-                                TextStyle(color: kPrimaryColor, fontSize: 20),
-                          ),
-                          Text(
-                            'Welcome in Feex',
-                            style:
-                                TextStyle(color: kSecondaryColor, fontSize: 15),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
+                  child: customerDetailsProfileWidget(context),
                 ),
               ],
             ),
@@ -221,8 +230,14 @@ class UserProfile extends StatelessWidget {
                 ),
                 divider,
                 GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, HomeScreen.routeName);
+                  onTap: () async {
+                    await AuthMethods().logOutUser().then((hasError) {
+                      if (hasError == false) {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            LoginScreen.routeName,
+                            (Route<dynamic> route) => false);
+                      } else {}
+                    });
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),

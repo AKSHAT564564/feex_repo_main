@@ -21,4 +21,18 @@ class AuthMethods {
     } else
       return jsonResponse['detail'];
   }
+
+  getAccessToken() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.containsKey('access_token');
+  }
+
+  logOutUser() async {
+    bool hasError = false;
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences
+        .remove('access_token')
+        .onError((error, stackTrace) => hasError = true);
+    return hasError;
+  }
 }

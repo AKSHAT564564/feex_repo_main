@@ -84,8 +84,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                           TextStyle(fontSize: getProportionateScreenWidth(16)),
                     ),
                     GestureDetector(
-                      onTap: () =>
-                          Navigator.pushNamed(context, LoginScreen.routeName),
+                      onTap: () => Navigator.pushReplacementNamed(
+                          context, LoginScreen.routeName),
                       child: Text(
                         "Log In",
                         style: TextStyle(

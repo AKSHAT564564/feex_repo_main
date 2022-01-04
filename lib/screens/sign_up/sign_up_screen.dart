@@ -82,10 +82,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             // width: double.infinity,
             child: Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal: getProportionateScreenWidth(20)),
+                  horizontal: getProportionateScreenWidth(25)),
               child: Column(
                 children: [
-                  SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+                  SizedBox(height: SizeConfig.screenHeight * 0.03), // 4%
 
                   SvgPicture.asset(
                     'assets/images/frame_blue.svg',
@@ -93,7 +93,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     width: SizeConfig.screenWidth * 0.4,
                   ),
 
-                  SizedBox(height: SizeConfig.screenHeight * 0.08),
+                  SizedBox(height: SizeConfig.screenHeight * 0.05),
                   Form(
                     key: _formKey,
                     child: Column(
@@ -101,21 +101,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         credentialsFeild(
                             _nameController, 'Name', false, false, 'username'),
                         SizedBox(
-                          height: getProportionateScreenHeight(20),
+                          height: getProportionateScreenHeight(15),
                         ),
                         credentialsFeild(
                             _emailController, 'Email', false, false, 'email'),
-                        SizedBox(height: getProportionateScreenHeight(20)),
+                        SizedBox(height: getProportionateScreenHeight(15)),
                         credentialsFeild(_mobileController, 'Mobile', false,
                             false, 'mobile_number'),
-                        SizedBox(height: getProportionateScreenHeight(20)),
+                        SizedBox(height: getProportionateScreenHeight(15)),
                         credentialsFeild(_passwordController, 'Password', false,
                             true, 'password'),
-                        SizedBox(height: getProportionateScreenHeight(20)),
+                        SizedBox(height: getProportionateScreenHeight(15)),
                         credentialsFeild(_confirmPasswordController,
                             'Confirm Password', false, true, 'password2'),
                         // FormError(errors: errors),
-                        SizedBox(height: getProportionateScreenHeight(80)),
+                        SizedBox(height: getProportionateScreenHeight(100)),
                         DefaultButton(
                           text: "Create Account",
                           press: () async {
@@ -132,7 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   SizedBox(height: SizeConfig.screenHeight * 0.04),
-                  YesAccountText(),
+                  const YesAccountText(),
                 ],
               ),
             ),

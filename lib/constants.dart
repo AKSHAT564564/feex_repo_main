@@ -21,3 +21,9 @@ final headingStyle = TextStyle(
 );
 
 const defaultDuration = Duration(milliseconds: 250);
+
+//icons paths
+
+final kPendingIcon = 'assets/images/clock_icon.png';
+final kCompletedIcon = 'assets/images/completed_icon.png';
+final kCancelledIcon = 'assets/images/cancelled_icon.png';

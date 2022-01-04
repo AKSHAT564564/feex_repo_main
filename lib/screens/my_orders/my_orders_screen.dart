@@ -129,7 +129,7 @@ class _MyOrdersState extends State<MyOrders> {
     );
   }
 
-  orderItemWidget(status) {
+  orderItemWidget(status, icon, title) {
     return GestureDetector(
       onTap: () => showBarModalBottomSheet(
           duration: const Duration(microseconds: 300),
@@ -156,9 +156,9 @@ class _MyOrdersState extends State<MyOrders> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text(
-                            'Plumber',
+                            '$title',
                             style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.black,
@@ -175,9 +175,14 @@ class _MyOrdersState extends State<MyOrders> {
                     flex: 3,
                     child: Row(
                       children: [
-                        Image.asset(
-                          'assets/images/completed_icon.png',
-                          scale: 3.5,
+                        Padding(
+                          padding: const EdgeInsets.only(right: 5),
+                          child: Image.asset(
+                            '$icon',
+                            scale: icon != 'assets/images/clock_icon.png'
+                                ? 3.5
+                                : 1.5,
+                          ),
                         ),
                         Text(
                           '$status',
@@ -256,9 +261,9 @@ class _MyOrdersState extends State<MyOrders> {
               scrollDirection: Axis.vertical,
               physics: const BouncingScrollPhysics(),
               children: [
-                orderItemWidget('Pending'),
-                orderItemWidget('Completed'),
-                orderItemWidget('Cancelled')
+                orderItemWidget('Pending', kPendingIcon, 'Plumber'),
+                orderItemWidget('Completed', kCompletedIcon, 'Carpenter'),
+                orderItemWidget('Cancelled', kCancelledIcon, 'Ac Repair')
               ],
             )
           ],
