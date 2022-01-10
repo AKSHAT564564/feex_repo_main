@@ -1,10 +1,20 @@
-import 'package:feex/components/app_bar_component.dart';
 import 'package:feex/components/default_button.dart';
 import 'package:feex/constants.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
 
-class ServiceDetails extends StatelessWidget {
+class ServiceDetailsTwo extends StatelessWidget {
+  List<DropdownMenuItem<String>> get dropdownItems {
+    List<DropdownMenuItem<String>> menuItems = [
+      DropdownMenuItem(child: Text("USA"), value: "USA"),
+      DropdownMenuItem(child: Text("Canada"), value: "Canada"),
+      DropdownMenuItem(child: Text("Brazil"), value: "Brazil"),
+      DropdownMenuItem(child: Text("England"), value: "England"),
+    ];
+    return menuItems;
+  }
+
+  String selectedValue = "USA";
   final _feildController = TextEditingController();
 
   credentialsFeild(controller, hintText, errorText, obscureText, suffixIcon) {
@@ -53,6 +63,51 @@ class ServiceDetails extends StatelessWidget {
     );
   }
 
+  Widget dropDownFeild() {
+    return Container(
+      height: 44,
+      child: InputDecorator(
+        decoration: const InputDecoration(
+          contentPadding: EdgeInsets.all(10),
+          errorText: false ? 'Check hintText' : null,
+          focusColor: kBorderGreyColor,
+          hintText: 'Number of bed Rooms',
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(3),
+            ),
+            borderSide: BorderSide(color: kBorderGreyColor, width: 1),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(3),
+            ),
+            borderSide: BorderSide(color: kBorderGreyColor, width: 1),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(3),
+            ),
+            borderSide: BorderSide(color: kBorderGreyColor, width: 1),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(3),
+            ),
+            borderSide: BorderSide(
+              color: kBorderGreyColor,
+              width: 1,
+            ),
+          ),
+        ),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton(
+              value: selectedValue, onChanged: null, items: dropdownItems),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +126,7 @@ class ServiceDetails extends StatelessWidget {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.only(left: 20, right: 20),
+        padding: const EdgeInsets.only(left: 20, right: 20),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,7 +137,7 @@ class ServiceDetails extends StatelessWidget {
               const ListTile(
                 contentPadding: EdgeInsets.all(0),
                 title: Text(
-                  'Home Cleaning Service',
+                  'AC unit Repair',
                   style: TextStyle(
                       color: kPrimaryColor,
                       fontWeight: FontWeight.bold,
@@ -100,104 +155,68 @@ class ServiceDetails extends StatelessWidget {
               SizedBox(
                 height: getProportionateScreenHeight(20),
               ),
-              const Text(
-                'Service Price',
-                style: TextStyle(
-                    color: kPrimaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
-              ),
+              dropDownFeild(),
               SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                height: 90,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: 3,
-                  itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Hero(
-                        tag: '$index' + 'title',
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          padding: EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                              color: Color(0xffF5F5F5),
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(
-                                  color: Color(0xffE3DEF8), width: 1.0)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: const [
-                              FittedBox(
-                                fit: BoxFit.contain,
-                                child: Text(
-                                  '20 AED',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      color: kPrimaryColor,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              Text('for 1 Hour')
-                            ],
-                          ),
-                        )),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: getProportionateScreenHeight(10),
+                height: getProportionateScreenHeight(20),
               ),
               const ListTile(
                 contentPadding: EdgeInsets.all(0),
                 title: Text(
-                  'Number of Rooms',
+                  'Service Price',
                   style: TextStyle(
                       color: kPrimaryColor,
                       fontSize: 18,
                       fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  'Select the number of room for cleaning',
+                  'Select the number of units',
                   style: TextStyle(fontSize: 15),
                 ),
               ),
-              Container(
-                height: 32,
-                width: 110,
-                decoration: BoxDecoration(
-                    color: Color(0xffF5F5F5),
-                    borderRadius: BorderRadius.circular(60)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    IconButton(
-                        onPressed: null,
-                        icon: Icon(
-                          Icons.remove,
-                          size: 18,
-                          color: kPrimaryColor,
-                        )),
-                    Text(
-                      '1',
-                      style: TextStyle(fontSize: 18),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    height: 32,
+                    width: 110,
+                    decoration: BoxDecoration(
+                        color: Color(0xffF5F5F5),
+                        borderRadius: BorderRadius.circular(60)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        IconButton(
+                            onPressed: null,
+                            icon: Icon(
+                              Icons.remove,
+                              size: 18,
+                              color: kPrimaryColor,
+                            )),
+                        Text(
+                          '1',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        IconButton(
+                            onPressed: null,
+                            icon: Icon(
+                              Icons.add,
+                              size: 18,
+                              color: kPrimaryColor,
+                            ))
+                      ],
                     ),
-                    IconButton(
-                        onPressed: null,
-                        icon: Icon(
-                          Icons.add,
-                          size: 18,
-                          color: kPrimaryColor,
-                        ))
-                  ],
-                ),
+                  ),
+                  const Text(
+                    '60 AED',
+                    style: TextStyle(
+                        color: kPrimaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  )
+                ],
               ),
               SizedBox(
-                height: getProportionateScreenHeight(30),
+                height: getProportionateScreenHeight(20),
               ),
               const Text(
                 'Choose Timing',

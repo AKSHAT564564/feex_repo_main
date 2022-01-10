@@ -18,14 +18,12 @@ class TopCategoriesProvider extends ChangeNotifier {
 
   String get errorMessage => _errorMessage;
 
-
-  // Async Function for fetching returns datatype of
+  // Async Function for fetching...returns datatype of
   // List<TopCategoriesDataModel>
 
   fetchData() async {
     var token =
         'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUyNjQ3MTA2LCJqdGkiOiJmNDc0ZDgyMzQ4MGU0YzQyOTNhODU5Y2ZlYmVhMDU5NCIsInVzZXJfaWQiOjN9.tHn6Qc8q6huJJdcERSPPu_X-fBgeTZ2Vp5Qc6p1n46k';
-
 
     //Runs http request
 
@@ -38,15 +36,14 @@ class TopCategoriesProvider extends ChangeNotifier {
         var jsonResponse = json.decode(response.body) as List;
         // coverts data into a list for easy breakdown
 
-
-        //Maps data as a list of data model  
+        //Maps data as a list of data model
         _topCategoriesData = jsonResponse
             .map((e) => TopCategoriesDataModel.fromJson(e))
             .toList();
         _error = false;
       } catch (e) {
         _error = true;
-       _errorMessage = e.toString();
+        _errorMessage = e.toString();
         _topCategoriesData = [];
       }
     } else {

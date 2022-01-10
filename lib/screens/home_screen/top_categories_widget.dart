@@ -31,7 +31,7 @@ class TopCategoriesWidget extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(
+          Container(
               width: double.infinity,
               height: SizeConfig.screenHeight * 0.45,
               child: RefreshIndicator(

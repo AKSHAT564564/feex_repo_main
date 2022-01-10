@@ -39,20 +39,3 @@ class DefaultButton extends StatelessWidget {
         ));
   }
 }
-
-// TextButton(
-//         style: TextButton.styleFrom(
-//           shape:
-//               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-//           primary: Colors.white,
-//           backgroundColor: kPrimaryColor,
-//         ),
-//         onPressed: press as void Function()?,
-//         child: Text(
-//           text!,
-//           style: TextStyle(
-//             fontSize: getProportionateScreenWidth(18),
-//             color: Colors.white,
-//           ),
-//         ),
-//       ),

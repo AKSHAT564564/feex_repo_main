@@ -5,6 +5,7 @@ import 'package:feex/helper/keyboard.dart';
 import 'package:feex/screens/forgot_password/reset_password_page.dart';
 import 'package:feex/screens/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -32,8 +33,7 @@ class _BodyState extends State<Body> {
 
   bool emailError = false, passwordError = false;
 
-  credentialsFeild(
-      controller, hintText, errorText, obscureText, Icon feildIcon) {
+  credentialsFeild(controller, hintText, errorText, obscureText, feildIcon) {
     return TextFormField(
       obscureText: obscureText,
       keyboardType: TextInputType.emailAddress,
@@ -43,8 +43,9 @@ class _BodyState extends State<Body> {
         if (value == null || value.isEmpty) return 'please enter $hintText';
       },
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.all(8),
+        // prefixIcon: Prefix,
         prefixIcon: feildIcon,
+        fillColor: Colors.black,
         errorText: errorText ? 'Check $hintText' : null,
         focusColor: Colors.grey,
         hintText: hintText,
@@ -130,9 +131,9 @@ class _BodyState extends State<Body> {
                           'Username',
                           emailError,
                           false,
-                          const Icon(
-                            Icons.person_outline_sharp,
-                            color: Color(0xff211452),
+                          Image.asset(
+                            'assets/images/user_name.png',
+                            scale: 3.6,
                           )),
                       SizedBox(height: getProportionateScreenHeight(20)),
                       credentialsFeild(
@@ -140,9 +141,9 @@ class _BodyState extends State<Body> {
                           'Password',
                           passwordError,
                           true,
-                          const Icon(
-                            Icons.lock_outline,
-                            color: Color(0xff211452),
+                          Image.asset(
+                            'assets/images/lock.png',
+                            scale: 3.6,
                           )),
                       SizedBox(height: getProportionateScreenHeight(30)),
                       Row(
