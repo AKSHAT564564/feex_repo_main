@@ -11,10 +11,11 @@ class AuthMethods {
     var res = await http.post(
         Uri.parse('https://feex.herokuapp.com/api/auth/login/'),
         body: body);
-    jsonResponse = json.decode(res.body);
+    jsonResponse = await json.decode(res.body);
     if (res.statusCode == 200) {
       if (jsonResponse != null) {
-        sharedPreferences.setString("access_token", jsonResponse['access']);
+        await sharedPreferences.setString(
+            "access_token", jsonResponse['access']);
 
         return 'true';
       }
