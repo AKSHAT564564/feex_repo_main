@@ -1,10 +1,11 @@
+import 'package:feex/auth/auth_functions.dart';
 import 'package:feex/components/drawer.dart';
 import 'package:feex/constants.dart';
 import 'package:feex/profile/user_profile.dart';
 import 'package:feex/providers/customer_details_provider.dart';
 import 'package:feex/screens/all_services/all_services.dart';
 
-import 'package:feex/screens/home_screen/top_categories_widget.dart';
+import 'package:feex/screens/home_screen/top_services_widget.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,19 +21,33 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Widget customerDetailsHomeWidget(BuildContext context) {
-    context.read<CustomerDetailsProvider>().fetchCustomerDetails();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<CustomerDetailsProvider>(context, listen: false)
+        .fetchCustomerDetails();
+  }
 
+  @override
+  Widget customerDetailsHomeWidget(BuildContext context) {
     return Consumer<CustomerDetailsProvider>(builder: (context, value, child) {
-      return value.hasData == false
+      return value.isGuestUser == false && value.hasData == false
           ? CircularProgressIndicator()
           : Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: ListTile(
-                  title: Text(
-                    value.customerDetailsModel.name,
-                    style: TextStyle(color: kPrimaryColor, fontSize: 20),
-                  ),
+                  title: value.isGuestUser == true
+                      // if not a guest user then displays customers name
+                      ? const Text(
+                          'Welcome Guest',
+                          style: TextStyle(color: kPrimaryColor, fontSize: 20),
+                        ) // is a guest user
+                      : Text(
+                          value.customerDetailsModel
+                              .name, // if not a guest displays name
+                          style: TextStyle(color: kPrimaryColor, fontSize: 20),
+                        ),
                   subtitle: Text(
                     'How we can help you today? ${value.customerDetailsModel.mobileNumber}',
                     style: TextStyle(color: kSecondaryColor),

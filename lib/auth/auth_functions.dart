@@ -9,7 +9,7 @@ class AuthMethods {
     Map body = {"email": email, "password": password};
     var jsonResponse;
     var res = await http.post(
-        Uri.parse('https://feex.herokuapp.com/api/auth/login/'),
+        Uri.parse('https://feex.herokuapp.com/api/account/login/'),
         body: body);
     jsonResponse = await json.decode(res.body);
     if (res.statusCode == 200) {
@@ -19,8 +19,9 @@ class AuthMethods {
 
         return 'true';
       }
-    } else
+    } else {
       return jsonResponse['detail'];
+    }
   }
 
   getAccessToken() async {
@@ -36,4 +37,12 @@ class AuthMethods {
         .onError((error, stackTrace) => hasError = true);
     return hasError;
   }
+
+  guestUserLogin() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    //Setting access_token key to null for guest session 
+    await sharedPreferences.setString('access_token', 'null');
+  }
+
+ 
 }

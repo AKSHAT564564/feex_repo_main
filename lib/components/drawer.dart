@@ -39,12 +39,18 @@ class DrawerWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              value.isGuestUser
+                  ? const Text(
+                      'Guest',
+                      style: TextStyle(color: kPrimaryColor, fontSize: 20),
+                    )
+                  : Text(
+                      value.customerDetailsModel.name,
+                      style:
+                          const TextStyle(color: kPrimaryColor, fontSize: 20),
+                    ),
               Text(
-                value.customerDetailsModel.name,
-                style: const TextStyle(color: kPrimaryColor, fontSize: 20),
-              ),
-              Text(
-                '$email',
+                value.customerDetailsModel.email,
                 style: const TextStyle(color: kSecondaryColor, fontSize: 15),
               )
             ],

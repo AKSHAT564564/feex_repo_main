@@ -97,8 +97,10 @@ class _BodyState extends State<Body> {
                 Row(children: [
                   Spacer(),
                   GestureDetector(
-                    onTap: () =>
-                        Navigator.pushNamed(context, HomeScreen.routeName),
+                    onTap: () async {
+                      await AuthMethods().guestUserLogin();
+                      Navigator.pushNamed(context, HomeScreen.routeName);
+                    },
                     child: const Text(
                       "Skip for now",
                       style: TextStyle(

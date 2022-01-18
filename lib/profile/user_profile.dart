@@ -36,10 +36,15 @@ class UserProfile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                value.customerDetailsModel.name,
-                style: TextStyle(color: kPrimaryColor, fontSize: 20),
-              ),
+              value.isGuestUser
+                  ? const Text(
+                      'Guest',
+                      style: TextStyle(color: kPrimaryColor, fontSize: 20),
+                    )
+                  : Text(
+                      value.customerDetailsModel.name,
+                      style: TextStyle(color: kPrimaryColor, fontSize: 20),
+                    ),
               const Text(
                 'Welcome in Feex',
                 style: TextStyle(color: kSecondaryColor, fontSize: 15),

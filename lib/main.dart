@@ -1,6 +1,7 @@
 import 'package:feex/constants.dart';
+import 'package:feex/providers/services_detail_provider.dart';
 import 'package:feex/providers/customer_details_provider.dart';
-import 'package:feex/providers/top_categories_provider.dart';
+import 'package:feex/providers/top_services_provider.dart';
 import 'package:feex/routes.dart';
 import 'package:feex/screens/login/login_screen.dart';
 import 'package:feex/screens/splash/splash_screen.dart';
@@ -25,7 +26,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<TopCategoriesProvider>(
             create: (_) => TopCategoriesProvider()),
         ChangeNotifierProvider<CustomerDetailsProvider>(
-            create: (_) => CustomerDetailsProvider())
+            create: (_) => CustomerDetailsProvider()),
+        ChangeNotifierProvider<ServiceDetailProvider>(
+            create: (_) => ServiceDetailProvider())
       ],
       builder: (context, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
