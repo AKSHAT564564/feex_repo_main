@@ -1,4 +1,5 @@
 import 'package:feex/constants.dart';
+import 'package:feex/providers/customer_address_provider.dart';
 import 'package:feex/providers/services_detail_provider.dart';
 import 'package:feex/providers/customer_details_provider.dart';
 import 'package:feex/providers/top_services_provider.dart';
@@ -24,11 +25,17 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<TopCategoriesProvider>(
-            create: (_) => TopCategoriesProvider()),
+            create: (_) =>
+                TopCategoriesProvider()), // provides top services on the home page
         ChangeNotifierProvider<CustomerDetailsProvider>(
-            create: (_) => CustomerDetailsProvider()),
+            create: (_) =>
+                CustomerDetailsProvider()), // provides customer details
         ChangeNotifierProvider<ServiceDetailProvider>(
-            create: (_) => ServiceDetailProvider())
+            create: (_) =>
+                ServiceDetailProvider()), //provides particular service detail based on the category
+        ChangeNotifierProvider<CustomerAddressProvider>(
+            create: (_) =>
+                CustomerAddressProvider()), //provides customer addresses
       ],
       builder: (context, child) => MaterialApp(
         debugShowCheckedModeBanner: false,

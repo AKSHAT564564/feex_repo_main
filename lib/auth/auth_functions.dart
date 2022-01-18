@@ -26,7 +26,18 @@ class AuthMethods {
 
   getAccessToken() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.containsKey('access_token');
+    var containesAccessTokenKey = sharedPreferences.containsKey('access_token');
+    if (containesAccessTokenKey == false) {
+      return false; // returns false if access_token key D.N.E.
+    } else {
+      var accessTokenValue = sharedPreferences.getString('access_token');
+      if (accessTokenValue == 'null') {
+        return false; // returns false if access_token exists but is NULL
+      } else {
+        return true; // return true if access_token exists and is not NULL
+        //implying access_token of a genuine user exits
+      }
+    }
   }
 
   logOutUser() async {
@@ -40,9 +51,7 @@ class AuthMethods {
 
   guestUserLogin() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    //Setting access_token key to null for guest session 
+    //Setting access_token key to null for guest session
     await sharedPreferences.setString('access_token', 'null');
   }
-
- 
 }

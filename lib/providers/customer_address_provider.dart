@@ -14,25 +14,27 @@ class CustomerAddressProvider extends ChangeNotifier {
   bool get hasAddress => _hasAddress;
   bool get guestUser => _guestUser;
   List<CustomerAddressModel> get customerAddresss => _customerAddresss;
-  bool get error => error;
-  bool get errorMessage => errorMessage;
+  bool get error => _error;
+  String get errorMessage => _errorMessage;
 
   //function to fetch customer details
   fetchCustomerAddress() async {
     String url =
-        'https://feex.herokuapp.com/api/customer/address'; //endpoint to fetch all customer details
+        'https://feex.herokuapp.com/api/customer/address/'; //endpoint to fetch all customer details
 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? accessToken = await sharedPreferences.getString('access_token');
+    String? accessToken = sharedPreferences.getString('access_token');
     if (accessToken != 'null') {
       var response = await http.get(Uri.parse(url),
           headers: {'Authorization': 'Bearer $accessToken'});
+
       if (response.statusCode == 200) {
         try {
           var jsonResponse = json.decode(response.body) as List;
           _customerAddresss = jsonResponse
               .map((e) => CustomerAddressModel.fromJson(e))
               .toList();
+          print('customer ${_customerAddresss.toString()}');
           _hasAddress = true;
           _error = false;
         } catch (e) {

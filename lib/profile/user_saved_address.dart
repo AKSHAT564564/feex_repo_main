@@ -1,9 +1,12 @@
 import 'package:feex/constants.dart';
+import 'package:feex/models/customer_address_model.dart';
+import 'package:feex/providers/customer_address_provider.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class UserSavedAddress extends StatelessWidget {
-  savedAddressWidget(category) {
+  savedAddressWidget(CustomerAddressModel customerAddressModel) {
     return Container(
       height: 100,
       decoration: BoxDecoration(
@@ -26,7 +29,7 @@ class UserSavedAddress extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    '$category',
+                    customerAddressModel.type,
                     style: const TextStyle(
                         fontSize: 17,
                         color: kPrimaryColor,
@@ -50,33 +53,41 @@ class UserSavedAddress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<CustomerAddressProvider>().fetchCustomerAddress();
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(
-              Icons.arrow_back_sharp,
-              color: Colors.black,
-            )),
-        elevation: 1,
-        title: const Text(
-          'Saved Addresses',
-          style: TextStyle(color: Colors.black),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(
+                Icons.arrow_back_sharp,
+                color: Colors.black,
+              )),
+          elevation: 1,
+          title: const Text(
+            'Saved Addresses',
+            style: TextStyle(color: Colors.black),
+          ),
         ),
-      ),
-      body: Container(
-        padding: const EdgeInsets.only(top: 25, left: 20, right: 30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            savedAddressWidget('Home'),
-            SizedBox(height: getProportionateScreenHeight(14)),
-            savedAddressWidget('Office'),
-          ],
-        ),
-      ),
-    );
+        body: Container(
+          padding: const EdgeInsets.only(top: 25, left: 20, right: 30),
+          child: Consumer<CustomerAddressProvider>(
+              builder: (_, customerAddressValue, __) {
+            // self explanatory conditional rendering
+            return customerAddressValue.guestUser == true
+                ? const Text('Login to Continue')
+                : customerAddressValue.hasAddress &&
+                        customerAddressValue.error == false
+                    ? ListView.builder(
+                        itemCount: customerAddressValue.customerAddresss.length,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          return savedAddressWidget(
+                              customerAddressValue.customerAddresss[index]);
+                        })
+                    : const Text('Error Loading Address');
+          }),
+        ));
   }
 }

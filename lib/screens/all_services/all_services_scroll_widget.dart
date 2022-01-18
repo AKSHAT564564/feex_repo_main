@@ -93,7 +93,7 @@ class _AllServicesScrollWidgetState extends State<AllServicesScrollWidget> {
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                             border: Border.all(
-                                                color: Color(0xffE3DEF8),
+                                                color: const Color(0xffE3DEF8),
                                                 width: 1.0)),
                                         child: ClipRRect(
                                           borderRadius:
