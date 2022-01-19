@@ -53,4 +53,23 @@ class CustomerAddressProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  addAddress(Map<String, dynamic> addressData) async {
+    String url = 'https://feex.herokuapp.com/api/customer/address/';
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? accessToken = await sharedPreferences.getString('access_token');
+
+    if (accessToken != 'null') {
+      var response = await http.post(Uri.parse(url),
+          headers: {'Authorization': 'Bearer $accessToken'}, body: addressData);
+      print(response.body.toString());
+      if (response.statusCode == 201) {
+        return 'success';
+      } else if (response.statusCode == 400) {
+        return 'failure';
+      } else {
+        return 'failure';
+      }
+    }
+  }
 }
