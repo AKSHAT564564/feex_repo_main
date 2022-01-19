@@ -7,9 +7,9 @@ import 'package:provider/provider.dart';
 
 class AllServicesScrollWidget extends StatefulWidget {
   String categoryName;
-  var categoryId;
+  List<ServiceDetailsDataModel> serviceDetails;
   AllServicesScrollWidget(
-      {required this.categoryId, required this.categoryName});
+      {required this.categoryName, required this.serviceDetails});
 
   @override
   _AllServicesScrollWidgetState createState() =>
@@ -17,24 +17,8 @@ class AllServicesScrollWidget extends StatefulWidget {
 }
 
 class _AllServicesScrollWidgetState extends State<AllServicesScrollWidget> {
-  List<ServiceDetailsDataModel> _serviceDetails =
-      []; // initializing the data type of service details array
+  // initializing the data type of service details array
   bool noData = false; // for empty array case
-
-  final ServiceDetailProvider serviceDetailProvider = ServiceDetailProvider();
-
-  @override
-  void initState() {
-    super.initState();
-
-    ServiceDetailProvider().fetchAllServices(widget.categoryId).then((v) {
-      setState(() {
-        _serviceDetails = v;
-        if (_serviceDetails.length == 0)
-          noData = true; //checking if the Category has data or not
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,80 +36,69 @@ class _AllServicesScrollWidgetState extends State<AllServicesScrollWidget> {
             )
           ],
         ),
-        _serviceDetails.isEmpty && noData == false
-            ? const CircularProgressIndicator(
-                color: kPrimaryColor,
-              )
-            : SizedBox(
-                height: 120,
-                width: double.infinity,
-                child: noData == true
-                    ? const Text(
-                        'Coming Soon',
-                        style: TextStyle(color: kPrimaryColor),
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: _serviceDetails.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ServiceDetails()));
-                                },
-                                child: SizedBox(
-                                  height: 120,
-                                  width: 100,
-                                  child: ListTile(
-                                    title: GestureDetector(
-                                      onTap: null,
-                                      child: Container(
-                                        width: 80,
-                                        height: 80,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            border: Border.all(
-                                                color: const Color(0xffE3DEF8),
-                                                width: 1.0)),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          child: const FadeInImage(
-                                            placeholder: AssetImage(
-                                                'assets/images/frame_blue.png'),
-                                            image: AssetImage(
-                                                'assets/images/frame_blue.png'),
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    subtitle: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 10.0, top: 2.0),
-                                      child: Text(
-                                        _serviceDetails[index].serviceName,
-                                        textAlign: TextAlign.start,
-                                        style: const TextStyle(
-                                            color: kSecondaryColor,
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+        SizedBox(
+          height: 120,
+          width: double.infinity,
+          child: ListView.builder(
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemCount: widget.serviceDetails.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ServiceDetails(
+                                    serviceDetails:
+                                        widget.serviceDetails[index],
+                                  )));
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                          onTap: null,
+                          child: Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                    color: Color(0xffE3DEF8), width: 1.0)),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: const FadeInImage(
+                                placeholder:
+                                    AssetImage('assets/images/frame_blue.png'),
+                                image:
+                                    AssetImage('assets/images/frame_blue.png'),
+                                // image: NetworkImage(
+                                //     'https://feex.herokuapp.com' +
+                                //         value
+                                //             .topServicesData[
+                                //                 index]
+                                //             .iconUrl),
+                                fit: BoxFit.contain,
                               ),
-                            ],
-                          );
-                        }),
-              )
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0, top: 2.0),
+                          child: Text(
+                            widget.serviceDetails[index].serviceName,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                color: kSecondaryColor, fontSize: 12),
+                          ),
+                        )
+                      ],
+                    ));
+              }),
+        )
       ],
     );
   }

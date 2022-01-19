@@ -1,4 +1,5 @@
 import 'package:feex/models/service_details_data_model.dart';
+import 'package:feex/models/service_options_data_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -23,6 +24,7 @@ class ServiceDetailProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       try {
         var jsonResponse = json.decode(response.body) as List;
+
         _serviceDetails = jsonResponse
             .map((e) => ServiceDetailsDataModel.fromJson(e))
             .toList();
@@ -38,5 +40,49 @@ class ServiceDetailProvider extends ChangeNotifier {
       _errorMessage = 'Unable to fetch Data';
     }
     return _serviceDetails;
+  }
+
+  List<ServiceOptionsDataModel> _serviceOptions = [];
+  bool _hasServiceOptions = false;
+
+  List<ServiceOptionsDataModel> get serviceOptions => _serviceOptions;
+  set serviceOptionss(value) {
+    _serviceOptions = [];
+    _hasServiceOptions = false;
+  }
+
+  bool get hasServiceOptions => _hasServiceOptions;
+
+  
+
+  fetchServiceOptions(serviceId) async {
+    String url = 'https://feex.herokuapp.com/api/options/?service=$serviceId';
+
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      try {
+        var jsonResponse = json.decode(response.body) as List;
+
+        _serviceOptions = jsonResponse
+            .map((e) => ServiceOptionsDataModel.fromJson(e))
+            .toList();
+
+        _hasServiceOptions = true;
+      } catch (e) {
+        _serviceOptions = [];
+        _hasServiceOptions = false;
+      }
+    } else {
+      _serviceOptions = [];
+      _hasServiceOptions = false;
+    }
+    notifyListeners();
+  }
+
+  
+
+  initialValuesForServiceOptions() {
+    _serviceOptions = [];
+    _hasServiceOptions = false;
   }
 }

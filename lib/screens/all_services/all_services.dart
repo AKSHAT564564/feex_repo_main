@@ -1,5 +1,7 @@
 import 'package:feex/constants.dart';
+import 'package:feex/models/service_details_data_model.dart';
 import 'package:feex/models/top_categories_datamodel.dart';
+import 'package:feex/providers/all_categories_provider.dart';
 import 'package:feex/providers/services_detail_provider.dart';
 import 'package:feex/screens/all_services/all_services_scroll_widget.dart';
 import 'package:feex/screens/all_services/service_details.dart';
@@ -10,14 +12,19 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class AllServices extends StatefulWidget {
-  List<TopCategoriesDataModel> servicesData;
-  AllServices({required this.servicesData});
-
   @override
   State<AllServices> createState() => _AllServicesState();
 }
 
 class _AllServicesState extends State<AllServices> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<AllCategoriesAndServiceProvider>(context, listen: false)
+        .fetchAllCategories();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,14 +43,21 @@ class _AllServicesState extends State<AllServices> {
             style: TextStyle(color: Colors.black),
           ),
         ),
-        body: Container(
-            padding: const EdgeInsets.only(left: 15, top: 15),
-            child: ListView.builder(
-                itemCount: widget.servicesData.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return AllServicesScrollWidget(
-                      categoryId: widget.servicesData[index].id,
-                      categoryName: widget.servicesData[index].Category);
-                })));
+        body:
+            Consumer<AllCategoriesAndServiceProvider>(builder: (_, value, __) {
+          return value.hasData == false
+              ? CircularProgressIndicator()
+              : ListView.builder(
+                  itemCount: value.categoriesData.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var categoryId = value.categoriesData[index].id;
+                    String categoryName = value.categoriesData[index].Category;
+                    List<ServiceDetailsDataModel> serviceDeatils =
+                        value.categoriesServiceDataMap[categoryId.toString()];
+                    return AllServicesScrollWidget(
+                        serviceDetails: serviceDeatils,
+                        categoryName: categoryName);
+                  });
+        }));
   }
 }

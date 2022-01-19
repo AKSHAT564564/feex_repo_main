@@ -1,10 +1,36 @@
 import 'package:feex/components/app_bar_component.dart';
 import 'package:feex/components/default_button.dart';
 import 'package:feex/constants.dart';
+import 'package:feex/models/service_details_data_model.dart';
+import 'package:feex/providers/services_detail_provider.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ServiceDetails extends StatelessWidget {
+class ServiceDetails extends StatefulWidget {
+  ServiceDetailsDataModel serviceDetails;
+  ServiceDetails({required this.serviceDetails});
+  @override
+  State<ServiceDetails> createState() => _ServiceDetailsState();
+}
+
+class _ServiceDetailsState extends State<ServiceDetails> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<ServiceDetailProvider>(context, listen: false)
+        .fetchServiceOptions(widget.serviceDetails.serviceId);
+  }
+
+  @override
+  // void dispose() {
+  //   // TODO: implement dispose
+  //   super.dispose();
+  //   Provider.of<ServiceDetailProvider>(context, listen: false)
+  //       .initialValuesForServiceOptions();
+  // }
+
   final _feildController = TextEditingController();
 
   credentialsFeild(controller, hintText, errorText, obscureText, suffixIcon) {
@@ -59,7 +85,10 @@ class ServiceDetails extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              ServiceDetailProvider().serviceOptionss = [];
+              Navigator.pop(context);
+            },
             icon: const Icon(
               Icons.arrow_back_sharp,
               color: Colors.black,
@@ -79,16 +108,16 @@ class ServiceDetails extends StatelessWidget {
               SizedBox(
                 height: getProportionateScreenHeight(10),
               ),
-              const ListTile(
+              ListTile(
                 contentPadding: EdgeInsets.all(0),
                 title: Text(
-                  'Home Cleaning Service',
-                  style: TextStyle(
+                  widget.serviceDetails.serviceName,
+                  style: const TextStyle(
                       color: kPrimaryColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 20),
                 ),
-                subtitle: Text(
+                subtitle: const Text(
                   'Lorem Ipsum Dolor smith',
                   style: TextStyle(fontSize: 15),
                 ),
@@ -111,91 +140,98 @@ class ServiceDetails extends StatelessWidget {
                 height: 10,
               ),
               SizedBox(
-                height: 90,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: 3,
-                  itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Hero(
-                        tag: '$index' + 'title',
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          padding: EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                              color: Color(0xffF5F5F5),
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(
-                                  color: Color(0xffE3DEF8), width: 1.0)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: const [
-                              FittedBox(
-                                fit: BoxFit.contain,
-                                child: Text(
-                                  '20 AED',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      color: kPrimaryColor,
-                                      fontWeight: FontWeight.bold),
+                  height: 90,
+                  child:
+                      Consumer<ServiceDetailProvider>(builder: (_, value, __) {
+                    return value.hasServiceOptions == false
+                        ? CircularProgressIndicator()
+                        : ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: value.serviceOptions.length,
+                            itemBuilder: (context, index) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                width: 100,
+                                height: 100,
+                                padding: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                    color: const Color(0xffF5F5F5),
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(
+                                        color: const Color(0xffE3DEF8),
+                                        width: 1.0)),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    FittedBox(
+                                      fit: BoxFit.contain,
+                                      child: Text(
+                                        value.serviceOptions[index].price
+                                                .toString() +
+                                            ' AED',
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            color: kPrimaryColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Text('for ' +
+                                        value.serviceOptions[index].title)
+                                  ],
                                 ),
                               ),
-                              Text('for 1 Hour')
-                            ],
-                          ),
-                        )),
-                  ),
-                ),
-              ),
+                            ),
+                          );
+                  })),
               SizedBox(
                 height: getProportionateScreenHeight(10),
               ),
-              const ListTile(
-                contentPadding: EdgeInsets.all(0),
-                title: Text(
-                  'Number of Rooms',
-                  style: TextStyle(
-                      color: kPrimaryColor,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text(
-                  'Select the number of room for cleaning',
-                  style: TextStyle(fontSize: 15),
-                ),
-              ),
-              Container(
-                height: 32,
-                width: 110,
-                decoration: BoxDecoration(
-                    color: Color(0xffF5F5F5),
-                    borderRadius: BorderRadius.circular(60)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    IconButton(
-                        onPressed: null,
-                        icon: Icon(
-                          Icons.remove,
-                          size: 18,
-                          color: kPrimaryColor,
-                        )),
-                    Text(
-                      '1',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    IconButton(
-                        onPressed: null,
-                        icon: Icon(
-                          Icons.add,
-                          size: 18,
-                          color: kPrimaryColor,
-                        ))
-                  ],
-                ),
-              ),
+              // const ListTile(
+              //   contentPadding: EdgeInsets.all(0),
+              //   title: Text(
+              //     'Number of Rooms',
+              //     style: TextStyle(
+              //         color: kPrimaryColor,
+              //         fontSize: 18,
+              //         fontWeight: FontWeight.bold),
+              //   ),
+              //   subtitle: Text(
+              //     'Select the number of room for cleaning',
+              //     style: TextStyle(fontSize: 15),
+              //   ),
+              // ),
+              // Container(
+              //   height: 32,
+              //   width: 110,
+              //   decoration: BoxDecoration(
+              //       color: Color(0xffF5F5F5),
+              //       borderRadius: BorderRadius.circular(60)),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: const [
+              //       IconButton(
+              //           onPressed: null,
+              //           icon: Icon(
+              //             Icons.remove,
+              //             size: 18,
+              //             color: kPrimaryColor,
+              //           )),
+              //       Text(
+              //         '1',
+              //         style: TextStyle(fontSize: 18),
+              //       ),
+              //       IconButton(
+              //           onPressed: null,
+              //           icon: Icon(
+              //             Icons.add,
+              //             size: 18,
+              //             color: kPrimaryColor,
+              //           ))
+              //     ],
+              //   ),
+              // ),
               SizedBox(
                 height: getProportionateScreenHeight(30),
               ),

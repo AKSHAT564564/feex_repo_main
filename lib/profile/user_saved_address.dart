@@ -16,14 +16,9 @@ class UserSavedAddress extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            flex: 1,
-            child: Radio(
-                value: 'value', groupValue: 'groupValue', onChanged: null),
-          ),
-          Expanded(
             flex: 7,
             child: Padding(
-              padding: const EdgeInsets.only(top: 6, bottom: 6),
+              padding: const EdgeInsets.only(top: 6, bottom: 6, left: 15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -35,10 +30,10 @@ class UserSavedAddress extends StatelessWidget {
                         color: kPrimaryColor,
                         fontWeight: FontWeight.w500),
                   ),
-                  Text(
+                  const Text(
                     'Dubai -Silicon Oasis',
                   ),
-                  Text('Axis 3 Building')
+                  const Text('Axis 3 Building')
                 ],
               ),
             ),

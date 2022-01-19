@@ -1,6 +1,7 @@
 import 'package:feex/constants.dart';
 import 'package:feex/providers/top_services_provider.dart';
 import 'package:feex/screens/all_services/all_services.dart';
+import 'package:feex/screens/all_services/service_details.dart';
 
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class TopCategoriesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     //initiates data calling as soon as widget is about to be build
 
-    context.read<TopCategoriesProvider>().fetchData();
+    context.read<TopServicesProvider>().fetchData();
 
     return Padding(
       padding: const EdgeInsets.all(15.0),
@@ -40,9 +41,9 @@ class TopCategoriesWidget extends StatelessWidget {
 
                 // provider consumer for data and updates as soon as async call completes
 
-                child: Consumer<TopCategoriesProvider>(
+                child: Consumer<TopServicesProvider>(
                     builder: (context, value, child) {
-                  return value.topCategoriesData.isEmpty &&
+                  return value.topServicesData.isEmpty &&
                           !value.error // shows CPI when listening to data
                       ? const Center(
                           child: CircularProgressIndicator(
@@ -58,43 +59,66 @@ class TopCategoriesWidget extends StatelessWidget {
                                   crossAxisCount: 3,
                                   mainAxisSpacing: 20,
                                   children: List.generate(
-                                      value.topCategoriesData.length, (index) {
-                                    return ListTile(
-                                      title: GestureDetector(
-                                        onTap: null,
-                                        child: Container(
-                                          width: 80,
-                                          height: 80,
-                                          decoration: BoxDecoration(
+                                      value.topServicesData.length, (index) {
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () async {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ServiceDetails(
+                                                            serviceDetails:
+                                                                //passing details of a particular service
+                                                                value.topServicesData[
+                                                                    index])));
+                                          },
+                                          child: Container(
+                                            width: 80,
+                                            height: 80,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                    color: Color(0xffE3DEF8),
+                                                    width: 1.0)),
+                                            child: ClipRRect(
                                               borderRadius:
-                                                  BorderRadius.circular(10),
-                                              border: Border.all(
-                                                  color: Color(0xffE3DEF8),
-                                                  width: 1.0)),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            child: const FadeInImage(
-                                              placeholder: AssetImage(
-                                                  'assets/images/frame_blue.png'),
-                                              image: AssetImage(
-                                                  'assets/images/frame_blue.png'),
-                                              fit: BoxFit.contain,
+                                                  BorderRadius.circular(8.0),
+                                              child: const FadeInImage(
+                                                placeholder: AssetImage(
+                                                    'assets/images/frame_blue.png'),
+                                                image: AssetImage(
+                                                    'assets/images/frame_blue.png'),
+                                                // image: NetworkImage(
+                                                //     'https://feex.herokuapp.com' +
+                                                //         value
+                                                //             .topServicesData[
+                                                //                 index]
+                                                //             .iconUrl),
+                                                fit: BoxFit.contain,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      subtitle: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10.0, top: 2.0),
-                                        child: Text(
-                                          value.topCategoriesData[index]
-                                              .Category,
-                                          style: const TextStyle(
-                                              color: kSecondaryColor,
-                                              fontSize: 12),
-                                        ),
-                                      ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10.0, top: 2.0),
+                                          child: Text(
+                                            value.topServicesData[index]
+                                                .serviceName,
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                                color: kSecondaryColor,
+                                                fontSize: 12),
+                                          ),
+                                        )
+                                      ],
                                     );
                                   }),
                                 ),
@@ -105,9 +129,8 @@ class TopCategoriesWidget extends StatelessWidget {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => AllServices(
-                                                  servicesData: value
-                                                      .topCategoriesData))); // to notify that conumser
+                                              builder: (context) =>
+                                                  AllServices())); // to notify that conumser
                                     },
                                     child: const Padding(
                                       padding: EdgeInsets.all(8.0),

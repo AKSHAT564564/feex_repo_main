@@ -2,16 +2,16 @@
 
 
 
-class TopCategoriesDataModel {
+class CategoriesDataModel {
   final int id;
   final String Category;
 
-  TopCategoriesDataModel({required this.id, required this.Category});
+  CategoriesDataModel({required this.id, required this.Category});
  
  //constructor for data model...return id and name of the category
 
-  factory TopCategoriesDataModel.fromJson(Map<String, dynamic> json) {
+  factory CategoriesDataModel.fromJson(Map<String, dynamic> json) {
     
-    return TopCategoriesDataModel(id: json['id'], Category: json['name']);
+    return CategoriesDataModel(id: json['id'], Category: json['name']);
   }
 }

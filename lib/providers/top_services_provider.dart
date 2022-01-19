@@ -1,3 +1,4 @@
+import 'package:feex/models/service_details_data_model.dart';
 import 'package:feex/models/top_categories_datamodel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -5,14 +6,13 @@ import 'dart:convert';
 
 //provider class for topcategories provider
 
-class TopCategoriesProvider extends ChangeNotifier {
-  List<TopCategoriesDataModel> _topCategoriesData = []; // for data as list
+class TopServicesProvider extends ChangeNotifier {
+  List<ServiceDetailsDataModel> _topSerivcesData = []; // for data as list
   bool _error = false; // error handling
   String _errorMessage = ''; // error handling
 
   //getters for data
-
-  List<TopCategoriesDataModel> get topCategoriesData => _topCategoriesData;
+  List<ServiceDetailsDataModel> get topServicesData => _topSerivcesData;
 
   bool get error => _error;
 
@@ -25,8 +25,8 @@ class TopCategoriesProvider extends ChangeNotifier {
     //Runs http request
 
     var response = await http.get(
-      Uri.parse('http://feex.herokuapp.com/api/categories/'),
-    );
+      Uri.parse('https://feex.herokuapp.com/api/services/?top=True'),
+    ); //fetches all the top services
 
     if (response.statusCode == 200) {
       try {
@@ -34,25 +34,25 @@ class TopCategoriesProvider extends ChangeNotifier {
         // coverts data into a list for easy breakdown
 
         //Maps data as a list of data model
-        _topCategoriesData = jsonResponse
-            .map((e) => TopCategoriesDataModel.fromJson(e))
+        _topSerivcesData = jsonResponse
+            .map((e) => ServiceDetailsDataModel.fromJson(e))
             .toList();
         _error = false;
       } catch (e) {
         _error = true;
         _errorMessage = e.toString();
-        _topCategoriesData = [];
+        _topSerivcesData = [];
       }
     } else {
       _error = true;
       _errorMessage = 'Unknown';
-      _topCategoriesData = [];
+      _topSerivcesData = [];
     }
     notifyListeners();
   }
 
   void initialValues() {
-    _topCategoriesData = [];
+    _topSerivcesData = [];
     _error = false;
     _errorMessage = '';
     notifyListeners();
