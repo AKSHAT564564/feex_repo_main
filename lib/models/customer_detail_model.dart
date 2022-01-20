@@ -3,6 +3,8 @@ class CustomerDetailsModel {
   final String mobileNumber;
   final String profileImgLink;
   final String email;
+  final String gender;
+  final String dob;
   var id;
 
   CustomerDetailsModel(
@@ -10,7 +12,9 @@ class CustomerDetailsModel {
       this.mobileNumber = '',
       this.profileImgLink = '',
       this.email = '',
-      this.id = ''});
+      this.id = '',
+      this.dob = '',
+      this.gender = ''});
 
   factory CustomerDetailsModel.fromJson(Map<String, dynamic> json) {
     return CustomerDetailsModel(
@@ -18,6 +22,8 @@ class CustomerDetailsModel {
         mobileNumber: json['mobile_number'],
         email: json['email'],
         id: json['id'],
-        profileImgLink: json['profile_img']);
+        profileImgLink: json['profile_img'],
+        gender: json['gender'],
+        dob: json['dob']);
   }
 }

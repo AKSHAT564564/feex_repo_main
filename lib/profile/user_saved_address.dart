@@ -5,6 +5,7 @@ import 'package:feex/providers/customer_address_provider.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UserSavedAddress extends StatefulWidget {
   @override
@@ -12,6 +13,10 @@ class UserSavedAddress extends StatefulWidget {
 }
 
 class _UserSavedAddressState extends State<UserSavedAddress> {
+  
+    
+  
+  
   savedAddressWidget(CustomerAddressModel customerAddressModel) {
     return Padding(
       padding: const EdgeInsets.all(8.0),

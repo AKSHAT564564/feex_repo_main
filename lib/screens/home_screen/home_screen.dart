@@ -48,8 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               .name, // if not a guest displays name
                           style: TextStyle(color: kPrimaryColor, fontSize: 20),
                         ),
-                  subtitle: Text(
-                    'How we can help you today? ${value.customerDetailsModel.mobileNumber}',
+                  subtitle: const Text(
+                    'How we can help you today? ',
                     style: TextStyle(color: kSecondaryColor),
                   )));
     });

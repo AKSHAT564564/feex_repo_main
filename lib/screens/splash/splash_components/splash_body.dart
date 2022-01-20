@@ -32,7 +32,7 @@ class _BodyState extends State<Body> {
   ];
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
+    
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(

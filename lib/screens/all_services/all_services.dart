@@ -46,9 +46,26 @@ class _AllServicesState extends State<AllServices> {
         body:
             Consumer<AllCategoriesAndServiceProvider>(builder: (_, value, __) {
           return value.hasData == false
-              ? CircularProgressIndicator()
+              ? Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: kPrimaryColor,
+                      ),
+                      Text(
+                        ' Loading... ',
+                        style: TextStyle(color: kSecondaryColor, fontSize: 25),
+                      ),
+                    ],
+                  ),
+                )
               : ListView.builder(
                   itemCount: value.categoriesData.length,
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
                     var categoryId = value.categoriesData[index].id;
                     String categoryName = value.categoriesData[index].Category;
