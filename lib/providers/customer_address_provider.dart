@@ -57,7 +57,7 @@ class CustomerAddressProvider extends ChangeNotifier {
   addAddress(Map<String, dynamic> addressData) async {
     String url = 'https://feex.herokuapp.com/api/customer/address/';
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? accessToken = await sharedPreferences.getString('access_token');
+    String? accessToken = sharedPreferences.getString('access_token');
 
     Map<String, dynamic> responseMap = {};
 
@@ -66,16 +66,15 @@ class CustomerAddressProvider extends ChangeNotifier {
           headers: {'Authorization': 'Bearer $accessToken'}, body: addressData);
       var jsonResponse = json.decode(response.body) as Map<String, dynamic>;
       if (response.statusCode == 201) {
-        responseMap['success'] = true;
         responseMap['statusCode'] = 200;
       } else if (response.statusCode == 400) {
         responseMap['response'] = jsonResponse;
         responseMap['statusCode'] = 400;
       } else {
-        responseMap['failure'] = true;
         responseMap['statusCode'] = 500;
       }
     }
+    
     return responseMap;
   }
 }

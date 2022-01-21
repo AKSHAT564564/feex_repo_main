@@ -23,17 +23,17 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Provider.of<CustomerDetailsProvider>(context, listen: false)
         .fetchCustomerDetails();
   }
 
-  @override
   Widget customerDetailsHomeWidget(BuildContext context) {
     return Consumer<CustomerDetailsProvider>(builder: (context, value, child) {
       return value.isGuestUser == false && value.hasData == false
-          ? CircularProgressIndicator()
+          ? const CircularProgressIndicator(
+              color: kPrimaryColor,
+            )
           : Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: ListTile(
@@ -64,13 +64,13 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         drawer: buildDrawer(),
         appBar: AppBar(
-          iconTheme: IconThemeData(color: kPrimaryColor),
+          iconTheme: const IconThemeData(color: kPrimaryColor),
           backgroundColor: Colors.white,
           elevation: 0,
           actions: <Widget>[
             GestureDetector(
               child: Padding(
-                padding: EdgeInsets.only(right: 20),
+                padding: const EdgeInsets.only(right: 20),
                 child: GestureDetector(
                   onTap: () => Navigator.push(context,
                       MaterialPageRoute(builder: (context) => UserProfile())),
@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
           children: [
             customerDetailsHomeWidget(context),
-            TopCategoriesWidget(),
+            const TopCategoriesWidget(),
           ],
         )),
       ),

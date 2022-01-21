@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class UserChangeEmail extends StatelessWidget {
+  UserChangeEmail({Key? key}) : super(key: key);
   final _emailController = TextEditingController();
 
   credentialsFeild(controller, hintText, errorText, obscureText, feildIcon) {

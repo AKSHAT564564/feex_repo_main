@@ -56,7 +56,26 @@ class CustomerDetailsProvider extends ChangeNotifier {
         _errorMessage = 'Unable to fetch Details';
       }
     }
+    return customerDetailsModel;
     notifyListeners();
+  }
+
+  updateCustomerDetails(Map<String, dynamic> customerDetails) async {
+    print(customerDetails.toString());
+    String url = 'https://feex.herokuapp.com/api/customer/update-profile/1/';
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? accessToken = await sharedPreferences.getString('access_token');
+    var response = await http.put(Uri.parse(url),
+        headers: {'Authorization': 'Bearer $accessToken'},
+        body: customerDetails);
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      return 'sucess';
+    } else {
+      return 'failure';
+    }
   }
 
   void initialValues() {
