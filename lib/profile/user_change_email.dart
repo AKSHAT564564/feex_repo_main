@@ -1,7 +1,9 @@
 import 'package:feex/components/default_button.dart';
 import 'package:feex/constants.dart';
+import 'package:feex/providers/customer_details_provider.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class UserChangeEmail extends StatelessWidget {
   final _emailController = TextEditingController();
@@ -75,16 +77,18 @@ class UserChangeEmail extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              children: const [
-                Text(
+              children: [
+                const Text(
                   'Current Email: ',
                   style: TextStyle(
                       color: kPrimaryColor, fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  'Joseph@feexapp.com',
-                  style: TextStyle(color: kSecondaryColor),
-                )
+                Consumer<CustomerDetailsProvider>(builder: (_, value, __) {
+                  return Text(
+                    value.customerDetailsModel.email,
+                    style: const TextStyle(color: kSecondaryColor),
+                  );
+                })
               ],
             ),
             SizedBox(
@@ -104,7 +108,7 @@ class UserChangeEmail extends StatelessWidget {
               height: SizeConfig.screenHeight * 0.35,
             ),
             Center(
-              child: Container(
+              child: SizedBox(
                 width: SizeConfig.screenWidth * 0.8,
                 child: const DefaultButton(
                   text: 'Save',

@@ -108,7 +108,7 @@ class TopCategoriesWidget extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const AllServices())),
+                                                AllServices())),
                                     child: const Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: Text(

@@ -39,6 +39,18 @@ class _UserAddAddressState extends State<UserAddAddress> {
     'apartment_office': ''
   };
 
+  // store json response of every feild
+  // acoridng to key value pair
+  Map<String, dynamic> _errorHandling = {
+    'name': '',
+    'type': '',
+    'area': '',
+    'street': '',
+    'building_house': '',
+    'floor': '',
+    'apartment_office': ''
+  };
+
   credentialsFeild(TextEditingController controller, hintText, errorText,
       obscureText, feildIcon, feildName) {
     return TextFormField(
@@ -51,10 +63,15 @@ class _UserAddAddressState extends State<UserAddAddress> {
       },
       onChanged: (value) {
         addressData[feildName] = controller.text;
+        setState(() {
+          _errorHandling[feildName] = '';
+        });
       },
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(10),
-        errorText: errorText ? 'Check $hintText' : null,
+        errorText: _errorHandling[feildName] == ''
+            ? null
+            : _errorHandling[feildName].toString(),
         focusColor: Colors.grey,
         hintText: hintText,
         suffixIcon: feildIcon,
@@ -88,6 +105,8 @@ class _UserAddAddressState extends State<UserAddAddress> {
       ),
     );
   }
+
+  String addressType = 'Apartment';
 
   @override
   Widget build(BuildContext context) {
@@ -125,13 +144,44 @@ class _UserAddAddressState extends State<UserAddAddress> {
                   SizedBox(
                     height: getProportionateScreenHeight(15),
                   ),
-                  credentialsFeild(
-                      _nameController, 'Name', false, false, null, 'name'),
+                  //dropdown for selecting item type
+                  Container(
+                    padding: EdgeInsets.only(left: 10),
+                    width: SizeConfig.screenWidth,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(3),
+                        border:
+                            Border.all(color: Color(0xffE3DEF8), width: 1.0)),
+                    child: DropdownButton<String>(
+                      value: addressType,
+                      icon: null,
+                      elevation: 0,
+                      isExpanded: true,
+                      style: const TextStyle(color: kPrimaryColor),
+                      underline: Container(
+                        height: 0,
+                        color: Colors.deepPurpleAccent,
+                      ),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          addressType = newValue!;
+                          _typeController.text = addressType.toLowerCase();
+                        });
+                      },
+                      items: <String>['Apartment', 'House', 'Office']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                   SizedBox(
                     height: getProportionateScreenHeight(15),
                   ),
                   credentialsFeild(
-                      _typeController, 'Type', false, false, null, 'type'),
+                      _nameController, 'Name', false, false, null, 'name'),
                   SizedBox(
                     height: getProportionateScreenHeight(15),
                   ),
@@ -184,12 +234,26 @@ class _UserAddAddressState extends State<UserAddAddress> {
                         await CustomerAddressProvider()
                             .addAddress(addressData)
                             .then((v) {
-                          if (v == 'success') {
+                          //we are getting a Map as a response to the fucntion call
+                          //if sucess a statusCode feild is added with value 200 is added
+                          //if failure or wrong feilds statusCode is made 400 and error response is added
+                          // to 'response' feild in the return value i.e. 'v'
+                          if (v['statusCode'] == 200) {
                             Navigator.pop(context);
+                          } else if (v['statusCode'] == 500) {
+                            setState(() {
+                              _isLoading = false;
+                            });
                           } else {
                             setState(() {
                               _isLoading = false;
                             });
+                            Map<String, dynamic> errors = v['response'];
+                            for (var item in errors.keys) {
+                              setState(() {
+                                _errorHandling[item] = errors[item];
+                              });
+                            }
                           }
                         });
                       }

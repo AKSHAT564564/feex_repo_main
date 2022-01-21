@@ -1,4 +1,5 @@
-import 'package:feex/models/top_categories_datamodel.dart';
+
+import 'package:feex/screens/models/top_categories_datamodel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

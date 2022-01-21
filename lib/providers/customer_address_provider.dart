@@ -59,17 +59,23 @@ class CustomerAddressProvider extends ChangeNotifier {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? accessToken = await sharedPreferences.getString('access_token');
 
+    Map<String, dynamic> responseMap = {};
+
     if (accessToken != 'null') {
       var response = await http.post(Uri.parse(url),
           headers: {'Authorization': 'Bearer $accessToken'}, body: addressData);
-      print(response.body.toString());
+      var jsonResponse = json.decode(response.body) as Map<String, dynamic>;
       if (response.statusCode == 201) {
-        return 'success';
+        responseMap['success'] = true;
+        responseMap['statusCode'] = 200;
       } else if (response.statusCode == 400) {
-        return 'failure';
+        responseMap['response'] = jsonResponse;
+        responseMap['statusCode'] = 400;
       } else {
-        return 'failure';
+        responseMap['failure'] = true;
+        responseMap['statusCode'] = 500;
       }
     }
+    return responseMap;
   }
 }

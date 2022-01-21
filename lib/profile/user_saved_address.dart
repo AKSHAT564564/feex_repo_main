@@ -13,13 +13,9 @@ class UserSavedAddress extends StatefulWidget {
 }
 
 class _UserSavedAddressState extends State<UserSavedAddress> {
-  
-    
-  
-  
   savedAddressWidget(CustomerAddressModel customerAddressModel) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(bottom: 12),
       child: Container(
         height: 100,
         decoration: BoxDecoration(
@@ -43,18 +39,23 @@ class _UserSavedAddressState extends State<UserSavedAddress> {
                           color: kPrimaryColor,
                           fontWeight: FontWeight.w500),
                     ),
-                    const Text(
-                      'Dubai -Silicon Oasis',
+                    Text(
+                      customerAddressModel.floor.toString() +
+                          ', ' +
+                          customerAddressModel.buildingHouse.toString() +
+                          ', ' +
+                          customerAddressModel.name,
                     ),
-                    const Text('Axis 3 Building')
+                    Text(customerAddressModel.street +
+                        ', ' +
+                        customerAddressModel.area)
                   ],
                 ),
               ),
             ),
-            Expanded(
+            const Expanded(
                 flex: 2,
-                child:
-                    const IconButton(onPressed: null, icon: Icon(Icons.edit)))
+                child: IconButton(onPressed: null, icon: Icon(Icons.edit)))
           ],
         ),
       ),
@@ -84,7 +85,7 @@ class _UserSavedAddressState extends State<UserSavedAddress> {
                     setState(() {});
                   });
                 },
-                child: Text(
+                child:const Text(
                   'Add',
                   style: TextStyle(color: greenColor),
                 ))
