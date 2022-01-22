@@ -1,5 +1,6 @@
 import 'package:feex/models/service_details_data_model.dart';
 import 'package:feex/models/service_options_data_model.dart';
+import 'package:feex/models/service_time_slots_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -53,8 +54,6 @@ class ServiceDetailProvider extends ChangeNotifier {
 
   bool get hasServiceOptions => _hasServiceOptions;
 
-  
-
   fetchServiceOptions(serviceId) async {
     String url = 'https://feex.herokuapp.com/api/options/?service=$serviceId';
 
@@ -79,7 +78,31 @@ class ServiceDetailProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  
+  List<ServiceTimeSlotModel> _serviceTimeSlots = [];
+  bool _hasTimeSlots = false;
+
+  List<ServiceTimeSlotModel> get serviceTimeSlots => _serviceTimeSlots;
+  bool get hasTimeSlots => _hasTimeSlots;
+  fetchServiceTimeSlots(serviceId) async {
+    String url =
+        'https://feex.herokuapp.com/api/time-slots/?service=$serviceId';
+
+    var response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      try {
+        var jsonResponse = json.decode(response.body) as List;
+        _serviceTimeSlots =
+            jsonResponse.map((e) => ServiceTimeSlotModel.fromJson(e)).toList();
+        _hasTimeSlots = true;
+      } catch (e) {
+        _hasTimeSlots = false;
+      }
+    } else {
+      _hasTimeSlots = false;
+    }
+    notifyListeners();
+  }
 
   initialValuesForServiceOptions() {
     _serviceOptions = [];

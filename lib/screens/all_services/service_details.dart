@@ -2,14 +2,16 @@ import 'package:feex/components/app_bar_component.dart';
 import 'package:feex/components/default_button.dart';
 import 'package:feex/constants.dart';
 import 'package:feex/models/service_details_data_model.dart';
+import 'package:feex/models/service_time_slots_model.dart';
 import 'package:feex/providers/services_detail_provider.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ServiceDetails extends StatefulWidget {
-  ServiceDetailsDataModel serviceDetails;
-  ServiceDetails({required this.serviceDetails});
+  final ServiceDetailsDataModel serviceDetails;
+  const ServiceDetails({required this.serviceDetails, Key? key})
+      : super(key: key);
   @override
   State<ServiceDetails> createState() => _ServiceDetailsState();
 }
@@ -17,13 +19,13 @@ class ServiceDetails extends StatefulWidget {
 class _ServiceDetailsState extends State<ServiceDetails> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Provider.of<ServiceDetailProvider>(context, listen: false)
         .fetchServiceOptions(widget.serviceDetails.serviceId);
+    Provider.of<ServiceDetailProvider>(context, listen: false)
+        .fetchServiceTimeSlots(widget.serviceDetails.serviceId);
   }
 
-  @override
   // void dispose() {
   //   // TODO: implement dispose
   //   super.dispose();
@@ -79,6 +81,8 @@ class _ServiceDetailsState extends State<ServiceDetails> {
     );
   }
 
+  int selectedPrice = -1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,7 +113,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                 height: getProportionateScreenHeight(10),
               ),
               ListTile(
-                contentPadding: EdgeInsets.all(0),
+                contentPadding: const EdgeInsets.all(0),
                 title: Text(
                   widget.serviceDetails.serviceName,
                   style: const TextStyle(
@@ -136,7 +140,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               SizedBox(
@@ -151,43 +155,54 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                             itemCount: value.serviceOptions.length,
                             itemBuilder: (context, index) => Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                width: 100,
-                                height: 100,
-                                padding: const EdgeInsets.all(8.0),
-                                decoration: BoxDecoration(
-                                    color: const Color(0xffF5F5F5),
-                                    borderRadius: BorderRadius.circular(6),
-                                    border: Border.all(
-                                        color: const Color(0xffE3DEF8),
-                                        width: 1.0)),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    FittedBox(
-                                      fit: BoxFit.contain,
-                                      child: Text(
-                                        value.serviceOptions[index].price
-                                                .toString() +
-                                            ' AED',
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            color: kPrimaryColor,
-                                            fontWeight: FontWeight.bold),
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedPrice = index;
+                                  });
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 100,
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xffF5F5F5),
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(
+                                          color: selectedPrice == index
+                                              ? greenColor
+                                              : const Color(0xffE3DEF8),
+                                          width: 1.0)),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      FittedBox(
+                                        fit: BoxFit.contain,
+                                        child: Text(
+                                          value.serviceOptions[index].price
+                                                  .toString() +
+                                              ' AED',
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              color: kPrimaryColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
-                                    ),
-                                    Text('for ' +
-                                        value.serviceOptions[index].title)
-                                  ],
+                                      Expanded(
+                                        child: Text(
+                                          'for ' +
+                                              value.serviceOptions[index].title,
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           );
                   })),
-              SizedBox(
-                height: getProportionateScreenHeight(10),
-              ),
+
               // const ListTile(
               //   contentPadding: EdgeInsets.all(0),
               //   title: Text(
@@ -233,7 +248,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
               //   ),
               // ),
               SizedBox(
-                height: getProportionateScreenHeight(30),
+                height: getProportionateScreenHeight(20),
               ),
               const Text(
                 'Choose Timing',
@@ -242,54 +257,92 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                     color: Colors.black,
                     fontWeight: FontWeight.bold),
               ),
-              Row(
-                children: const [
-                  SizedBox(
-                    width: 120,
-                    child: ListTile(
-                      contentPadding: EdgeInsets.all(0),
-                      horizontalTitleGap: 0,
-                      leading: Radio(
-                          value: 'value',
-                          groupValue: 'groupValue',
-                          onChanged: null),
-                      title: Text(
-                        'ASAP',
-                        style: TextStyle(color: Colors.black, fontSize: 15),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 200,
-                    child: ListTile(
-                      horizontalTitleGap: 0,
-                      contentPadding: EdgeInsets.all(0),
-                      leading: Radio(
-                          value: 'value',
-                          groupValue: 'groupValue',
-                          onChanged: null),
-                      title: Text(
-                        'Schedule for Later',
-                        style: TextStyle(color: Colors.black, fontSize: 15),
-                      ),
-                    ),
-                  )
-                ],
+              SizedBox(
+                height: getProportionateScreenHeight(15),
               ),
+              // Row(
+              //   children: const [
+              //     SizedBox(
+              //       width: 120,
+              //       child: ListTile(
+              //         contentPadding: EdgeInsets.all(0),
+              //         horizontalTitleGap: 0,
+              //         leading: Radio(
+              //             value: 'value',
+              //             groupValue: 'groupValue',
+              //             onChanged: null),
+              //         title: Text(
+              //           'ASAP',
+              //           style: TextStyle(color: Colors.black, fontSize: 15),
+              //         ),
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: 200,
+              //       child: ListTile(
+              //         horizontalTitleGap: 0,
+              //         contentPadding: EdgeInsets.all(0),
+              //         leading: Radio(
+              //             value: 'value',
+              //             groupValue: 'groupValue',
+              //             onChanged: null),
+              //         title: Text(
+              //           'Schedule for Later',
+              //           style: TextStyle(color: Colors.black, fontSize: 15),
+              //         ),
+              //       ),
+              //     )
+              //   ],
+              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
+                  SizedBox(
                     width: SizeConfig.screenWidth * 0.4,
                     height: 45,
-                    child: credentialsFeild(_feildController, 'Choose Time',
-                        false, false, const Icon(Icons.access_time)),
+                    child: Consumer<ServiceDetailProvider>(
+                        builder: (_, value, __) {
+                      List timeSlots = value.serviceTimeSlots;
+                      return value.hasTimeSlots
+                          ? Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
+                                  border: Border.all(
+                                      color: const Color(0xffE3DEF8),
+                                      width: 1.0)),
+                              child: timeSlots.isEmpty
+                                  ? const Center(
+                                      child: Text('No Avaialbe slots'))
+                                  : DropdownButton<String>(
+                                      onChanged: null,
+                                      elevation: 0,
+                                      isExpanded: true,
+                                      style:
+                                          const TextStyle(color: kPrimaryColor),
+                                      underline: Container(
+                                        height: 0,
+                                        color: Colors.deepPurpleAccent,
+                                      ),
+                                      items: timeSlots.map((e) {
+                                        return DropdownMenuItem<String>(
+                                            child: Text(e.slot.toString()));
+                                      }).toList()
+                                      //     timeSlots.map<DropdownMenuItem<ServiceTimeSlotModel>>((ServiceTimeSlotModel model) {
+                                      //   return DropdownMenuItem<ServiceTimeSlotModel>(
+                                      //       value: model.id, child: Text(model.slot));
+                                      // }),
+                                      ),
+                            )
+                          : CircularProgressIndicator();
+                    }),
+                    // child: credentialsFeild(_feildController, 'Choose Time',
+                    //     false, false, const Icon(Icons.access_time)),
                   ),
-                  Container(
+                  SizedBox(
                     width: SizeConfig.screenWidth * 0.4,
                     height: 45,
                     child: credentialsFeild(_feildController, 'Choose Date',
-                        false, false, Icon(Icons.calendar_today)),
+                        false, false, const Icon(Icons.calendar_today)),
                   )
                 ],
               ),
@@ -336,19 +389,19 @@ class _ServiceDetailsState extends State<ServiceDetails> {
               SizedBox(
                 height: getProportionateScreenHeight(20),
               ),
-              credentialsFeild(
-                  _feildController,
-                  'Image or Video of the problem',
-                  false,
-                  false,
-                  const Icon(Icons.camera_alt_outlined)),
-              SizedBox(
-                height: getProportionateScreenHeight(10),
-              ),
-              const Text('Maximum attachment 10MB'),
-              SizedBox(
-                height: getProportionateScreenHeight(40),
-              ),
+              // credentialsFeild(
+              //     _feildController,
+              //     'Image or Video of the problem',
+              //     false,
+              //     false,
+              //     const Icon(Icons.camera_alt_outlined)),
+              // SizedBox(
+              //   height: getProportionateScreenHeight(10),
+              // ),
+              // const Text('Maximum attachment 10MB'),
+              // SizedBox(
+              //   height: getProportionateScreenHeight(40),
+              // ),
               const Padding(
                 padding: EdgeInsets.only(bottom: 20),
                 child: DefaultButton(

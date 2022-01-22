@@ -1,10 +1,13 @@
 import 'package:feex/auth/auth_functions.dart';
 import 'package:feex/models/customer_detail_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class CustomerDetailsProvider extends ChangeNotifier {
   bool _error = false;
@@ -56,26 +59,65 @@ class CustomerDetailsProvider extends ChangeNotifier {
         _errorMessage = 'Unable to fetch Details';
       }
     }
-    return customerDetailsModel;
+
     notifyListeners();
+    return customerDetailsModel;
   }
 
-  updateCustomerDetails(Map<String, dynamic> customerDetails) async {
+  updateCustomerDetails(
+      Map<String, dynamic> customerDetails, XFile? file) async {
     print(customerDetails.toString());
     String url = 'https://feex.herokuapp.com/api/customer/update-profile/1/';
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? accessToken = await sharedPreferences.getString('access_token');
-    var response = await http.put(Uri.parse(url),
-        headers: {'Authorization': 'Bearer $accessToken'},
-        body: customerDetails);
-    print(response.body);
+    var request = http.MultipartRequest('PUT', Uri.parse(url));
+
+    request.headers['Authorization'] = 'Bearer $accessToken';
+
+    var picture = file == null
+        ? http.MultipartFile.fromBytes(
+            'profile_img',
+            (await rootBundle.load('assets/images/user_default.png'))
+                .buffer
+                .asInt8List(),
+            filename: 'user_default.png')
+        : http.MultipartFile(
+            'profile_img',
+            File(file.path).readAsBytes().asStream(),
+            File(file.path).lengthSync(),
+            filename: file.name);
+
+    // refer : https://androidkt.com/how-to-upload-image-using-multipart-in-flutter/
+    // refer : https://www.androidcoding.in/2021/09/01/flutter-upload-image/
+
+    request.files.add(picture);
+
+    request.fields['name'] = customerDetails['name'];
+    request.fields['dob'] = customerDetails['dob'];
+    request.fields['mobile_number'] = customerDetails['mobile_number'];
+
+    var response = await request.send();
+    var responseData = await response.stream.toBytes();
+
+    var result = String.fromCharCodes(responseData);
 
     if (response.statusCode == 200) {
-      print(response.body);
-      return 'sucess';
+      return 'success';
     } else {
-      return 'failure';
+      return 'Failure';
     }
+
+    // var response = await http.put(Uri.parse(url),
+    //     headers: {'Authorization': 'Bearer $accessToken'},
+    //     body: customerDetails);
+    // print(response.body);
+
+    // if (response.statusCode == 200) {
+    //   print(response.body);
+    //   return 'sucess';
+    // } else {
+    //   return 'failure';
+    // }
   }
 
   void initialValues() {

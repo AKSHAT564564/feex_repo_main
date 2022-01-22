@@ -148,12 +148,14 @@ class _UserAccountInfoState extends State<UserAccountInfo> {
           child: Consumer<CustomerDetailsProvider>(builder: (_, value, __) {
             // storing initial values from the database
             if (storedInitialValue == false) {
-              customerDetails['name'] = value.customerDetailsModel.name;
-              customerDetails['mobile_number'] =
+              customerDetails['name'] =
+                  _nameController.text = value.customerDetailsModel.name;
+              customerDetails['mobile_number'] = _mobileNumberController.text =
                   value.customerDetailsModel.mobileNumber;
-              customerDetails['dob'] = value.customerDetailsModel.dob;
-              customerDetails['gender'] = value.customerDetailsModel.gender;
-              customerDetails['profile_img'] = 'assets/images/user_default.png';
+              customerDetails['dob'] =
+                  _dobController.text = value.customerDetailsModel.dob;
+              customerDetails['gender'] =
+                  _genderController.text = value.customerDetailsModel.gender;
 
               //initializing radio buttons
               if (value.customerDetailsModel.gender == 'Male') {
@@ -245,6 +247,7 @@ class _UserAccountInfoState extends State<UserAccountInfo> {
                   ValueListenableBuilder<int>(
                       //listning to change in radioButton value
                       //avoiding setState Method
+
                       // 1 for male
                       // 2 for female
                       valueListenable: radioButton,
@@ -306,13 +309,20 @@ class _UserAccountInfoState extends State<UserAccountInfo> {
                       child: DefaultButton(
                         text: 'Save',
                         press: () async {
+                          String result = '';
                           await CustomerDetailsProvider()
-                              .updateCustomerDetails(customerDetails)
+                              .updateCustomerDetails(
+                                  customerDetails, pickedImage.value)
                               .then((v) {
-                            if (v == 'success') {
-                              Navigator.pop(context);
-                            }
+                            result = v;
                           });
+                          if (result == 'success') {
+                            await CustomerDetailsProvider()
+                                .fetchCustomerDetails(); // updating details of the customer
+                            Navigator.pop(context);
+                          } else {
+                            print('Failure');
+                          }
                         },
                       ),
                     ),

@@ -146,12 +146,12 @@ class _UserAddAddressState extends State<UserAddAddress> {
                   ),
                   //dropdown for selecting item type
                   Container(
-                    padding: EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 10),
                     width: SizeConfig.screenWidth,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(3),
-                        border:
-                            Border.all(color: Color(0xffE3DEF8), width: 1.0)),
+                        border: Border.all(
+                            color: const Color(0xffE3DEF8), width: 1.0)),
                     child: DropdownButton<String>(
                       value: addressType,
                       icon: null,
