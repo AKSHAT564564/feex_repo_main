@@ -74,7 +74,28 @@ class CustomerAddressProvider extends ChangeNotifier {
         responseMap['statusCode'] = 500;
       }
     }
-    
+
+    return responseMap;
+  }
+
+  editAddress(addressId, addressData) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? accessToken = sharedPreferences.getString('access_token');
+    String url = 'https://feex.herokuapp.com/api/customer/address/$addressId/';
+
+    var response = await http.patch(Uri.parse(url),
+        headers: {'Authorization': 'Bearer $accessToken'}, body: addressData);
+
+    Map<String, dynamic> responseMap = {};
+
+    if (response.statusCode == 200) {
+      responseMap['statusCode'] = 200;
+    } else if (response.statusCode == 400) {
+      responseMap['response'] = json.decode(response.body);
+      responseMap['statusCode'] = 400;
+    } else {
+      responseMap['statusCode'] = 500;
+    }
     return responseMap;
   }
 }

@@ -53,9 +53,18 @@ class _UserSavedAddressState extends State<UserSavedAddress> {
                 ),
               ),
             ),
-            const Expanded(
+            Expanded(
                 flex: 2,
-                child: IconButton(onPressed: null, icon: Icon(Icons.edit)))
+                child: IconButton(
+                    onPressed: () async {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UserAddAddress(
+                                  isEditingAddress: true,
+                                  customerAddressModel: customerAddressModel)));
+                    },
+                    icon: const Icon(Icons.edit)))
           ],
         ),
       ),
@@ -85,7 +94,7 @@ class _UserSavedAddressState extends State<UserSavedAddress> {
                     setState(() {});
                   });
                 },
-                child:const Text(
+                child: const Text(
                   'Add',
                   style: TextStyle(color: greenColor),
                 ))
