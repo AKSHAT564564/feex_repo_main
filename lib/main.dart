@@ -24,20 +24,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<TopServicesProvider>(
-            create: (_) =>
-                TopServicesProvider()), // provides top services on the home page
+            create: (_) => TopServicesProvider()),
+        // provides top services on the home page
         ChangeNotifierProvider<CustomerDetailsProvider>(
-            create: (_) =>
-                CustomerDetailsProvider()), // provides customer details
+            create: (_) => CustomerDetailsProvider()),
+        // provides customer details
         ChangeNotifierProvider<ServiceDetailProvider>(
-            create: (_) =>
-                ServiceDetailProvider()), //provides particular service detail based on the category
+            create: (_) => ServiceDetailProvider()),
+        //provides particular service detail based on the category
         ChangeNotifierProvider<CustomerAddressProvider>(
             create: (_) => CustomerAddressProvider()),
+
         ChangeNotifierProvider<AllCategoriesAndServiceProvider>(
             create: (_) =>
                 AllCategoriesAndServiceProvider()) //provides customer addresses

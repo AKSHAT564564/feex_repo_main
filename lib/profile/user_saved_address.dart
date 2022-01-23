@@ -14,58 +14,63 @@ class UserSavedAddress extends StatefulWidget {
 
 class _UserSavedAddressState extends State<UserSavedAddress> {
   savedAddressWidget(CustomerAddressModel customerAddressModel) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Container(
-        height: 100,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: const Color(0xffe3def8))),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 7,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 6, bottom: 6, left: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      customerAddressModel.type.toString().toUpperCase(),
-                      style: const TextStyle(
-                          fontSize: 17,
-                          color: kPrimaryColor,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    Text(
-                      customerAddressModel.floor.toString() +
+    return GestureDetector(
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => UserAddAddress(
+                  isEditingAddress: true,
+                  customerAddressModel: customerAddressModel))).then((value) {
+        setState(() {});
+      }),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: Container(
+          height: 100,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(color: const Color(0xffe3def8))),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 7,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 6, bottom: 6, left: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        customerAddressModel.type.toString().toUpperCase(),
+                        style: const TextStyle(
+                            fontSize: 17,
+                            color: kPrimaryColor,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        customerAddressModel.floor.toString() +
+                            ', ' +
+                            customerAddressModel.buildingHouse.toString() +
+                            ', ' +
+                            customerAddressModel.name,
+                      ),
+                      Text(customerAddressModel.street +
                           ', ' +
-                          customerAddressModel.buildingHouse.toString() +
-                          ', ' +
-                          customerAddressModel.name,
-                    ),
-                    Text(customerAddressModel.street +
-                        ', ' +
-                        customerAddressModel.area)
-                  ],
+                          customerAddressModel.area)
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-                flex: 2,
-                child: IconButton(
-                    onPressed: () async {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UserAddAddress(
-                                  isEditingAddress: true,
-                                  customerAddressModel: customerAddressModel)));
-                    },
-                    icon: const Icon(Icons.edit)))
-          ],
+              // Expanded(
+              //     flex: 2,
+              //     child: IconButton(
+              //         onPressed: () async {
+
+              //         },
+              //         icon: const Icon(Icons.edit)))
+            ],
+          ),
         ),
       ),
     );

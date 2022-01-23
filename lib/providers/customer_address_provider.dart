@@ -98,4 +98,18 @@ class CustomerAddressProvider extends ChangeNotifier {
     }
     return responseMap;
   }
+
+  deleteAddress(addressId) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? accessToken = sharedPreferences.getString('access_token');
+    String url = 'https://feex.herokuapp.com/api/customer/address/$addressId/';
+
+    var response = await http.delete(Uri.parse(url),
+        headers: {'Authorization': 'Bearer $accessToken'});
+    if (response.statusCode == 204) {
+      return 'success';
+    } else {
+      return 'failed';
+    }
+  }
 }

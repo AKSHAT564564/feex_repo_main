@@ -32,6 +32,8 @@ class _UserAccountInfoState extends State<UserAccountInfo> {
     'profile_img': '',
   };
 
+  bool _isLoading = false;
+
   final ValueNotifier<int> radioButton =
       ValueNotifier<int>(-1); //using valuenotifier to update radio buttons
   //without setState Method
@@ -306,25 +308,35 @@ class _UserAccountInfoState extends State<UserAccountInfo> {
                   Center(
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width * 0.8,
-                      child: DefaultButton(
-                        text: 'Save',
-                        press: () async {
-                          String result = '';
-                          await CustomerDetailsProvider()
-                              .updateCustomerDetails(
-                                  customerDetails, pickedImage.value)
-                              .then((v) {
-                            result = v;
-                          });
-                          if (result == 'success') {
-                            await CustomerDetailsProvider()
-                                .fetchCustomerDetails(); // updating details of the customer
-                            Navigator.pop(context);
-                          } else {
-                            print('Failure');
-                          }
-                        },
-                      ),
+                      child: _isLoading
+                          ? LinearProgressIndicator(
+                              color: kPrimaryColor,
+                            )
+                          : DefaultButton(
+                              text: 'Save',
+                              press: () async {
+                                setState(() {
+                                  _isLoading = true;
+                                });
+
+                                String result = '';
+                                await CustomerDetailsProvider()
+                                    .updateCustomerDetails(
+                                        customerDetails, pickedImage.value)
+                                    .then((v) {
+                                  result = v;
+                                });
+                                if (result == 'success') {
+                                  await CustomerDetailsProvider()
+                                      .fetchCustomerDetails(); // updating details of the customer
+                                  Navigator.pop(context);
+                                } else {
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                }
+                              },
+                            ),
                     ),
                   )
                 ],

@@ -4,6 +4,7 @@ import 'package:feex/constants.dart';
 import 'package:feex/models/service_details_data_model.dart';
 import 'package:feex/models/service_time_slots_model.dart';
 import 'package:feex/providers/services_detail_provider.dart';
+import 'package:feex/screens/all_services/select_service_address_screen.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +35,22 @@ class _ServiceDetailsState extends State<ServiceDetails> {
   // }
 
   final _feildController = TextEditingController();
+
+  DateTime currentDate = DateTime.now();
+
+  selectDate() async {
+    //Date picker
+    final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: currentDate,
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2023));
+    if (pickedDate != null && pickedDate != currentDate) {
+      setState(() {
+        currentDate = pickedDate;
+      });
+    }
+  }
 
   credentialsFeild(controller, hintText, errorText, obscureText, suffixIcon) {
     return TextFormField(
@@ -83,6 +100,8 @@ class _ServiceDetailsState extends State<ServiceDetails> {
 
   int selectedPrice = -1;
 
+  ValueNotifier<int> selectedTimeSlot = ValueNotifier<int>(0);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +123,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.only(left: 20, right: 20),
+        padding: const EdgeInsets.only(left: 20, right: 20),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -302,7 +321,9 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                     height: 45,
                     child: Consumer<ServiceDetailProvider>(
                         builder: (_, value, __) {
-                      List timeSlots = value.serviceTimeSlots;
+                      List<ServiceTimeSlotModel> timeSlots =
+                          value.serviceTimeSlots;
+                      timeSlots.reversed;
                       return value.hasTimeSlots
                           ? Container(
                               decoration: BoxDecoration(
@@ -313,27 +334,50 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                               child: timeSlots.isEmpty
                                   ? const Center(
                                       child: Text('No Avaialbe slots'))
-                                  : DropdownButton<String>(
-                                      onChanged: null,
-                                      elevation: 0,
-                                      isExpanded: true,
-                                      style:
-                                          const TextStyle(color: kPrimaryColor),
-                                      underline: Container(
-                                        height: 0,
-                                        color: Colors.deepPurpleAccent,
-                                      ),
-                                      items: timeSlots.map((e) {
-                                        return DropdownMenuItem<String>(
-                                            child: Text(e.slot.toString()));
-                                      }).toList()
-                                      //     timeSlots.map<DropdownMenuItem<ServiceTimeSlotModel>>((ServiceTimeSlotModel model) {
-                                      //   return DropdownMenuItem<ServiceTimeSlotModel>(
-                                      //       value: model.id, child: Text(model.slot));
-                                      // }),
-                                      ),
+                                  : ValueListenableBuilder<int>(
+                                      valueListenable: selectedTimeSlot,
+                                      builder: (_, timeSlotValue, __) {
+                                        return DropdownButton<int>(
+                                          value: selectedTimeSlot.value,
+
+                                          onChanged: (int? newValue) {
+                                            selectedTimeSlot.value = newValue!;
+                                            timeSlotValue = newValue;
+                                          },
+                                          elevation: 0,
+                                          isExpanded: true,
+
+                                          style: const TextStyle(
+                                              color: kPrimaryColor),
+                                          underline: Container(
+                                            height: 0,
+                                            color: Colors.deepPurpleAccent,
+                                          ),
+                                          items: List.generate(timeSlots.length,
+                                              (index) {
+                                            return DropdownMenuItem<int>(
+                                                value: timeSlots[index].id - 1,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10),
+                                                  child: Text(
+                                                      timeSlots[index].slot),
+                                                ));
+                                          }),
+                                          // items: timeSlots.map((e) {
+                                          //   return DropdownMenuItem(
+                                          //       value: e.slot,
+                                          //       child: Text(e.slot.toString()));
+                                          // }).toList()
+                                          //     timeSlots.map<DropdownMenuItem<ServiceTimeSlotModel>>((ServiceTimeSlotModel model) {
+                                          //   return DropdownMenuItem<ServiceTimeSlotModel>(
+                                          //       value: model.id, child: Text(model.slot));
+                                          // }),
+                                        );
+                                      }),
                             )
-                          : CircularProgressIndicator();
+                          : const CircularProgressIndicator();
                     }),
                     // child: credentialsFeild(_feildController, 'Choose Time',
                     //     false, false, const Icon(Icons.access_time)),
@@ -341,8 +385,16 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                   SizedBox(
                     width: SizeConfig.screenWidth * 0.4,
                     height: 45,
-                    child: credentialsFeild(_feildController, 'Choose Date',
-                        false, false, const Icon(Icons.calendar_today)),
+                    child: credentialsFeild(
+                        _feildController,
+                        'Choose Date',
+                        false,
+                        false,
+                        IconButton(
+                            onPressed: () async {
+                              await selectDate().then((v) {});
+                            },
+                            icon: const Icon(Icons.calendar_today))),
                   )
                 ],
               ),
@@ -402,10 +454,16 @@ class _ServiceDetailsState extends State<ServiceDetails> {
               // SizedBox(
               //   height: getProportionateScreenHeight(40),
               // ),
-              const Padding(
-                padding: EdgeInsets.only(bottom: 20),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
                 child: DefaultButton(
-                  text: 'Request',
+                  press: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SelectServiceAddress()));
+                  },
+                  text: 'Proceed',
                 ),
               )
             ],

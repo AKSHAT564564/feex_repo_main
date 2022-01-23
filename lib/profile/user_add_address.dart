@@ -156,6 +156,24 @@ class _UserAddAddressState extends State<UserAddAddress> {
             'Add Address',
             style: TextStyle(color: Colors.black),
           ),
+          actions: [
+            widget.isEditingAddress == true
+                ? IconButton(
+                    onPressed: () async {
+                      await CustomerAddressProvider()
+                          .deleteAddress(widget.customerAddressModel.id)
+                          .then((v) {
+                        if (v == 'success') {
+                          Navigator.pop(context);
+                        }
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.delete_outline_rounded,
+                      color: greenColor,
+                    ))
+                : const Center()
+          ],
         ),
         body: Container(
           padding: const EdgeInsets.all(20),
