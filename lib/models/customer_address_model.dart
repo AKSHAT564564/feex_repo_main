@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomerAddressModel {
-  final id;
+  final int id;
   final name;
   final type;
   final area;

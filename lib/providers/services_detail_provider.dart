@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ServiceDetailProvider extends ChangeNotifier {
   bool _hasData = false;
@@ -102,6 +103,27 @@ class ServiceDetailProvider extends ChangeNotifier {
       _hasTimeSlots = false;
     }
     notifyListeners();
+  }
+
+  requestService(Map<String, dynamic> requestServiceDetials) async {
+    print(requestServiceDetials.toString());
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? accessToken = sharedPreferences.getString('access_token');
+
+    var url = 'https://feex.herokuapp.com/api/request-service/';
+
+    var response = await http.post(Uri.parse(url),
+        body: json.encode(requestServiceDetials),
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'Content-type': 'application/json',
+        });
+
+    if (response.statusCode == 201) {
+      return 'success';
+    } else {
+      return 'failure';
+    }
   }
 
   initialValuesForServiceOptions() {

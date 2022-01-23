@@ -28,7 +28,7 @@ class ResetPasswordSuccessScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: SizeConfig.screenHeight * 0.09),
-              Text(
+            const  Text(
                 'Check Your Inbox',
                 style: TextStyle(
                     color: kPrimaryColor,

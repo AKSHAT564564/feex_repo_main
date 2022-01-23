@@ -32,11 +32,29 @@ class _ServiceDetailsState extends State<ServiceDetails> {
   //   super.dispose();
   //   Provider.of<ServiceDetailProvider>(context, listen: false)
   //       .initialValuesForServiceOptions();
-  // }
+  //
 
-  final _feildController = TextEditingController();
+  Map<String, dynamic> requestServiceDetails = {
+    'service': '', //takes selectedprice id
+    'address': '',
+    'date': '',
+    'time': '',
+    'description': ''
+  };
+  Map<String, dynamic> _errors = {
+    'service': '', //takes selectedprice id
+    'address': '',
+    'date': '',
+    'time': '',
+    'description': ''
+  };
+
+  final _dateController = TextEditingController();
 
   DateTime currentDate = DateTime.now();
+  int selectedPrice = -1;
+
+  ValueNotifier<int> selectedTimeSlot = ValueNotifier<int>(0);
 
   selectDate() async {
     //Date picker
@@ -46,10 +64,9 @@ class _ServiceDetailsState extends State<ServiceDetails> {
         firstDate: DateTime.now(),
         lastDate: DateTime(2023));
     if (pickedDate != null && pickedDate != currentDate) {
-      setState(() {
-        currentDate = pickedDate;
-      });
+      currentDate = pickedDate;
     }
+    return pickedDate;
   }
 
   credentialsFeild(controller, hintText, errorText, obscureText, suffixIcon) {
@@ -97,10 +114,6 @@ class _ServiceDetailsState extends State<ServiceDetails> {
       ),
     );
   }
-
-  int selectedPrice = -1;
-
-  ValueNotifier<int> selectedTimeSlot = ValueNotifier<int>(0);
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +180,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                   child:
                       Consumer<ServiceDetailProvider>(builder: (_, value, __) {
                     return value.hasServiceOptions == false
-                        ? CircularProgressIndicator()
+                        ? const CircularProgressIndicator()
                         : ListView.builder(
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: true,
@@ -178,6 +191,8 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                 onTap: () {
                                   setState(() {
                                     selectedPrice = index;
+                                    requestServiceDetails['service'] =
+                                        value.serviceOptions[index].id;
                                   });
                                 },
                                 child: Container(
@@ -343,6 +358,8 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                           onChanged: (int? newValue) {
                                             selectedTimeSlot.value = newValue!;
                                             timeSlotValue = newValue;
+                                            requestServiceDetails['time'] =
+                                                newValue + 1;
                                           },
                                           elevation: 0,
                                           isExpanded: true,
@@ -383,16 +400,21 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                     //     false, false, const Icon(Icons.access_time)),
                   ),
                   SizedBox(
-                    width: SizeConfig.screenWidth * 0.4,
+                    width: SizeConfig.screenWidth * 0.45,
                     height: 45,
                     child: credentialsFeild(
-                        _feildController,
+                        _dateController,
                         'Choose Date',
                         false,
                         false,
                         IconButton(
                             onPressed: () async {
-                              await selectDate().then((v) {});
+                              await selectDate().then((v) {
+                                _dateController.text =
+                                    v.toString().substring(0, 10);
+                                requestServiceDetails['date'] =
+                                    _dateController.text.toString();
+                              });
                             },
                             icon: const Icon(Icons.calendar_today))),
                   )
@@ -401,10 +423,13 @@ class _ServiceDetailsState extends State<ServiceDetails> {
               SizedBox(
                 height: getProportionateScreenHeight(20),
               ),
-              const TextField(
+              TextField(
+                onChanged: (value) {
+                  // requestServiceDetails['description'] = value.toString();
+                },
                 minLines: 5,
                 maxLines: 7,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Describe the problem',
                   contentPadding: EdgeInsets.all(10),
                   errorText: false ? 'Check ' : null,
@@ -458,10 +483,26 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                 padding: const EdgeInsets.only(bottom: 20),
                 child: DefaultButton(
                   press: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SelectServiceAddress()));
+                    print(requestServiceDetails.toString());
+                    bool error = false;
+                    for (var item in requestServiceDetails.keys) {
+                      if (item == 'address') {
+                        continue;
+                      } else if (requestServiceDetails[item] == '') {
+                        error = true;
+                        setState(() {
+                          _errors[item] = 'Please Select $item';
+                        });
+                      }
+                    }
+                    if (error == false) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SelectServiceAddress(
+                                  requestServiceDetails:
+                                      requestServiceDetails)));
+                    }
                   },
                   text: 'Proceed',
                 ),

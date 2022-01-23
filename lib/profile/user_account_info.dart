@@ -169,8 +169,76 @@ class _UserAccountInfoState extends State<UserAccountInfo> {
             }
             return SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(height: getProportionateScreenHeight(25)),
+                  SizedBox(
+                    width: SizeConfig.screenWidth * 0.3,
+                    child: ValueListenableBuilder<XFile?>(
+                        valueListenable: pickedImage,
+                        builder: (_, imageValue, __) {
+                          return Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 40,
+                                backgroundImage: pickedImage.value == null
+                                    ? Image.asset(
+                                            'assets/images/user_default.png')
+                                        .image
+                                    : Image.file(File(imageValue!.path)).image,
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Column(
+                                  children: [
+                                    pickedImage.value != null
+                                        ? Align(
+                                            alignment: Alignment.topRight,
+                                            child: IconButton(
+                                                onPressed: () async {
+                                                  await removePickedImage();
+                                                },
+                                                icon: const Icon(
+                                                  Icons.cancel_outlined,
+                                                  color: Colors.black,
+                                                )),
+                                          )
+                                        : const SizedBox(),
+                                    Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: IconButton(
+                                          padding: EdgeInsets.all(0),
+                                          onPressed: () async {
+                                            await pickImage();
+                                          },
+                                          icon: const Icon(
+                                            Icons.camera_alt,
+                                            color: Colors.black,
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          );
+                        }),
+                  ),
+
+                  // ElevatedButton(
+                  //         onPressed: () async {
+                  //           await pickImage();
+                  //         },
+                  //         child: pickedImage.value == null
+                  //             ? const Text('Pick Profle Image')
+                  //             : const Text('Change Image')),
+                  //     pickedImage.value != null
+                  //         ? TextButton(
+                  //             onPressed: () async {
+                  //               await removePickedImage();
+                  //             },
+                  //             child: const Text('Remove Image'))
+                  //         : const SizedBox()
                   SizedBox(height: getProportionateScreenHeight(25)),
                   credentialsFeild(
                       _nameController,
@@ -210,38 +278,7 @@ class _UserAccountInfoState extends State<UserAccountInfo> {
                           )),
                       'dob'),
                   SizedBox(height: getProportionateScreenHeight(25)),
-                  ValueListenableBuilder<XFile?>(
-                      valueListenable: pickedImage,
-                      builder: (_, imageValue, __) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            pickedImage.value != null
-                                ? CircleAvatar(
-                                    radius: 20,
-                                    backgroundImage:
-                                        Image.file(File(imageValue!.path))
-                                            .image,
-                                  )
-                                : const SizedBox(),
-                            ElevatedButton(
-                                onPressed: () async {
-                                  await pickImage();
-                                },
-                                child: pickedImage.value == null
-                                    ? const Text('Pick Profle Image')
-                                    : const Text('Change Image')),
-                            pickedImage.value != null
-                                ? TextButton(
-                                    onPressed: () async {
-                                      await removePickedImage();
-                                    },
-                                    child: const Text('Remove Image'))
-                                : const SizedBox()
-                          ],
-                        );
-                      }),
-                  SizedBox(height: getProportionateScreenHeight(25)),
+
                   const Text(
                     'Gender (optional)',
                     style: TextStyle(color: kSecondaryColor),
