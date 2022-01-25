@@ -5,20 +5,20 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class CustomerAddressProvider extends ChangeNotifier {
-  bool _hasAddress = false;
+  bool _hasAllAddress = false;
   List<CustomerAddressModel> _customerAddresss = []; // class object
   bool _guestUser = false;
   bool _error = false;
   String _errorMessage = '';
 
-  bool get hasAddress => _hasAddress;
+  bool get hasAllAddress => _hasAllAddress;
   bool get guestUser => _guestUser;
   List<CustomerAddressModel> get customerAddresss => _customerAddresss;
   bool get error => _error;
   String get errorMessage => _errorMessage;
 
   //function to fetch customer details
-  fetchCustomerAddress() async {
+  fetchAllCustomerAddress() async {
     String url =
         'https://feex.herokuapp.com/api/customer/address/'; //endpoint to fetch all customer details
 
@@ -35,20 +35,46 @@ class CustomerAddressProvider extends ChangeNotifier {
               .map((e) => CustomerAddressModel.fromJson(e))
               .toList();
           print('customer ${_customerAddresss.toString()}');
-          _hasAddress = true;
+          _hasAllAddress = true;
           _error = false;
         } catch (e) {
-          _hasAddress = false;
+          _hasAllAddress = false;
           _error = true;
           _errorMessage = '';
         }
       } else {
-        _hasAddress = false;
+        _hasAllAddress = false;
         _error = true;
         _errorMessage = '';
       }
     } else {
       _guestUser = true; //access_token is set as null for guest user
+      _hasAllAddress = false;
+    }
+    notifyListeners();
+  }
+
+  bool _hasAddress = false;
+  CustomerAddressModel? _customerAddressModel;
+
+  bool get hasAddress => _hasAddress;
+  CustomerAddressModel? get customerAddressModel => _customerAddressModel;
+
+  fetchAddressFromAddressId(addressId) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? accessToken = sharedPreferences.getString('access_token');
+
+    String url = 'https://feex.herokuapp.com/api/customer/address/$addressId/';
+
+    var response = await http
+        .get(Uri.parse(url), headers: {'Authorization': 'Bearer $accessToken'});
+
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(response.body);
+      _customerAddressModel = CustomerAddressModel.fromJson(jsonResponse);
+      _hasAddress = true;
+    } else {
+      _customerAddressModel = null;
       _hasAddress = false;
     }
     notifyListeners();

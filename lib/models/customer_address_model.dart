@@ -21,6 +21,7 @@ class CustomerAddressModel {
       this.apartmentOffice = ''});
 
   factory CustomerAddressModel.fromJson(Map<String, dynamic> json) {
+
     return CustomerAddressModel(
         id: json['id'],
         name: json['name'],

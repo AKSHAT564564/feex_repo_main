@@ -33,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return value.isGuestUser == false && value.hasData == false
           ? const CircularProgressIndicator(
               color: kPrimaryColor,
+              strokeWidth: 3.0,
             )
           : Padding(
               padding: const EdgeInsets.only(left: 15.0),

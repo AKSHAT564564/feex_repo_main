@@ -1,16 +1,17 @@
 class ServiceDetailsDataModel {
-  final int serviceId;
-  final int categoryId;
-  final String serviceName;
-  final String iconUrl;
+  int serviceId;
+  int categoryId;
+  String serviceName;
+  String iconUrl;
 
   ServiceDetailsDataModel(
       {required this.serviceId,
       required this.serviceName,
-      required this.categoryId,
-      required this.iconUrl});
+      this.categoryId = 0,
+      this.iconUrl = ''});
 
   factory ServiceDetailsDataModel.fromJson(Map<String, dynamic> json) {
+    
     return ServiceDetailsDataModel(
         serviceId: json['id'],
         serviceName: json['name'],

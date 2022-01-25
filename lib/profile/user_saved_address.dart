@@ -78,7 +78,7 @@ class _UserSavedAddressState extends State<UserSavedAddress> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<CustomerAddressProvider>().fetchCustomerAddress();
+    context.read<CustomerAddressProvider>().fetchAllCustomerAddress();
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -117,7 +117,7 @@ class _UserSavedAddressState extends State<UserSavedAddress> {
             // self explanatory conditional rendering
             return customerAddressValue.guestUser == true
                 ? const Text('Login to Continue')
-                : customerAddressValue.hasAddress &&
+                : customerAddressValue.hasAllAddress &&
                         customerAddressValue.error == false
                     ? ListView.builder(
                         itemCount: customerAddressValue.customerAddresss.length,

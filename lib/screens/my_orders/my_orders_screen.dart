@@ -1,8 +1,12 @@
 import 'package:feex/constants.dart';
+import 'package:feex/models/requested_service_data_model.dart';
+import 'package:feex/providers/customer_address_provider.dart';
+import 'package:feex/providers/services_detail_provider.dart';
 import 'package:feex/screens/quotation_screens/quotation_details.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 
 class MyOrders extends StatefulWidget {
   const MyOrders({Key? key}) : super(key: key);
@@ -12,8 +16,11 @@ class MyOrders extends StatefulWidget {
 }
 
 class _MyOrdersState extends State<MyOrders> {
-  Widget bottomWidget() {
-    return Container(
+  Widget bottomWidget(RequestedServiceDataModel requestedServiceDataModel,
+      BuildContext context) {
+    context.read<CustomerAddressProvider>().fetchAddressFromAddressId(
+        requestedServiceDataModel.customerAddressModel.id);
+    return SizedBox(
       height: SizeConfig.screenHeight * 0.3,
       child: Padding(
         padding: const EdgeInsets.all(1.0),
@@ -33,13 +40,13 @@ class _MyOrdersState extends State<MyOrders> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Plumber',
-                            style: TextStyle(
+                            requestedServiceDataModel.serviceModel.name,
+                            style: const TextStyle(
                                 fontSize: 18,
                                 color: kPrimaryColor,
                                 fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           ),
                           Row(
@@ -49,21 +56,38 @@ class _MyOrdersState extends State<MyOrders> {
                                 child: Image.asset(
                                     'assets/images/location_pin.png'),
                               ),
-                              Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Text(
-                                    'Dubai -Silicon Oasis',
-                                    style: TextStyle(color: kSecondaryColor),
-                                  ),
-                                  Text(
-                                    'Home',
-                                    style: TextStyle(color: kSecondaryColor),
-                                  ),
-                                ],
-                              )
+                              Consumer<CustomerAddressProvider>(
+                                  builder: (_, customerAddressValue, __) {
+                                return customerAddressValue.hasAddress == false
+                                    ? const Text('Loading')
+                                    : Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            customerAddressValue
+                                                    .customerAddressModel!.floor
+                                                    .toString() +
+                                                ', ' +
+                                                customerAddressValue
+                                                    .customerAddressModel!
+                                                    .street,
+                                            style: const TextStyle(
+                                                color: kSecondaryColor),
+                                          ),
+                                          Text(
+                                            customerAddressValue
+                                                .customerAddressModel!.type
+                                                .toString()
+                                                .toUpperCase(),
+                                            style: const TextStyle(
+                                                color: kSecondaryColor),
+                                          ),
+                                        ],
+                                      );
+                              })
                             ],
                           )
                         ],
@@ -85,8 +109,8 @@ class _MyOrdersState extends State<MyOrders> {
                               ),
                             ),
                             Text(
-                              'Pending',
-                              style: TextStyle(color: kPrimaryColor),
+                              requestedServiceDataModel.status,
+                              style: const TextStyle(color: kPrimaryColor),
                             ),
                           ],
                         ),
@@ -129,7 +153,7 @@ class _MyOrdersState extends State<MyOrders> {
     );
   }
 
-  orderItemWidget(status, icon, title) {
+  orderItemWidget(RequestedServiceDataModel requestedServiceDataModel) {
     return GestureDetector(
       onTap: () => showBarModalBottomSheet(
           duration: const Duration(microseconds: 300),
@@ -137,7 +161,7 @@ class _MyOrdersState extends State<MyOrders> {
           context: context,
           backgroundColor: Colors.white,
           builder: (context) {
-            return bottomWidget();
+            return bottomWidget(requestedServiceDataModel, context);
           }),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 20),
@@ -158,16 +182,16 @@ class _MyOrdersState extends State<MyOrders> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '$title',
-                            style: TextStyle(
+                            requestedServiceDataModel.serviceModel.name,
+                            style: const TextStyle(
                                 fontSize: 20,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            'Requested for : Home',
+                            'Requested for : ${requestedServiceDataModel.customerAddressModel.name}',
                           ),
-                          Text('Date : 12/07/2020')
+                          Text('Date: ${requestedServiceDataModel.date}')
                         ],
                       ),
                     )),
@@ -178,15 +202,16 @@ class _MyOrdersState extends State<MyOrders> {
                         Padding(
                           padding: const EdgeInsets.only(right: 5),
                           child: Image.asset(
-                            '$icon',
-                            scale: icon != 'assets/images/clock_icon.png'
-                                ? 3.5
-                                : 1.5,
+                            'assets/images/clock_icon.png',
+                            scale: 1.5,
+                            // scale: icon != 'assets/images/clock_icon.png'
+                            //     ? 3.5
+                            //     : 1.5,
                           ),
                         ),
                         Text(
-                          '$status',
-                          style: TextStyle(color: Colors.black),
+                          requestedServiceDataModel.status,
+                          style: const TextStyle(color: Colors.black),
                         ),
                         const Icon(
                           Icons.keyboard_arrow_right_sharp,
@@ -198,6 +223,14 @@ class _MyOrdersState extends State<MyOrders> {
             )),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<ServiceDetailProvider>(context, listen: false)
+        .getAllReuestedServiced();
   }
 
   @override
@@ -256,16 +289,31 @@ class _MyOrdersState extends State<MyOrders> {
             SizedBox(
               height: SizeConfig.screenHeight * 0.04,
             ),
-            ListView(
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              physics: const BouncingScrollPhysics(),
-              children: [
-                orderItemWidget('Pending', kPendingIcon, 'Plumber'),
-                orderItemWidget('Completed', kCompletedIcon, 'Carpenter'),
-                orderItemWidget('Cancelled', kCancelledIcon, 'Ac Repair')
-              ],
-            )
+            Consumer<ServiceDetailProvider>(
+                builder: (_, allRequestedServiceValue, __) {
+              return allRequestedServiceValue.hasAllRequestedServices == false
+                  ? CircularProgressIndicator()
+                  : ListView.builder(
+                      itemCount:
+                          allRequestedServiceValue.allRequestedServices.length,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        return orderItemWidget(allRequestedServiceValue
+                            .allRequestedServices[index]);
+                      });
+            })
+            // ListView.bu(
+            //   shrinkWrap: true,
+            //   scrollDirection: Axis.vertical,
+            //   physics: const BouncingScrollPhysics(),
+            //   children: [
+            //     orderItemWidget('Pending', kPendingIcon, 'Plumber'),
+            //     orderItemWidget('Completed', kCompletedIcon, 'Carpenter'),
+            //     orderItemWidget('Cancelled', kCancelledIcon, 'Ac Repair')
+            //   ],
+            // )
           ],
         ),
       ),

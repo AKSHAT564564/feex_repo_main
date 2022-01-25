@@ -27,3 +27,11 @@ class CustomerDetailsModel {
         dob: json['dob']);
   }
 }
+
+// {
+//     "id": 2,
+//     "name": "usoof",
+//     "mobile_number": "0563858825",
+//     "email": "test@test.com",
+//     "profile_img": "/media/profile_images/default_img.png"
+// }

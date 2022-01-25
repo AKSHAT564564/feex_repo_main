@@ -10,6 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class DrawerWidget extends StatelessWidget {
+  DrawerWidget({Key? key}) : super(key: key);
   var email = "joseph@gmail.com";
   var name = "Joseph Jo";
   @override
@@ -99,7 +100,8 @@ class DrawerWidget extends StatelessWidget {
                   Navigator.pushNamed(context, HomeScreen.routeName);
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
@@ -118,8 +120,10 @@ class DrawerWidget extends StatelessWidget {
               Divider(),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyOrders()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MyOrders()));
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),

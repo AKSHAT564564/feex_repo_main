@@ -33,7 +33,7 @@ class TopCategoriesWidget extends StatelessWidget {
               )
             ],
           ),
-          Container(
+          SizedBox(
               width: double.infinity,
               height: SizeConfig.screenHeight * 0.45,
               child: RefreshIndicator(
@@ -48,6 +48,7 @@ class TopCategoriesWidget extends StatelessWidget {
                       ? const Center(
                           child: CircularProgressIndicator(
                           color: kPrimaryColor,
+                          strokeWidth: 3,
                         ))
                       : value.error
                           ? const Text('Something Wrong')
@@ -85,7 +86,8 @@ class TopCategoriesWidget extends StatelessWidget {
                                                 borderRadius:
                                                     BorderRadius.circular(10),
                                                 border: Border.all(
-                                                    color: Color(0xffE3DEF8),
+                                                    color:
+                                                        const Color(0xffE3DEF8),
                                                     width: 1.0)),
                                             child: ClipRRect(
                                               borderRadius:

@@ -1,3 +1,4 @@
+import 'package:feex/models/requested_service_data_model.dart';
 import 'package:feex/models/service_details_data_model.dart';
 import 'package:feex/models/service_options_data_model.dart';
 import 'package:feex/models/service_time_slots_model.dart';
@@ -106,7 +107,6 @@ class ServiceDetailProvider extends ChangeNotifier {
   }
 
   requestService(Map<String, dynamic> requestServiceDetials) async {
-    print(requestServiceDetials.toString());
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? accessToken = sharedPreferences.getString('access_token');
 
@@ -124,6 +124,41 @@ class ServiceDetailProvider extends ChangeNotifier {
     } else {
       return 'failure';
     }
+  }
+
+  List<RequestedServiceDataModel> _allRequestedServices = [];
+  bool _hasAllRequestedServices = false;
+
+  List<RequestedServiceDataModel> get allRequestedServices =>
+      _allRequestedServices;
+
+  bool get hasAllRequestedServices => _hasAllRequestedServices;
+
+  getAllReuestedServiced() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? accessToken = sharedPreferences.getString('access_token');
+
+    String url = 'https://feex.herokuapp.com/api/request-service/';
+
+    var response = await http
+        .get(Uri.parse(url), headers: {'Authorization': 'Bearer $accessToken'});
+
+    if (response.statusCode == 200) {
+      try {
+        var jsonResponse = json.decode(response.body) as List;
+
+        _allRequestedServices = jsonResponse
+            .map((e) => RequestedServiceDataModel.fromJson(e))
+            .toList();
+
+        _hasAllRequestedServices = true;
+      } catch (e) {
+        _hasAllRequestedServices = false;
+      }
+    } else {
+      _hasAllRequestedServices = false;
+    }
+    notifyListeners();
   }
 
   initialValuesForServiceOptions() {
