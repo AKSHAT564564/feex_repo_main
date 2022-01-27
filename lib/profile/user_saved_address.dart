@@ -3,10 +3,8 @@ import 'package:feex/constants.dart';
 import 'package:feex/models/customer_address_model.dart';
 import 'package:feex/profile/user_add_address.dart';
 import 'package:feex/providers/customer_address_provider.dart';
-import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:image_picker/image_picker.dart';
 
 class UserSavedAddress extends StatefulWidget {
   @override

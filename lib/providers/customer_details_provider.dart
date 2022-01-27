@@ -1,8 +1,6 @@
-import 'package:feex/auth/auth_functions.dart';
 import 'package:feex/models/customer_detail_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';

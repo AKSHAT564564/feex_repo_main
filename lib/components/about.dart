@@ -65,7 +65,7 @@ class AboutPage extends StatelessWidget {
                   height: getProportionateScreenHeight(50),
                 ),
                 const Text(
-                  'Missio   n & Vision',
+                  'Mission & Vision',
                   style: TextStyle(
                       color: kPrimaryColor,
                       fontSize: 20,

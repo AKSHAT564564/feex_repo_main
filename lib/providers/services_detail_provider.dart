@@ -27,7 +27,6 @@ class ServiceDetailProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       try {
         var jsonResponse = json.decode(response.body) as List;
-
         _serviceDetails = jsonResponse
             .map((e) => ServiceDetailsDataModel.fromJson(e))
             .toList();

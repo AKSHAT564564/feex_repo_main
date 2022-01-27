@@ -1,5 +1,4 @@
 import 'package:feex/models/service_details_data_model.dart';
-import 'package:feex/models/top_categories_datamodel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -7,6 +6,7 @@ import 'dart:convert';
 //provider class for topcategories provider
 
 class TopServicesProvider extends ChangeNotifier {
+  
   List<ServiceDetailsDataModel> _topSerivcesData = []; // for data as list
   bool _error = false; // error handling
   String _errorMessage = ''; // error handling
@@ -31,12 +31,13 @@ class TopServicesProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       try {
         var jsonResponse = json.decode(response.body) as List;
-        // coverts data into a list for easy breakdown
+        //converts data into a list for easy breakdown
 
         //Maps data as a list of data model
         _topSerivcesData = jsonResponse
             .map((e) => ServiceDetailsDataModel.fromJson(e))
             .toList();
+
         _error = false;
       } catch (e) {
         _error = true;

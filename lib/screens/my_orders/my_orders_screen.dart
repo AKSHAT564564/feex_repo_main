@@ -242,88 +242,91 @@ class _MyOrdersState extends State<MyOrders> {
         builder: (_, customerDetailsValue, __) {
       return Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Column(
-          children: [
-            SizedBox(
-              child: Container(
-                height: SizeConfig.screenHeight * 0.09,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 15),
-                        child: CircleAvatar(
-                          radius: 30,
-                          child: Image.asset('assets/images/user_default.png'),
-                        ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            customerDetailsValue.customerDetailsModel.name,
-                            style: const TextStyle(
-                                color: kPrimaryColor, fontSize: 20),
-                          ),
-                          Text(
-                            customerDetailsValue.customerDetailsModel.email,
-                            style: const TextStyle(
-                                color: kSecondaryColor, fontSize: 15),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                child: Container(
+                  height: SizeConfig.screenHeight * 0.09,
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(right: 20),
-                  child: Icon(
-                    Icons.settings_outlined,
-                    size: 30,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 15),
+                          child: CircleAvatar(
+                            radius: 30,
+                            child:
+                                Image.asset('assets/images/user_default.png'),
+                          ),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              customerDetailsValue.customerDetailsModel.name,
+                              style: const TextStyle(
+                                  color: kPrimaryColor, fontSize: 20),
+                            ),
+                            Text(
+                              customerDetailsValue.customerDetailsModel.email,
+                              style: const TextStyle(
+                                  color: kSecondaryColor, fontSize: 15),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: SizeConfig.screenHeight * 0.04,
-            ),
-            customerDetailsValue.isGuestUser == true
-                ? const DefaultButton(
-                    text: 'Login to Continue',
+                  const Padding(
+                    padding: EdgeInsets.only(right: 20),
+                    child: Icon(
+                      Icons.settings_outlined,
+                      size: 30,
+                    ),
                   )
-                : Consumer<ServiceDetailProvider>(
-                    builder: (_, allRequestedServiceValue, __) {
-                    return allRequestedServiceValue.hasAllRequestedServices ==
-                            false
-                        ? CircularProgressIndicator()
-                        : ListView.builder(
-                            itemCount: allRequestedServiceValue
-                                .allRequestedServices.length,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            physics: const BouncingScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) {
-                              return orderItemWidget(allRequestedServiceValue
-                                  .allRequestedServices[index]);
-                            });
-                  })
-            // ListView.bu(
-            //   shrinkWrap: true,
-            //   scrollDirection: Axis.vertical,
-            //   physics: const BouncingScrollPhysics(),
-            //   children: [
-            //     orderItemWidget('Pending', kPendingIcon, 'Plumber'),
-            //     orderItemWidget('Completed', kCompletedIcon, 'Carpenter'),
-            //     orderItemWidget('Cancelled', kCancelledIcon, 'Ac Repair')
-            //   ],
-            // )
-          ],
+                ],
+              ),
+              SizedBox(
+                height: SizeConfig.screenHeight * 0.04,
+              ),
+              customerDetailsValue.isGuestUser == true
+                  ? const DefaultButton(
+                      text: 'Login to Continue',
+                    )
+                  : Consumer<ServiceDetailProvider>(
+                      builder: (_, allRequestedServiceValue, __) {
+                      return allRequestedServiceValue.hasAllRequestedServices ==
+                              false
+                          ? CircularProgressIndicator()
+                          : ListView.builder(
+                              itemCount: allRequestedServiceValue
+                                  .allRequestedServices.length,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              physics: const BouncingScrollPhysics(),
+                              itemBuilder: (BuildContext context, int index) {
+                                return orderItemWidget(allRequestedServiceValue
+                                    .allRequestedServices[index]);
+                              });
+                    })
+              // ListView.bu(
+              //   shrinkWrap: true,
+              //   scrollDirection: Axis.vertical,
+              //   physics: const BouncingScrollPhysics(),
+              //   children: [
+              //     orderItemWidget('Pending', kPendingIcon, 'Plumber'),
+              //     orderItemWidget('Completed', kCompletedIcon, 'Carpenter'),
+              //     orderItemWidget('Cancelled', kCancelledIcon, 'Ac Repair')
+              //   ],
+              // )
+            ],
+          ),
         ),
       );
     }));
