@@ -12,7 +12,8 @@ import 'package:image_picker/image_picker.dart';
 class CustomerDetailsProvider extends ChangeNotifier {
   bool _error = false;
   String _errorMessage = '';
-  CustomerDetailsModel _customerDetailsModel = CustomerDetailsModel();
+  CustomerDetailsModel _customerDetailsModel =
+      CustomerDetailsModel(name: 'Guest', email: '');
   bool _hasData = false;
   bool _isGuestUser = false;
 
@@ -31,7 +32,8 @@ class CustomerDetailsProvider extends ChangeNotifier {
     String? accessToken = await sharedPreferences.getString('access_token');
 
     if (accessToken == 'null') {
-      _isGuestUser = true; //set Guest user to true and notify listners
+      _isGuestUser = true;
+      //set Guest user to true and notify listners
     } else {
       _isGuestUser =
           false; //set guest user to false then fetches customer details

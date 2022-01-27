@@ -1,3 +1,4 @@
+import 'package:feex/components/default_button.dart';
 import 'package:feex/constants.dart';
 import 'package:feex/models/customer_address_model.dart';
 import 'package:feex/profile/user_add_address.dart';
@@ -21,6 +22,7 @@ class _UserSavedAddressState extends State<UserSavedAddress> {
               builder: (context) => UserAddAddress(
                   isEditingAddress: true,
                   customerAddressModel: customerAddressModel))).then((value) {
+        CustomerAddressProvider().fetchAllCustomerAddress();
         setState(() {});
       }),
       child: Padding(
@@ -79,58 +81,64 @@ class _UserSavedAddressState extends State<UserSavedAddress> {
   @override
   Widget build(BuildContext context) {
     context.read<CustomerAddressProvider>().fetchAllCustomerAddress();
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          leading: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(
-                Icons.arrow_back_sharp,
-                color: Colors.black,
-              )),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UserAddAddress()))
-                      .then((value) {
-                    setState(() {});
-                  });
-                },
-                child: const Text(
-                  'Add',
-                  style: TextStyle(color: greenColor),
-                ))
-          ],
-          elevation: 1,
-          title: const Text(
-            'Saved Addresses',
-            style: TextStyle(color: Colors.black),
+    return Consumer<CustomerAddressProvider>(
+        builder: (_, customerAddressValue, __) {
+      // self explanatory conditional rendering
+      return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            leading: IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(
+                  Icons.arrow_back_sharp,
+                  color: Colors.black,
+                )),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserAddAddress()))
+                        .then((value) {
+                      setState(() {});
+                    });
+                  },
+                  child: customerAddressValue.guestUser
+                      ? const Text('')
+                      : const Text(
+                          'Add',
+                          style: TextStyle(color: greenColor),
+                        ))
+            ],
+            elevation: 1,
+            title: const Text(
+              'Saved Addresses',
+              style: TextStyle(color: Colors.black),
+            ),
           ),
-        ),
-        body: Container(
-          padding: const EdgeInsets.only(top: 25, left: 20, right: 30),
-          child: Consumer<CustomerAddressProvider>(
-              builder: (_, customerAddressValue, __) {
-            // self explanatory conditional rendering
-            return customerAddressValue.guestUser == true
-                ? const Text('Login to Continue')
-                : customerAddressValue.hasAllAddress &&
-                        customerAddressValue.error == false
-                    ? ListView.builder(
-                        itemCount: customerAddressValue.customerAddresss.length,
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          return savedAddressWidget(
-                              customerAddressValue.customerAddresss[index]);
-                        })
-                    : customerAddressValue.error == true
-                        ? const Text('Error Loading Address')
-                        : Text('Loading');
-          }),
-        ));
+          body: Container(
+              padding: const EdgeInsets.only(top: 25, left: 20, right: 30),
+              child: customerAddressValue.guestUser == true
+                  ? const Center(
+                      child: DefaultButton(
+                        text: 'Login to Continue',
+                      ),
+                    )
+                  : customerAddressValue.hasAllAddress &&
+                          customerAddressValue.error == false
+                      ? ListView.builder(
+                          itemCount:
+                              customerAddressValue.customerAddresss.length,
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            return savedAddressWidget(
+                                customerAddressValue.customerAddresss[index]);
+                          })
+                      : customerAddressValue.error == true
+                          ? const Text('Error Loading Address')
+                          : Text('Loading')));
+    });
   }
 }

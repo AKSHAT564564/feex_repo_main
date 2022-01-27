@@ -9,56 +9,81 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
         leading: IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back_sharp)),
+            icon: const Icon(
+              Icons.arrow_back_sharp,
+              color: kPrimaryColor,
+            )),
         title: null,
       ),
       body: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(25),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               'assets/images/frame_blue.png',
               height: SizeConfig.screenHeight * 0.08,
               width: SizeConfig.screenWidth * 0.4,
             ),
+            SizedBox(
+              height: getProportionateScreenHeight(15),
+            ),
             const Text(
               'Version: 1.0.1',
               style: TextStyle(color: kSecondaryColor, fontSize: 15),
             ),
             SizedBox(
-              height: getProportionateScreenHeight(30),
+              height: getProportionateScreenHeight(100),
             ),
-            const Text(
-              'About Us',
-              style: TextStyle(color: kPrimaryColor, fontSize: 20),
-            ),
-            const Text(
-              'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry 45s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-              textAlign: TextAlign.start,
-              maxLines: 5,
-              style: TextStyle(
-                  color: kSecondaryColor,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300),
-            ),
-            SizedBox(
-              height: getProportionateScreenHeight(30),
-            ),
-            const Text(
-              'Mission & Vision',
-              style: TextStyle(color: kPrimaryColor, fontSize: 20),
-            ),
-            const Text(
-              'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry 45s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-              textAlign: TextAlign.start,
-              maxLines: 5,
-              style: TextStyle(
-                  color: kSecondaryColor,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'About Us',
+                  style: TextStyle(
+                      color: kPrimaryColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: getProportionateScreenHeight(15),
+                ),
+                const Text(
+                  'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry 45s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
+                  textAlign: TextAlign.start,
+                  maxLines: 5,
+                  style: TextStyle(
+                      color: kSecondaryColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w300),
+                ),
+                SizedBox(
+                  height: getProportionateScreenHeight(50),
+                ),
+                const Text(
+                  'Missio   n & Vision',
+                  style: TextStyle(
+                      color: kPrimaryColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: getProportionateScreenHeight(15),
+                ),
+                const Text(
+                  'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry 45s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
+                  textAlign: TextAlign.start,
+                  maxLines: 5,
+                  style: TextStyle(
+                      color: kSecondaryColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w300),
+                ),
+              ],
             ),
           ],
         ),

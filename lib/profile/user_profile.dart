@@ -11,7 +11,12 @@ import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class UserProfile extends StatelessWidget {
+class UserProfile extends StatefulWidget {
+  @override
+  State<UserProfile> createState() => _UserProfileState();
+}
+
+class _UserProfileState extends State<UserProfile> {
   Widget divider = const Divider(
     height: 20,
     thickness: 0.3,
@@ -113,9 +118,12 @@ class UserProfile extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => UserAccountInfo()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserAccountInfo()))
+                        .then((value) {
+                      setState(() {});
+                    });
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(

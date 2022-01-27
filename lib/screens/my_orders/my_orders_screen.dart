@@ -1,11 +1,14 @@
+import 'package:feex/components/default_button.dart';
 import 'package:feex/constants.dart';
 import 'package:feex/models/requested_service_data_model.dart';
 import 'package:feex/providers/customer_address_provider.dart';
+import 'package:feex/providers/customer_details_provider.dart';
 import 'package:feex/providers/services_detail_provider.dart';
 import 'package:feex/screens/quotation_screens/quotation_details.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 import 'package:provider/provider.dart';
 
 class MyOrders extends StatefulWidget {
@@ -235,8 +238,9 @@ class _MyOrdersState extends State<MyOrders> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
+    return Scaffold(body: Consumer<CustomerDetailsProvider>(
+        builder: (_, customerDetailsValue, __) {
+      return Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
           children: [
@@ -263,12 +267,12 @@ class _MyOrdersState extends State<MyOrders> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Joseph Jo',
+                            customerDetailsValue.customerDetailsModel.name,
                             style: const TextStyle(
                                 color: kPrimaryColor, fontSize: 20),
                           ),
                           Text(
-                            'jsoeph@feexapp.com',
+                            customerDetailsValue.customerDetailsModel.email,
                             style: const TextStyle(
                                 color: kSecondaryColor, fontSize: 15),
                           )
@@ -289,21 +293,26 @@ class _MyOrdersState extends State<MyOrders> {
             SizedBox(
               height: SizeConfig.screenHeight * 0.04,
             ),
-            Consumer<ServiceDetailProvider>(
-                builder: (_, allRequestedServiceValue, __) {
-              return allRequestedServiceValue.hasAllRequestedServices == false
-                  ? CircularProgressIndicator()
-                  : ListView.builder(
-                      itemCount:
-                          allRequestedServiceValue.allRequestedServices.length,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        return orderItemWidget(allRequestedServiceValue
-                            .allRequestedServices[index]);
-                      });
-            })
+            customerDetailsValue.isGuestUser == true
+                ? const DefaultButton(
+                    text: 'Login to Continue',
+                  )
+                : Consumer<ServiceDetailProvider>(
+                    builder: (_, allRequestedServiceValue, __) {
+                    return allRequestedServiceValue.hasAllRequestedServices ==
+                            false
+                        ? CircularProgressIndicator()
+                        : ListView.builder(
+                            itemCount: allRequestedServiceValue
+                                .allRequestedServices.length,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (BuildContext context, int index) {
+                              return orderItemWidget(allRequestedServiceValue
+                                  .allRequestedServices[index]);
+                            });
+                  })
             // ListView.bu(
             //   shrinkWrap: true,
             //   scrollDirection: Axis.vertical,
@@ -316,7 +325,7 @@ class _MyOrdersState extends State<MyOrders> {
             // )
           ],
         ),
-      ),
-    );
+      );
+    }));
   }
 }

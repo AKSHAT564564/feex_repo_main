@@ -47,7 +47,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   registerUser(Map<String, dynamic> userDetails) async {
     var jsonResponse;
     var res = await http.post(
-        Uri.parse('https://feex.herokuapp.com/api/auth/register/'),
+        Uri.parse('https://feex.herokuapp.com/api/account/register/'),
         body: userDetails);
     Map<String, dynamic> response = convert.jsonDecode(res.body);
 

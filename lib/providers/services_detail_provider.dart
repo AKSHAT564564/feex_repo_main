@@ -140,23 +140,25 @@ class ServiceDetailProvider extends ChangeNotifier {
 
     String url = 'https://feex.herokuapp.com/api/request-service/';
 
-    var response = await http
-        .get(Uri.parse(url), headers: {'Authorization': 'Bearer $accessToken'});
+    if (accessToken != 'null') {
+      var response = await http.get(Uri.parse(url),
+          headers: {'Authorization': 'Bearer $accessToken'});
 
-    if (response.statusCode == 200) {
-      try {
-        var jsonResponse = json.decode(response.body) as List;
+      if (response.statusCode == 200) {
+        try {
+          var jsonResponse = json.decode(response.body) as List;
 
-        _allRequestedServices = jsonResponse
-            .map((e) => RequestedServiceDataModel.fromJson(e))
-            .toList();
+          _allRequestedServices = jsonResponse
+              .map((e) => RequestedServiceDataModel.fromJson(e))
+              .toList();
 
-        _hasAllRequestedServices = true;
-      } catch (e) {
+          _hasAllRequestedServices = true;
+        } catch (e) {
+          _hasAllRequestedServices = false;
+        }
+      } else {
         _hasAllRequestedServices = false;
       }
-    } else {
-      _hasAllRequestedServices = false;
     }
     notifyListeners();
   }

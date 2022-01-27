@@ -3,6 +3,7 @@ import 'package:feex/components/default_button.dart';
 import 'package:feex/constants.dart';
 import 'package:feex/models/service_details_data_model.dart';
 import 'package:feex/models/service_time_slots_model.dart';
+import 'package:feex/providers/customer_details_provider.dart';
 import 'package:feex/providers/services_detail_provider.dart';
 import 'package:feex/screens/all_services/select_service_address_screen.dart';
 import 'package:feex/size_config.dart';
@@ -64,9 +65,10 @@ class _ServiceDetailsState extends State<ServiceDetails> {
         firstDate: DateTime.now(),
         lastDate: DateTime(2023));
     if (pickedDate != null && pickedDate != currentDate) {
-      currentDate = pickedDate;
+      return pickedDate;
+    } else {
+      return null;
     }
-    return pickedDate;
   }
 
   credentialsFeild(controller, hintText, errorText, obscureText, suffixIcon) {
@@ -180,7 +182,18 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                   child:
                       Consumer<ServiceDetailProvider>(builder: (_, value, __) {
                     return value.hasServiceOptions == false
-                        ? const CircularProgressIndicator()
+                        ? Row(
+                            children: const [
+                              CircularProgressIndicator(
+                                color: kPrimaryColor,
+                                strokeWidth: 2,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('Loading'),
+                              )
+                            ],
+                          )
                         : ListView.builder(
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: true,
@@ -394,7 +407,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                         );
                                       }),
                             )
-                          : const CircularProgressIndicator();
+                          : const Text('Loading Info');
                     }),
                     // child: credentialsFeild(_feildController, 'Choose Time',
                     //     false, false, const Icon(Icons.access_time)),
@@ -410,6 +423,9 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                         IconButton(
                             onPressed: () async {
                               await selectDate().then((v) {
+                                if (v == null)
+                                  return; // if not picked a date simply return
+
                                 _dateController.text =
                                     v.toString().substring(0, 10);
                                 requestServiceDetails['date'] =
@@ -425,7 +441,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
               ),
               TextField(
                 onChanged: (value) {
-                  // requestServiceDetails['description'] = value.toString();
+                  requestServiceDetails['description'] = value.toString();
                 },
                 minLines: 5,
                 maxLines: 7,
@@ -479,34 +495,49 @@ class _ServiceDetailsState extends State<ServiceDetails> {
               // SizedBox(
               //   height: getProportionateScreenHeight(40),
               // ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: DefaultButton(
-                  press: () {
-                    print(requestServiceDetails.toString());
-                    bool error = false;
-                    for (var item in requestServiceDetails.keys) {
-                      if (item == 'address') {
-                        continue;
-                      } else if (requestServiceDetails[item] == '') {
-                        error = true;
-                        setState(() {
-                          _errors[item] = 'Please Select $item';
-                        });
+              Consumer<CustomerDetailsProvider>(builder: (_, value, __) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: DefaultButton(
+                    press: () {
+                      if (value.isGuestUser) return;
+                      bool error = false;
+                      String errorMessage = '';
+                      for (var item in requestServiceDetails.keys) {
+                        if (item == 'address' || item == 'description') {
+                          //ignoring address feild and description feild(not compulsary)
+                          // address will be selected on the next screen
+                          continue;
+                        } else if (requestServiceDetails[item] == '') {
+                          errorMessage += item.toString().toUpperCase() + ', ';
+                          error = true;
+                        }
                       }
-                    }
-                    if (error == false) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SelectServiceAddress(
-                                  requestServiceDetails:
-                                      requestServiceDetails)));
-                    }
-                  },
-                  text: 'Proceed',
-                ),
-              )
+                      if (error == false) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SelectServiceAddress(
+                                    requestServiceDetails:
+                                        requestServiceDetails)));
+                      } else {
+                        //shows warning message
+                        //if error is true
+                        var snackBar = SnackBar(
+                            backgroundColor: kSecondaryColor,
+                            content: Text(
+                              'Select $errorMessage',
+                              style: const TextStyle(color: kPrimaryColor),
+                            ));
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                    },
+                    text: value.isGuestUser == false
+                        ? 'Proceed'
+                        : 'Login to Continue',
+                  ),
+                );
+              })
             ],
           ),
         ),

@@ -149,7 +149,7 @@ class _UserAccountInfoState extends State<UserAccountInfo> {
           padding: const EdgeInsets.all(18.0),
           child: Consumer<CustomerDetailsProvider>(builder: (_, value, __) {
             // storing initial values from the database
-            if (storedInitialValue == false) {
+            if (value.isGuestUser == false && storedInitialValue == false) {
               customerDetails['name'] =
                   _nameController.text = value.customerDetailsModel.name;
               customerDetails['mobile_number'] = _mobileNumberController.text =
@@ -167,218 +167,215 @@ class _UserAccountInfoState extends State<UserAccountInfo> {
               }
               storedInitialValue = true;
             }
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: getProportionateScreenHeight(25)),
-                  SizedBox(
-                    width: SizeConfig.screenWidth * 0.3,
-                    child: ValueListenableBuilder<XFile?>(
-                        valueListenable: pickedImage,
-                        builder: (_, imageValue, __) {
-                          return Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              CircleAvatar(
-                                radius: 40,
-                                backgroundImage: pickedImage.value == null
-                                    ? Image.asset(
-                                            'assets/images/user_default.png')
-                                        .image
-                                    : Image.file(File(imageValue!.path)).image,
-                              ),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: Column(
-                                  children: [
-                                    pickedImage.value != null
-                                        ? Align(
-                                            alignment: Alignment.topRight,
-                                            child: IconButton(
-                                                onPressed: () async {
-                                                  await removePickedImage();
-                                                },
-                                                icon: const Icon(
-                                                  Icons.cancel_outlined,
-                                                  color: Colors.black,
-                                                )),
-                                          )
-                                        : const SizedBox(),
-                                    Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: IconButton(
-                                          padding: EdgeInsets.all(0),
-                                          onPressed: () async {
-                                            await pickImage();
-                                          },
-                                          icon: const Icon(
-                                            Icons.camera_alt,
-                                            color: Colors.black,
-                                          )),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          );
-                        }),
-                  ),
-
-                  // ElevatedButton(
-                  //         onPressed: () async {
-                  //           await pickImage();
-                  //         },
-                  //         child: pickedImage.value == null
-                  //             ? const Text('Pick Profle Image')
-                  //             : const Text('Change Image')),
-                  //     pickedImage.value != null
-                  //         ? TextButton(
-                  //             onPressed: () async {
-                  //               await removePickedImage();
-                  //             },
-                  //             child: const Text('Remove Image'))
-                  //         : const SizedBox()
-                  SizedBox(height: getProportionateScreenHeight(25)),
-                  credentialsFeild(
-                      _nameController,
-                      value.customerDetailsModel.name,
-                      false,
-                      false,
-                      null,
-                      'name'),
-                  SizedBox(height: getProportionateScreenHeight(25)),
-                  credentialsFeild(
-                      _mobileNumberController,
-                      value.customerDetailsModel.mobileNumber,
-                      false,
-                      false,
-                      null,
-                      'mobile_number'),
-                  // SizedBox(height: getProportionateScreenHeight(25)),
-                  // credentialsFeild(
-                  //     , 'Gender', false, false, null),
-                  SizedBox(height: getProportionateScreenHeight(25)),
-                  credentialsFeild(
-                      _dobController,
-                      value.customerDetailsModel.dob,
-                      false,
-                      false,
-                      IconButton(
-                          onPressed: () async {
-                            await selectDate().then((v) {
-                              _dobController.text =
-                                  currentDate.toString().substring(0, 10);
-                              customerDetails['dob'] = _dobController.text;
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.calendar_today_outlined,
-                            color: kBorderGreyColor,
-                          )),
-                      'dob'),
-                  SizedBox(height: getProportionateScreenHeight(25)),
-
-                  const Text(
-                    'Gender (optional)',
-                    style: TextStyle(color: kSecondaryColor),
-                  ),
-                  ValueListenableBuilder<int>(
-                      //listning to change in radioButton value
-                      //avoiding setState Method
-
-                      // 1 for male
-                      // 2 for female
-                      valueListenable: radioButton,
-                      builder: (_, genderValue, __) {
-                        return Row(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Radio(
-                                    value: 1, //1 for male
-                                    groupValue:
-                                        genderValue, // signifying the group ther are in
-                                    activeColor: kPrimaryColor,
-                                    onChanged: (v) {
-                                      radioButton.value =
-                                          1; //on selecting radioButton variable will be updated to
-                                      //desired value then it wil upadate the state of radio button
-                                      //using value listner
-                                      customerDetails['gender'] =
-                                          'Male'; // updating the data
-                                    }),
-                                const Text(
-                                  'Male',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Radio(
-                                    value: 2, // 2 for female
-                                    groupValue:
-                                        genderValue, // signifying the group
-                                    activeColor: kPrimaryColor,
-                                    onChanged: (v) {
-                                      radioButton.value = 2;
-                                      customerDetails['gender'] = 'Female';
-                                    }),
-                                const Text(
-                                  'Female',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            )
-                          ],
-                        );
-                      }),
-                  SizedBox(
-                    height: getProportionateScreenHeight(30),
-                  ),
-                  Center(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      child: _isLoading
-                          ? LinearProgressIndicator(
-                              color: kPrimaryColor,
-                            )
-                          : DefaultButton(
-                              text: 'Save',
-                              press: () async {
-                                setState(() {
-                                  _isLoading = true;
-                                });
-
-                                String result = '';
-                                await CustomerDetailsProvider()
-                                    .updateCustomerDetails(
-                                        customerDetails, pickedImage.value)
-                                    .then((v) {
-                                  result = v;
-                                });
-                                if (result == 'success') {
-                                  await CustomerDetailsProvider()
-                                      .fetchCustomerDetails(); // updating details of the customer
-                                  Navigator.pop(context);
-                                } else {
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
-                                }
-                              },
-                            ),
+            return value.isGuestUser // checking for guest user
+                ? const Center(
+                    child: DefaultButton(
+                      text: 'Login to Continue',
                     ),
                   )
-                ],
-              ),
-            );
+                : SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: getProportionateScreenHeight(25)),
+                        SizedBox(
+                          width: SizeConfig.screenWidth * 0.3,
+                          child: ValueListenableBuilder<XFile?>(
+                              valueListenable: pickedImage,
+                              builder: (_, imageValue, __) {
+                                return Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 40,
+                                      backgroundImage: pickedImage.value == null
+                                          ? Image.asset(
+                                                  'assets/images/user_default.png')
+                                              .image
+                                          : Image.file(File(imageValue!.path))
+                                              .image,
+                                    ),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Column(
+                                        children: [
+                                          pickedImage.value != null
+                                              ? Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: IconButton(
+                                                      onPressed: () async {
+                                                        await removePickedImage();
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.cancel_outlined,
+                                                        color: Colors.black,
+                                                      )),
+                                                )
+                                              : const SizedBox(),
+                                          Align(
+                                            alignment: Alignment.bottomRight,
+                                            child: IconButton(
+                                                padding: EdgeInsets.all(0),
+                                                onPressed: () async {
+                                                  await pickImage();
+                                                },
+                                                icon: const Icon(
+                                                  Icons.camera_alt,
+                                                  color: Colors.black,
+                                                )),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                );
+                              }),
+                        ),
+
+                        SizedBox(height: getProportionateScreenHeight(25)),
+                        credentialsFeild(
+                            _nameController,
+                            value.customerDetailsModel.name,
+                            false,
+                            false,
+                            null,
+                            'name'),
+                        SizedBox(height: getProportionateScreenHeight(25)),
+                        credentialsFeild(
+                            _mobileNumberController,
+                            value.customerDetailsModel.mobileNumber,
+                            false,
+                            false,
+                            null,
+                            'mobile_number'),
+                        // SizedBox(height: getProportionateScreenHeight(25)),
+                        // credentialsFeild(
+                        //     , 'Gender', false, false, null),
+                        SizedBox(height: getProportionateScreenHeight(25)),
+                        credentialsFeild(
+                            _dobController,
+                            value.customerDetailsModel.dob,
+                            false,
+                            false,
+                            IconButton(
+                                onPressed: () async {
+                                  await selectDate().then((v) {
+                                    _dobController.text =
+                                        currentDate.toString().substring(0, 10);
+                                    customerDetails['dob'] =
+                                        _dobController.text;
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.calendar_today_outlined,
+                                  color: kBorderGreyColor,
+                                )),
+                            'dob'),
+                        SizedBox(height: getProportionateScreenHeight(25)),
+
+                        const Text(
+                          'Gender (optional)',
+                          style: TextStyle(color: kSecondaryColor),
+                        ),
+                        ValueListenableBuilder<int>(
+                            //listning to change in radioButton value
+                            //avoiding setState Method
+
+                            // 1 for male
+                            // 2 for female
+                            valueListenable: radioButton,
+                            builder: (_, genderValue, __) {
+                              return Row(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Radio(
+                                          value: 1, //1 for male
+                                          groupValue:
+                                              genderValue, // signifying the group ther are in
+                                          activeColor: kPrimaryColor,
+                                          onChanged: (v) {
+                                            radioButton.value =
+                                                1; //on selecting radioButton variable will be updated to
+                                            //desired value then it wil upadate the state of radio button
+                                            //using value listner
+                                            customerDetails['gender'] =
+                                                'Male'; // updating the data
+                                          }),
+                                      const Text(
+                                        'Male',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Radio(
+                                          value: 2, // 2 for female
+                                          groupValue:
+                                              genderValue, // signifying the group
+                                          activeColor: kPrimaryColor,
+                                          onChanged: (v) {
+                                            radioButton.value = 2;
+                                            customerDetails['gender'] =
+                                                'Female';
+                                          }),
+                                      const Text(
+                                        'Female',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              );
+                            }),
+                        SizedBox(
+                          height: getProportionateScreenHeight(30),
+                        ),
+                        Center(
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            child: _isLoading
+                                ? const LinearProgressIndicator(
+                                    color: kPrimaryColor,
+                                  )
+                                : DefaultButton(
+                                    text: 'Save',
+                                    press: () async {
+                                      setState(() {
+                                        _isLoading = true;
+                                      });
+
+                                      String result = '';
+                                      await CustomerDetailsProvider()
+                                          .updateCustomerDetails(
+                                              customerDetails,
+                                              pickedImage.value)
+                                          .then((v) {
+                                        result = v;
+                                      });
+                                      if (result == 'success') {
+                                        await CustomerDetailsProvider()
+                                            .fetchCustomerDetails(); // updating details of the customer
+                                        Navigator.pop(context);
+                                      } else {
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+                                      }
+                                    },
+                                  ),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
           })),
     );
   }
