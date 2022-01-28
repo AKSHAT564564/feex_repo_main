@@ -344,6 +344,7 @@ class _UserAccountInfoState extends State<UserAccountInfo> {
                             child: _isLoading
                                 ? const LinearProgressIndicator(
                                     color: kPrimaryColor,
+                                    backgroundColor: kSecondaryColor,
                                   )
                                 : DefaultButton(
                                     text: 'Save',
