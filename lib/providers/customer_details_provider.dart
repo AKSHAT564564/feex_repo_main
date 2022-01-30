@@ -27,7 +27,7 @@ class CustomerDetailsProvider extends ChangeNotifier {
 
   fetchCustomerDetails() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? accessToken = await sharedPreferences.getString('access_token');
+    String? accessToken = sharedPreferences.getString('access_token');
 
     if (accessToken == 'null') {
       _isGuestUser = true;

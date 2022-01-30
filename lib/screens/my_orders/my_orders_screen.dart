@@ -21,6 +21,8 @@ class MyOrders extends StatefulWidget {
 class _MyOrdersState extends State<MyOrders> {
   Widget bottomWidget(RequestedServiceDataModel requestedServiceDataModel,
       BuildContext context) {
+    //fetching all details of the rewuested service address
+    //based on its id
     context.read<CustomerAddressProvider>().fetchAddressFromAddressId(
         requestedServiceDataModel.customerAddressModel.id);
     return SizedBox(
@@ -117,22 +119,35 @@ class _MyOrdersState extends State<MyOrders> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
-                        GestureDetector(
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => QuotationDetails())),
-                          child: const Text(
-                            'View Quotation',
-                            style: TextStyle(
-                                color: greenColor,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        )
+                        Consumer<CustomerAddressProvider>(
+                            builder: (_, value, __) {
+                          return GestureDetector(
+                            onTap: () {
+                              if (value.hasAddress == false) {
+                                return;
+                              } else {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => QuotationDetails(
+                                            requestedServiceDataModel:
+                                                requestedServiceDataModel,
+                                            customerAddressModel:
+                                                value.customerAddressModel!)));
+                              }
+                            },
+                            child: const Text(
+                              'View Quotation',
+                              style: TextStyle(
+                                  color: greenColor,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          );
+                        })
                       ],
                     ))
               ],

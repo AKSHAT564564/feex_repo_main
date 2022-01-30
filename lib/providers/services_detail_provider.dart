@@ -1,3 +1,4 @@
+import 'package:feex/models/quotation_data_model.dart';
 import 'package:feex/models/requested_service_data_model.dart';
 import 'package:feex/models/service_details_data_model.dart';
 import 'package:feex/models/service_options_data_model.dart';
@@ -158,6 +159,35 @@ class ServiceDetailProvider extends ChangeNotifier {
       } else {
         _hasAllRequestedServices = false;
       }
+    }
+    notifyListeners();
+  }
+
+  bool _hasQuotationData = false;
+
+  bool get hasQuotationData => _hasQuotationData;
+
+  QuotationDataModel? _quotationDataModel;
+
+  QuotationDataModel? get quotattionDataModel => _quotationDataModel;
+
+  getQuotationDetails(id) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? accessToken = sharedPreferences.getString('access_token');
+
+    if (accessToken == 'null') return;
+
+    String url = 'https://feex.herokuapp.com/api/quotation/$id/';
+
+    var response = await http
+        .get(Uri.parse(url), headers: {'Authorization': 'Bearer $accessToken'});
+
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      _quotationDataModel = QuotationDataModel.fromJson(jsonResponse);
+      _hasQuotationData = true;
+    } else {
+      _hasQuotationData = false;
     }
     notifyListeners();
   }

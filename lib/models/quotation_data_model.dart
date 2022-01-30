@@ -15,10 +15,10 @@ class QuotationDataModel {
   factory QuotationDataModel.fromJson(Map<String, dynamic> jsonData) {
     //first storing it as a list
     // see sample response
-    List solution = json.decode(jsonData['solution']) as List;
+
     return QuotationDataModel(
         id: jsonData['id'],
-        solution: solution,
+        solution: jsonData['solution'],
         price: jsonData['price'],
         comment: jsonData['comments']);
   }
