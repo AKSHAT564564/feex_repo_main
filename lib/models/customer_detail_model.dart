@@ -4,16 +4,16 @@ class CustomerDetailsModel {
   final String profileImgLink;
   final String email;
   final String gender;
-  final String dob;
-  var id;
+  var dob;
+  int id;
 
   CustomerDetailsModel(
       {this.name = '',
       this.mobileNumber = '',
       this.profileImgLink = '',
       this.email = '',
-      this.id = '',
-      this.dob = '',
+      this.id = 0,
+      this.dob = null,
       this.gender = ''});
 
   factory CustomerDetailsModel.fromJson(Map<String, dynamic> json) {

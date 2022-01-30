@@ -1,20 +1,35 @@
-import 'dart:convert';
+import 'dart:convert' as convert;
 
 import 'package:feex/components/default_button.dart';
 import 'package:feex/constants.dart';
 import 'package:feex/providers/customer_details_provider.dart';
+import 'package:feex/screens/login/login_screen.dart';
 import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:feex/auth/auth_functions.dart';
 
-class UserChangePassword extends StatelessWidget {
+class UserChangePassword extends StatefulWidget {
+  @override
+  State<UserChangePassword> createState() => _UserChangePasswordState();
+}
+
+class _UserChangePasswordState extends State<UserChangePassword> {
   final _currentPasswordController = TextEditingController();
+
   final _newPasswordController1 = TextEditingController();
+
   final _newPasswordController2 = TextEditingController();
 
   Map<String, dynamic> _passwordDetails = {
+    'current_password': '',
+    'passwrod': '',
+    'password2': ''
+  };
+
+  Map<String, dynamic> _errorMap = {
     'current_password': '',
     'passwrod': '',
     'password2': ''
@@ -40,8 +55,19 @@ class UserChangePassword extends StatelessWidget {
       return responseMap;
     } else if (response.statusCode == 400) {
       responseMap['statusCode'] = 400;
-      responseMap['response'] =
-          jsonDecode(response.body) as Map<String, dynamic>;
+      Map<String, dynamic> jsonResponse = convert.jsonDecode(response.body);
+
+      for (var item in jsonResponse.keys) {
+        if (item == 'current_password') {
+          setState(() {
+            _errorMap[item] = jsonResponse[item][item];
+          });
+        }
+        setState(() {
+          _errorMap[item] = jsonResponse[item];
+        });
+      }
+
       return responseMap;
     } else {
       responseMap['statusCode'] == 500;
@@ -59,10 +85,17 @@ class UserChangePassword extends StatelessWidget {
       validator: (value) {
         if (value == null || value.isEmpty) return 'please enter $hintText';
       },
-      onChanged: (value) => _passwordDetails[feildName] = value,
+      onChanged: (value) {
+        _passwordDetails[feildName] = value;
+        setState(() {
+          _errorMap[feildName] = '';
+        });
+      },
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(10),
-        errorText: errorText ? 'Check $hintText' : null,
+        errorText: _errorMap[feildName] == ''
+            ? null
+            : _errorMap[feildName].toString().trimRight(),
         focusColor: Colors.grey,
         hintText: hintText,
         suffixIcon: feildIcon,
@@ -149,18 +182,22 @@ class UserChangePassword extends StatelessWidget {
                 press: () async {
                   bool error = false;
                   Map errorMap = {};
+                  var v = {};
                   await changePassword(
                           _passwordDetails, value.customerDetailsModel.id)
-                      .then((v) {
-                    print(v.toString());
-                    if (v['statusCode'] == 200) {
-                    } else if (v['statusCode'] == 400) {
-                      error = true;
-                      errorMap = v['response'];
-                    } else {
-                      error = true;
-                    }
+                      .then((response) {
+                    v = response;
                   });
+                  if (v['statusCode'] == 200) {
+                    await AuthMethods().logOutUser();
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, LoginScreen.routeName, (route) => false);
+                  } else if (v['statusCode'] == 400) {
+                    error = true;
+                    // errorMap = v['response'];
+                  } else {
+                    error = true;
+                  }
                 },
               )
             ],

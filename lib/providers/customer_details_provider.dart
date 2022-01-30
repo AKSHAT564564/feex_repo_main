@@ -44,12 +44,14 @@ class CustomerDetailsProvider extends ChangeNotifier {
 
         try {
           var jsonResponse = json.decode(response.body);
+          print(jsonResponse.toString());
           _customerDetailsModel = CustomerDetailsModel.fromJson(jsonResponse);
+          print(_customerDetailsModel.name);
           _error = false;
         } catch (e) {
           _error = true;
           _errorMessage = e.toString();
-          _customerDetailsModel = CustomerDetailsModel();
+          _customerDetailsModel = CustomerDetailsModel(name: '');
           print(_customerDetailsModel.toString());
         }
         _hasData = true; // for condtional rendering of widgets
@@ -121,7 +123,7 @@ class CustomerDetailsProvider extends ChangeNotifier {
   }
 
   void initialValues() {
-    _customerDetailsModel = CustomerDetailsModel();
+    _customerDetailsModel = CustomerDetailsModel(name: '');
     _error = false;
     _errorMessage = '';
     notifyListeners();
