@@ -17,6 +17,8 @@ class CustomerAddressProvider extends ChangeNotifier {
   bool get error => _error;
   String get errorMessage => _errorMessage;
 
+ 
+
   //function to fetch customer details
   fetchAllCustomerAddress() async {
     String url =
@@ -24,6 +26,7 @@ class CustomerAddressProvider extends ChangeNotifier {
 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? accessToken = sharedPreferences.getString('access_token');
+
     if (accessToken != 'null') {
       var response = await http.get(Uri.parse(url),
           headers: {'Authorization': 'Bearer $accessToken'});
