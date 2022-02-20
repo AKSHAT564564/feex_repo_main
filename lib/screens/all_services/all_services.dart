@@ -1,12 +1,7 @@
 import 'package:feex/constants.dart';
 import 'package:feex/models/service_details_data_model.dart';
-import 'package:feex/models/top_categories_datamodel.dart';
 import 'package:feex/providers/all_categories_provider.dart';
-import 'package:feex/providers/services_detail_provider.dart';
 import 'package:feex/screens/all_services/all_services_scroll_widget.dart';
-import 'package:feex/screens/all_services/service_details.dart';
-import 'package:feex/screens/all_services/service_details_two.dart';
-import 'package:feex/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';

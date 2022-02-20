@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'components/reset_password_successful_body.dart';
 import 'package:feex/components/default_button.dart';
 import 'package:feex/constants.dart';
 import 'package:feex/screens/login/login_screen.dart';
