@@ -9,12 +9,10 @@ import 'package:feex/screens/login/login_screen.dart';
 import 'package:feex/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'size_config.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+
 
 // const AndroidNotificationChannel channel = AndroidNotificationChannel(
 //     'high_importance_channel', 'High Importance Notifications',
@@ -35,7 +33,7 @@ Future<void> main() async {
       statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
 
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
 
   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
