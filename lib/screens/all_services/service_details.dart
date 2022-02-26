@@ -240,16 +240,16 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                       const SizedBox(
                                         height: 8,
                                       ),
-                                      FittedBox(
-                                        fit: BoxFit.contain,
-                                        child: Text(
-                                          'for ' +
-                                              value.serviceOptions[index].title,
-                                          style: TextStyle(
-                                              color: selectedPrice == index
-                                                  ? kPrimaryColor
-                                                  : kSecondaryColor),
-                                        ),
+                                      Text(
+                                        'for ' +
+                                            value.serviceOptions[index].title,
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: selectedPrice == index
+                                                ? kPrimaryColor
+                                                : kSecondaryColor),
                                       )
                                     ],
                                   ),
@@ -361,7 +361,10 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                       List<ServiceTimeSlotModel> timeSlots =
                           value.serviceTimeSlots;
                       List<int> dropDownID = value.dropDownID;
-                      timeSlots.reversed;
+                      if (timeSlots.isNotEmpty) {
+                        timeSlots.reversed;
+                        // selectedTimeSlot.value = timeSlots[0].id;
+                      }
 
                       return value.hasTimeSlots
                           ? Container(
@@ -373,43 +376,40 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                               child: timeSlots.isEmpty
                                   ? const Center(
                                       child: Text('No Avaialbe slots'))
-                                  : const Center(
-                                      child: Text('Error'),
-                                    )
-                              // : ValueListenableBuilder<int>(
-                              //     valueListenable: selectedTimeSlot,
-                              //     builder: (_, timeSlotValue, __) {
-                              //       return DropdownButton<int>(
-                              //         value: selectedTimeSlot.value,
-                              //         onChanged: (int? newValue) {
-                              //           selectedTimeSlot.value = newValue!;
-                              //           timeSlotValue = newValue;
-                              //           requestServiceDetails['time'] =
-                              //               newValue + 1;
-                              //         },
-                              //         elevation: 0,
-                              //         isExpanded: true,
-                              //         style: const TextStyle(
-                              //             color: kPrimaryColor),
-                              //         underline: Container(
-                              //           height: 0,
-                              //           color: Colors.deepPurpleAccent,
-                              //         ),
-                              //         items: List.generate(timeSlots.length,
-                              //             (index) {
-                              //           return DropdownMenuItem<int>(
-                              //               value: timeSlots[index].id,
-                              //               child: Padding(
-                              //                 padding:
-                              //                     const EdgeInsets.only(
-                              //                         left: 10),
-                              //                 child: Text(
-                              //                     timeSlots[index].slot),
-                              //               ));
-                              //         }),
-                              //       );
-                              //     }),
-                              )
+                                  : ValueListenableBuilder<int>(
+                                      valueListenable: selectedTimeSlot,
+                                      builder: (_, timeSlotValue, __) {
+                                        return DropdownButton<int>(
+                                          value: selectedTimeSlot.value,
+                                          onChanged: (int? newValue) {
+                                            selectedTimeSlot.value = newValue!;
+                                            timeSlotValue = newValue;
+                                            requestServiceDetails['time'] =
+                                                timeSlots[newValue].id;
+                                          },
+                                          elevation: 0,
+                                          isExpanded: true,
+                                          style: const TextStyle(
+                                              color: kPrimaryColor),
+                                          underline: Container(
+                                            height: 0,
+                                            color: Colors.deepPurpleAccent,
+                                          ),
+                                          items: List.generate(timeSlots.length,
+                                              (index) {
+                                            return DropdownMenuItem<int>(
+                                                value: index,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10),
+                                                  child: Text(
+                                                      timeSlots[index].slot),
+                                                ));
+                                          }),
+                                        );
+                                      }),
+                            )
                           : const Text('Loading Info');
                     }),
                     // child: credentialsFeild(_feildController, 'Choose Time',

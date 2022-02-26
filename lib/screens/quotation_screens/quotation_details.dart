@@ -210,7 +210,8 @@ class _QuotationDetailsState extends State<QuotationDetails> {
                       padding: const EdgeInsets.all(20.0),
                       child: Container(
                         width: SizeConfig.screenWidth,
-                        padding: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.only(
+                            top: 15, left: 15, bottom: 15, right: 15),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
@@ -256,7 +257,8 @@ class _QuotationDetailsState extends State<QuotationDetails> {
                             Align(
                                 alignment: Alignment.centerRight,
                                 child: Text(
-                                  'Price : ${quotationValue.quotattionDataModel!.price}',
+                                  'Price : ${quotationValue.quotattionDataModel!.price}' +
+                                      ' AED',
                                   style: const TextStyle(color: kPrimaryColor),
                                 ))
                           ],
@@ -266,7 +268,7 @@ class _QuotationDetailsState extends State<QuotationDetails> {
             }),
             SizedBox(
               height: getProportionateScreenHeight(20),
-            ), 
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 50, right: 50),
               child: DefaultButton(
