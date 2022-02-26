@@ -138,7 +138,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
         ),
       ),
       body: Container(
-        padding: const EdgeInsets.only(left: 20, right: 20),
+        padding: const EdgeInsets.only(left: 21, right: 20),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,7 +165,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                 color: kBorderGreyColor,
               ),
               SizedBox(
-                height: getProportionateScreenHeight(20),
+                height: getProportionateScreenHeight(15),
               ),
               const Text(
                 'Service Price',
@@ -199,7 +199,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                             shrinkWrap: true,
                             itemCount: value.serviceOptions.length,
                             itemBuilder: (context, index) => Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.only(right: 15),
                               child: GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -210,7 +210,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                 },
                                 child: Container(
                                   width: 100,
-                                  height: 100,
+                                  height: 90,
                                   padding: const EdgeInsets.all(8.0),
                                   decoration: BoxDecoration(
                                       color: const Color(0xffF5F5F5),
@@ -221,25 +221,34 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                               : const Color(0xffE3DEF8),
                                           width: 1.0)),
                                   child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                        value.serviceOptions[index].price
+                                                .toString() +
+                                            ' AED',
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            color: kPrimaryColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
                                       FittedBox(
                                         fit: BoxFit.contain,
                                         child: Text(
-                                          value.serviceOptions[index].price
-                                                  .toString() +
-                                              ' AED',
-                                          style: const TextStyle(
-                                              fontSize: 18,
-                                              color: kPrimaryColor,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Text(
                                           'for ' +
                                               value.serviceOptions[index].title,
+                                          style: TextStyle(
+                                              color: selectedPrice == index
+                                                  ? kPrimaryColor
+                                                  : kSecondaryColor),
                                         ),
                                       )
                                     ],
@@ -351,7 +360,9 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                         builder: (_, value, __) {
                       List<ServiceTimeSlotModel> timeSlots =
                           value.serviceTimeSlots;
+                      List<int> dropDownID = value.dropDownID;
                       timeSlots.reversed;
+
                       return value.hasTimeSlots
                           ? Container(
                               decoration: BoxDecoration(
@@ -362,51 +373,43 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                               child: timeSlots.isEmpty
                                   ? const Center(
                                       child: Text('No Avaialbe slots'))
-                                  : ValueListenableBuilder<int>(
-                                      valueListenable: selectedTimeSlot,
-                                      builder: (_, timeSlotValue, __) {
-                                        return DropdownButton<int>(
-                                          value: selectedTimeSlot.value,
-
-                                          onChanged: (int? newValue) {
-                                            selectedTimeSlot.value = newValue!;
-                                            timeSlotValue = newValue;
-                                            requestServiceDetails['time'] =
-                                                newValue + 1;
-                                          },
-                                          elevation: 0,
-                                          isExpanded: true,
-
-                                          style: const TextStyle(
-                                              color: kPrimaryColor),
-                                          underline: Container(
-                                            height: 0,
-                                            color: Colors.deepPurpleAccent,
-                                          ),
-                                          items: List.generate(timeSlots.length,
-                                              (index) {
-                                            return DropdownMenuItem<int>(
-                                                value: timeSlots[index].id - 1,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 10),
-                                                  child: Text(
-                                                      timeSlots[index].slot),
-                                                ));
-                                          }),
-                                          // items: timeSlots.map((e) {
-                                          //   return DropdownMenuItem(
-                                          //       value: e.slot,
-                                          //       child: Text(e.slot.toString()));
-                                          // }).toList()
-                                          //     timeSlots.map<DropdownMenuItem<ServiceTimeSlotModel>>((ServiceTimeSlotModel model) {
-                                          //   return DropdownMenuItem<ServiceTimeSlotModel>(
-                                          //       value: model.id, child: Text(model.slot));
-                                          // }),
-                                        );
-                                      }),
-                            )
+                                  : const Center(
+                                      child: Text('Error'),
+                                    )
+                              // : ValueListenableBuilder<int>(
+                              //     valueListenable: selectedTimeSlot,
+                              //     builder: (_, timeSlotValue, __) {
+                              //       return DropdownButton<int>(
+                              //         value: selectedTimeSlot.value,
+                              //         onChanged: (int? newValue) {
+                              //           selectedTimeSlot.value = newValue!;
+                              //           timeSlotValue = newValue;
+                              //           requestServiceDetails['time'] =
+                              //               newValue + 1;
+                              //         },
+                              //         elevation: 0,
+                              //         isExpanded: true,
+                              //         style: const TextStyle(
+                              //             color: kPrimaryColor),
+                              //         underline: Container(
+                              //           height: 0,
+                              //           color: Colors.deepPurpleAccent,
+                              //         ),
+                              //         items: List.generate(timeSlots.length,
+                              //             (index) {
+                              //           return DropdownMenuItem<int>(
+                              //               value: timeSlots[index].id,
+                              //               child: Padding(
+                              //                 padding:
+                              //                     const EdgeInsets.only(
+                              //                         left: 10),
+                              //                 child: Text(
+                              //                     timeSlots[index].slot),
+                              //               ));
+                              //         }),
+                              //       );
+                              //     }),
+                              )
                           : const Text('Loading Info');
                     }),
                     // child: credentialsFeild(_feildController, 'Choose Time',

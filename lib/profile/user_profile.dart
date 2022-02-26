@@ -115,7 +115,7 @@ class _UserProfileState extends State<UserProfile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     Navigator.push(
                             context,
@@ -144,7 +144,7 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                 ),
                 divider,
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     Navigator.push(
                         context,
@@ -170,7 +170,7 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                 ),
                 divider,
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     Navigator.pushNamed(context, HomeScreen.routeName);
                   },
@@ -192,7 +192,7 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                 ),
                 divider,
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     Navigator.push(
                         context,
@@ -217,7 +217,7 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                 ),
                 divider,
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     Navigator.push(
                         context,
@@ -242,7 +242,7 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                 ),
                 divider,
-                GestureDetector(
+                InkWell(
                   onTap: () async {
                     await AuthMethods().logOutUser().then((hasError) {
                       if (hasError == false) {
@@ -253,7 +253,8 @@ class _UserProfileState extends State<UserProfile> {
                     });
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [

@@ -89,7 +89,7 @@ class DrawerWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              GestureDetector(
+              InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, HomeScreen.routeName);
                 },
@@ -112,13 +112,9 @@ class DrawerWidget extends StatelessWidget {
                 ),
               ),
               Divider(),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MyOrders()));
-                },
+              InkWell(
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const MyOrders())),
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Row(
@@ -137,10 +133,8 @@ class DrawerWidget extends StatelessWidget {
                 ),
               ),
               Divider(),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, HomeScreen.routeName);
-                },
+              InkWell(
+                onTap: () => Navigator.pushNamed(context, HomeScreen.routeName),
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Row(
@@ -159,13 +153,11 @@ class DrawerWidget extends StatelessWidget {
                 ),
               ),
               Divider(),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const GetSupport()));
-                },
+              InkWell(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const GetSupport())),
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Row(
@@ -184,7 +176,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
               ),
               Divider(),
-              GestureDetector(
+              InkWell(
                 onTap: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const AboutPage())),
                 child: Container(
@@ -211,7 +203,8 @@ class DrawerWidget extends StatelessWidget {
                   Navigator.pushNamed(context, HomeScreen.routeName);
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [

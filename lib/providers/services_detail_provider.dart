@@ -80,9 +80,11 @@ class ServiceDetailProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<int> _dropDownID = [];
   List<ServiceTimeSlotModel> _serviceTimeSlots = [];
   bool _hasTimeSlots = false;
 
+  List<int> get dropDownID => _dropDownID;
   List<ServiceTimeSlotModel> get serviceTimeSlots => _serviceTimeSlots;
   bool get hasTimeSlots => _hasTimeSlots;
   fetchServiceTimeSlots(serviceId) async {
@@ -96,6 +98,10 @@ class ServiceDetailProvider extends ChangeNotifier {
         var jsonResponse = json.decode(response.body) as List;
         _serviceTimeSlots =
             jsonResponse.map((e) => ServiceTimeSlotModel.fromJson(e)).toList();
+
+        for (var i = 0; i < _serviceTimeSlots.length; i++) {
+          _dropDownID.add(i);
+        }
         _hasTimeSlots = true;
       } catch (e) {
         _hasTimeSlots = false;
